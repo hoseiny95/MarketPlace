@@ -13,7 +13,7 @@ public partial class City
 
     public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
 
-    public virtual ICollection<Both> Boths { get; set; } = new List<Both>();
+    public virtual ICollection<Booth> Booths { get; set; } = new List<Booth>();
 
     public virtual Province Province { get; set; } = null!;
 }

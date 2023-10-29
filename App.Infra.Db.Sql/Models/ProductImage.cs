@@ -11,7 +11,7 @@ public partial class ProductImage
 
     public int BoothProductId { get; set; }
 
-    public virtual BothProduct BoothProduct { get; set; } = null!;
+    public virtual BoothProduct BoothProduct { get; set; } = null!;
 
     public virtual Image Image { get; set; } = null!;
 }

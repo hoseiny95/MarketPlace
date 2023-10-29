@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace App.Infra.Db.Sql.Models;
 
-public partial class AttributeValue
+public partial class ProductAttributeValue
 {
     public int Id { get; set; }
 
@@ -13,9 +13,9 @@ public partial class AttributeValue
 
     public string AttributeTitle { get; set; } = null!;
 
-    public string AttributeValue1 { get; set; } = null!;
+    public string AttributeValue { get; set; } = null!;
 
-    public virtual AttributeTitle Attribute { get; set; } = null!;
+    public virtual CategoryAttributeTitle Attribute { get; set; } = null!;
 
     public virtual Product Product { get; set; } = null!;
 }

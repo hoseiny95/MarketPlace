@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace App.Infra.Db.Sql.Models;
 
-public partial class BothProduct
+public partial class BoothProduct
 {
     public int Id { get; set; }
 
@@ -25,7 +25,7 @@ public partial class BothProduct
 
     public virtual ICollection<Auction> Auctions { get; set; } = new List<Auction>();
 
-    public virtual Both Both { get; set; } = null!;
+    public virtual Booth Both { get; set; } = null!;
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 

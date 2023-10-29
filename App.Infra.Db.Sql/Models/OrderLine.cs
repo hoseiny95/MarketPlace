@@ -15,7 +15,7 @@ public partial class OrderLine
 
     public double? PriceSum { get; set; }
 
-    public virtual BothProduct? BothProduct { get; set; }
+    public virtual BoothProduct? BothProduct { get; set; }
 
     public virtual Order? Order { get; set; }
 }

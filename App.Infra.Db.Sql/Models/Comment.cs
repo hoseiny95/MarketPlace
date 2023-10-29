@@ -19,7 +19,7 @@ public partial class Comment
 
     public DateTime CreateAt { get; set; }
 
-    public virtual BothProduct BoothProduct { get; set; } = null!;
+    public virtual BoothProduct BoothProduct { get; set; } = null!;
 
     public virtual Customer Customer { get; set; } = null!;
 

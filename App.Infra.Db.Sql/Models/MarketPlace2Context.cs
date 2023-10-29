@@ -19,19 +19,17 @@ public partial class MarketPlace2Context : DbContext
 
     public virtual DbSet<AppUser> AppUsers { get; set; }
 
-    public virtual DbSet<AttributeTitle> AttributeTitles { get; set; }
-
-    public virtual DbSet<AttributeValue> AttributeValues { get; set; }
-
     public virtual DbSet<Auction> Auctions { get; set; }
 
     public virtual DbSet<Bid> Bids { get; set; }
 
-    public virtual DbSet<Both> Boths { get; set; }
+    public virtual DbSet<Booth> Booths { get; set; }
 
-    public virtual DbSet<BothProduct> BothProducts { get; set; }
+    public virtual DbSet<BoothProduct> BoothProducts { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
+
+    public virtual DbSet<CategoryAttributeTitle> CategoryAttributeTitles { get; set; }
 
     public virtual DbSet<City> Cities { get; set; }
 
@@ -50,6 +48,8 @@ public partial class MarketPlace2Context : DbContext
     public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
+
+    public virtual DbSet<ProductAttributeValue> ProductAttributeValues { get; set; }
 
     public virtual DbSet<ProductImage> ProductImages { get; set; }
 
@@ -93,45 +93,15 @@ public partial class MarketPlace2Context : DbContext
         modelBuilder.Entity<AppUser>(entity =>
         {
             entity.ToTable("AppUser");
-        });
 
-        modelBuilder.Entity<AttributeTitle>(entity =>
-        {
-            entity.ToTable("AttributeTitle");
-
-            entity.Property(e => e.AttributeTitle1)
-                .HasMaxLength(50)
-                .HasColumnName("AttributeTitle");
-
-            entity.HasOne(d => d.Category).WithMany(p => p.AttributeTitles)
-                .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_AttributeTitle_Category");
-        });
-
-        modelBuilder.Entity<AttributeValue>(entity =>
-        {
-            entity.ToTable("AttributeValue");
-
-            entity.Property(e => e.AttributeTitle).HasMaxLength(50);
-            entity.Property(e => e.AttributeValue1)
-                .HasMaxLength(50)
-                .HasColumnName("AttributeValue");
-
-            entity.HasOne(d => d.Attribute).WithMany(p => p.AttributeValues)
-                .HasForeignKey(d => d.AttributeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_AttributeValue_AttributeTitle");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.AttributeValues)
-                .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_AttributeValue_Products");
+            entity.HasOne(d => d.Wallet).WithMany(p => p.AppUsers)
+                .HasForeignKey(d => d.WalletId)
+                .HasConstraintName("FK_AppUser_Wallets");
         });
 
         modelBuilder.Entity<Auction>(entity =>
         {
-            entity.ToTable("Auction");
+            entity.HasKey(e => e.Id).HasName("PK_Auction");
 
             entity.Property(e => e.CreateAt).HasColumnType("datetime");
             entity.Property(e => e.Endtime).HasColumnType("datetime");
@@ -171,33 +141,33 @@ public partial class MarketPlace2Context : DbContext
                 .HasConstraintName("FK_Bits_Customer");
         });
 
-        modelBuilder.Entity<Both>(entity =>
+        modelBuilder.Entity<Booth>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK_Boths");
+
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(50);
 
-            entity.HasOne(d => d.City).WithMany(p => p.Boths)
+            entity.HasOne(d => d.City).WithMany(p => p.Booths)
                 .HasForeignKey(d => d.CityId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Boths_Cities");
         });
 
-        modelBuilder.Entity<BothProduct>(entity =>
+        modelBuilder.Entity<BoothProduct>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_ProductBooth");
-
-            entity.ToTable("BothProduct");
 
             entity.Property(e => e.Description)
                 .HasMaxLength(50)
                 .HasDefaultValueSql("(N'در انتظار تایید')");
 
-            entity.HasOne(d => d.Both).WithMany(p => p.BothProducts)
+            entity.HasOne(d => d.Both).WithMany(p => p.BoothProducts)
                 .HasForeignKey(d => d.BothId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductBooth_Boths");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.BothProducts)
+            entity.HasOne(d => d.Product).WithMany(p => p.BoothProducts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductBooth_Products");
@@ -212,6 +182,18 @@ public partial class MarketPlace2Context : DbContext
             entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent)
                 .HasForeignKey(d => d.ParentId)
                 .HasConstraintName("FK_Category_Category");
+        });
+
+        modelBuilder.Entity<CategoryAttributeTitle>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_AttributeTitle");
+
+            entity.Property(e => e.AttributeTitle).HasMaxLength(50);
+
+            entity.HasOne(d => d.Category).WithMany(p => p.CategoryAttributeTitles)
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AttributeTitle_Category");
         });
 
         modelBuilder.Entity<City>(entity =>
@@ -301,7 +283,7 @@ public partial class MarketPlace2Context : DbContext
 
         modelBuilder.Entity<OrderStatus>(entity =>
         {
-            entity.ToTable("OrderStatus");
+            entity.HasKey(e => e.Id).HasName("PK_OrderStatus");
 
             entity.Property(e => e.Title).HasMaxLength(50);
         });
@@ -317,9 +299,27 @@ public partial class MarketPlace2Context : DbContext
                 .HasConstraintName("FK_Products_Category");
         });
 
+        modelBuilder.Entity<ProductAttributeValue>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_AttributeValue");
+
+            entity.Property(e => e.AttributeTitle).HasMaxLength(50);
+            entity.Property(e => e.AttributeValue).HasMaxLength(50);
+
+            entity.HasOne(d => d.Attribute).WithMany(p => p.ProductAttributeValues)
+                .HasForeignKey(d => d.AttributeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AttributeValue_AttributeTitle");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductAttributeValues)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AttributeValue_Products");
+        });
+
         modelBuilder.Entity<ProductImage>(entity =>
         {
-            entity.ToTable("ProductImage");
+            entity.HasKey(e => e.Id).HasName("PK_ProductImage");
 
             entity.HasOne(d => d.BoothProduct).WithMany(p => p.ProductImages)
                 .HasForeignKey(d => d.BoothProductId)
@@ -336,14 +336,12 @@ public partial class MarketPlace2Context : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Privince");
 
-            entity.ToTable("Province");
-
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Seller>(entity =>
         {
-            entity.ToTable("Seller");
+            entity.HasKey(e => e.Id).HasName("PK_Seller");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Lastname).HasMaxLength(50);
@@ -362,7 +360,7 @@ public partial class MarketPlace2Context : DbContext
 
         modelBuilder.Entity<WalletHistory>(entity =>
         {
-            entity.ToTable("WalletHistory");
+            entity.HasKey(e => e.Id).HasName("PK_WalletHistory");
 
             entity.Property(e => e.CreateAt).HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(50);

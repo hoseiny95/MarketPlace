@@ -11,7 +11,7 @@ public partial class Category
 
     public int? ParentId { get; set; }
 
-    public virtual ICollection<AttributeTitle> AttributeTitles { get; set; } = new List<AttributeTitle>();
+    public virtual ICollection<CategoryAttributeTitle> CategoryAttributeTitles { get; set; } = new List<CategoryAttributeTitle>();
 
     public virtual ICollection<Category> InverseParent { get; set; } = new List<Category>();
 

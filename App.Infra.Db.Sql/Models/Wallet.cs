@@ -11,6 +11,8 @@ public partial class Wallet
 
     public double Balance { get; set; }
 
+    public virtual ICollection<AppUser> AppUsers { get; set; } = new List<AppUser>();
+
     public virtual AppUser User { get; set; } = null!;
 
     public virtual ICollection<WalletHistory> WalletHistories { get; set; } = new List<WalletHistory>();
