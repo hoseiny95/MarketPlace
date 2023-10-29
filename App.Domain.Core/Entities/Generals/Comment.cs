@@ -1,7 +1,10 @@
-﻿using System;
+﻿using App.Domain.Core.Entities.Orders;
+using App.Domain.Core.Entities.Products;
+using App.Domain.Core.Entities.Users;
+using System;
 using System.Collections.Generic;
 
-namespace App.Infra.Db.Sql.Models;
+namespace App.Domain.Core.Entities.Generals;
 
 public partial class Comment
 {

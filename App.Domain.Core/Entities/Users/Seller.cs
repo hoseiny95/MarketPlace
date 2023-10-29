@@ -1,7 +1,8 @@
-﻿using System;
+﻿using App.Domain.Core.Entities.Products;
+using System;
 using System.Collections.Generic;
 
-namespace App.Infra.Db.Sql.Models;
+namespace App.Domain.Core.Entities.Users;
 
 public partial class Seller
 {
@@ -17,7 +18,12 @@ public partial class Seller
 
     public int Medal { get; set; }
 
-    public int WalletId { get; set; }
-
     public long Phone { get; set; }
+
+    public virtual Booth Booth { get; set; } = null!;
+
+    public virtual MedalStatus MedalNavigation { get; set; } = null!;
+
+    public virtual AppUser User { get; set; } = null!;
+
 }

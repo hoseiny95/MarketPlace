@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using App.Domain.Core.Entities.Products;
 
-namespace App.Infra.Db.Sql.Models;
+namespace App.Domain.Core.Entities.Orders;
 
 public partial class OrderLine
 {

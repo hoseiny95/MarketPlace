@@ -1,7 +1,9 @@
-﻿using System;
+﻿using App.Domain.Core.Entities.Generals;
+using App.Domain.Core.Entities.Users;
+using System;
 using System.Collections.Generic;
 
-namespace App.Infra.Db.Sql.Models;
+namespace App.Domain.Core.Entities.Orders;
 
 public partial class Order
 {

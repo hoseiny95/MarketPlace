@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace App.Infra.Db.Sql.Models;
+namespace App.Domain.Core.Entities.Products;
 
 public partial class ProductAttributeValue
 {

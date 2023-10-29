@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using App.Domain.Core.Entities.Auctions;
+using App.Domain.Core.Entities.Generals;
+using App.Domain.Core.Entities.Orders;
+using App.Domain.Core.Entities.Products;
+using App.Domain.Core.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Infra.Db.Sql.Models;
 
-public partial class MarketPlace2Context : DbContext
+public partial class MarketPlaceContext : DbContext
 {
-    public MarketPlace2Context()
+    public MarketPlaceContext()
     {
     }
 
-    public MarketPlace2Context(DbContextOptions<MarketPlace2Context> options)
+    public MarketPlaceContext(DbContextOptions<MarketPlaceContext> options)
         : base(options)
     {
     }
@@ -94,8 +99,10 @@ public partial class MarketPlace2Context : DbContext
         {
             entity.ToTable("AppUser");
 
-            entity.HasOne(d => d.Wallet).WithMany(p => p.AppUsers)
-                .HasForeignKey(d => d.WalletId)
+            entity.HasIndex(e => e.WalletId, "UC_Person").IsUnique();
+
+            entity.HasOne(d => d.Wallet).WithOne(p => p.AppUser)
+                .HasForeignKey<AppUser>(d => d.WalletId)
                 .HasConstraintName("FK_AppUser_Wallets");
         });
 
@@ -152,6 +159,11 @@ public partial class MarketPlace2Context : DbContext
                 .HasForeignKey(d => d.CityId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Boths_Cities");
+
+            entity.HasOne(d => d.Image).WithMany(p => p.Booths)
+                .HasForeignKey(d => d.ImageId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Booths_Images");
         });
 
         modelBuilder.Entity<BoothProduct>(entity =>
@@ -232,8 +244,23 @@ public partial class MarketPlace2Context : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Customer");
 
+            entity.HasIndex(e => e.UserId, "UC_Person2").IsUnique();
+
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.Lastname).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
+
+            entity.HasOne(d => d.Image).WithMany(p => p.Customers)
+                .HasForeignKey(d => d.ImageId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Customers_Images");
+
+            entity.HasOne(d => d.User).WithOne(p => p.Customer)
+                .HasForeignKey<Customer>(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Customers_AppUser");
         });
 
         modelBuilder.Entity<Image>(entity =>
@@ -343,19 +370,33 @@ public partial class MarketPlace2Context : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Seller");
 
+            entity.HasIndex(e => e.UserId, "UC_Person3").IsUnique();
+
+            entity.HasIndex(e => e.BoothId, "UC_Person4").IsUnique();
+
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Lastname).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
+
+            entity.HasOne(d => d.Booth).WithOne(p => p.Seller)
+                .HasForeignKey<Seller>(d => d.BoothId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sellers_Booths");
+
+            entity.HasOne(d => d.MedalNavigation).WithMany(p => p.Sellers)
+                .HasForeignKey(d => d.Medal)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sellers_MedalStatus");
+
+            entity.HasOne(d => d.User).WithOne(p => p.Seller)
+                .HasForeignKey<Seller>(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sellers_AppUser");
         });
 
         modelBuilder.Entity<Wallet>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
-
-            entity.HasOne(d => d.User).WithMany(p => p.Wallets)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Wallets_AppUser");
         });
 
         modelBuilder.Entity<WalletHistory>(entity =>

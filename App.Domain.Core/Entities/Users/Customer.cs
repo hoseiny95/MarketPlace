@@ -1,7 +1,10 @@
-﻿using System;
+﻿using App.Domain.Core.Entities.Auctions;
+using App.Domain.Core.Entities.Generals;
+using App.Domain.Core.Entities.Orders;
+using System;
 using System.Collections.Generic;
 
-namespace App.Infra.Db.Sql.Models;
+namespace App.Domain.Core.Entities.Users;
 
 public partial class Customer
 {
@@ -15,7 +18,9 @@ public partial class Customer
 
     public int ImageId { get; set; }
 
-    public int WallwtId { get; set; }
+    public long? Phone { get; set; }
+
+    public string? Email { get; set; }
 
     public virtual ICollection<Auction> Auctions { get; set; } = new List<Auction>();
 
@@ -23,5 +28,9 @@ public partial class Customer
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
+    public virtual Image Image { get; set; } = null!;
+
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual AppUser User { get; set; } = null!;
 }

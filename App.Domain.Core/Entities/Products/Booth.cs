@@ -1,13 +1,14 @@
-﻿using System;
+﻿using App.Domain.Core.Entities.Auctions;
+using App.Domain.Core.Entities.Generals;
+using App.Domain.Core.Entities.Users;
+using System;
 using System.Collections.Generic;
 
-namespace App.Infra.Db.Sql.Models;
+namespace App.Domain.Core.Entities.Products;
 
 public partial class Booth
 {
     public int Id { get; set; }
-
-    public int SellerId { get; set; }
 
     public bool IsDeleted { get; set; }
 
@@ -30,4 +31,8 @@ public partial class Booth
     public virtual ICollection<BoothProduct> BoothProducts { get; set; } = new List<BoothProduct>();
 
     public virtual City City { get; set; } = null!;
+
+    public virtual Image Image { get; set; } = null!;
+
+    public virtual Seller? Seller { get; set; }
 }
