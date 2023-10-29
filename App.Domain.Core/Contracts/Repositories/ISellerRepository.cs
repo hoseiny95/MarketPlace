@@ -10,7 +10,5 @@ public interface ISellerRepository
     Task<SellerDto> GetById(string userId, CancellationToken cancellationToken);
     Task Create(SellerDto seller, CancellationToken cancellationToken);
     Task Update(SellerDto seller, CancellationToken cancellationToken);
-    Task Delete(int sellerInformationId, CancellationToken cancellationToken);
-
-
+    Task Delete(int sellerId, CancellationToken cancellationToken);
 }
