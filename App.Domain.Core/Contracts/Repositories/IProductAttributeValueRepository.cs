@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace App.Domain.Core.Contracts.Repositories
 {
-    public interface IProductAttributeValue
+    public interface IProductAttributeValueRepository
     {
         Task<List<ProductAttributeValueDto>> GetAll(CancellationToken cancellationToken);
         Task<ProductAttributeValueDto> GetById(int productAttributeId, CancellationToken cancellationToken);

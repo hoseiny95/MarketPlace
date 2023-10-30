@@ -5,7 +5,7 @@ using App.Domain.Core.Dtos.Orders;
 
 namespace App.Domain.Core.Contracts.Repositories;
 
-public interface IOrderRipository
+public interface IOrderRepository
 {
     Task<List<OrderDto>> GetAll(CancellationToken cancellationToken);
     Task<List<OrderDto>> GetAllByCustmerId( int customerId,CancellationToken cancellationToken);

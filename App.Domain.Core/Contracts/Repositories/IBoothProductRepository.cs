@@ -4,7 +4,7 @@ using App.Domain.Core.Dtos.Products;
 
 namespace App.Domain.Core.Contracts.Repositories;
 
-public interface IBoothProductRipository
+public interface IBoothProductRepository
 {
     Task<List<BoothProductDto>> GetAll(CancellationToken cancellationToken);
     Task<BoothProductDto> GetById(int boothProductId, CancellationToken cancellationToken);

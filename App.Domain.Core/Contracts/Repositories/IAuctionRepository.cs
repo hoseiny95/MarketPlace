@@ -4,7 +4,7 @@ using App.Domain.Core.Dtos.Auctions;
 
 namespace App.Domain.Core.Contracts.Repositories;
 
-public interface IAuctionRipository
+public interface IAuctionRepository
 {
     Task<List<AuctionDto>> GetAll(CancellationToken cancellationToken);
     Task<AuctionDto> GetById(int auctionId, CancellationToken cancellationToken);

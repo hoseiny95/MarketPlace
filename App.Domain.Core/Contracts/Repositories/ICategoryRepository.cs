@@ -4,7 +4,7 @@ using App.Domain.Core.Dtos.Products;
 
 namespace App.Domain.Core.Contracts.Repositories;
 
-public interface ICategoryRipository
+public interface ICategoryRepository
 {
     Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken);
     Task<CategoryDto> GetById(int categoryId, CancellationToken cancellationToken);

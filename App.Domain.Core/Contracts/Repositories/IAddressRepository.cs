@@ -5,7 +5,7 @@ using App.Domain.Core.Dtos.Users;
 
 namespace App.Domain.Core.Contracts.Repositories;
 
-public interface IAddressRipository
+public interface IAddressRepository
 {
     Task<List<AddressDto>> GetAll(CancellationToken CancellationToken);
     Task<AddressDto> GetById(int AddressId, CancellationToken cancellationToken);
