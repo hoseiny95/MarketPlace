@@ -2,8 +2,10 @@
 using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Generals;
 using App.Domain.Core.Entities.Auctions;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,8 +21,19 @@ public class ImageService : IImageService
         _imageRepository = imageRepository;
     }
 
-    public async Task<int> Create(string path, CancellationToken cancellationToken)
-        => await _imageRepository.create(path, cancellationToken);
+    public async Task<int> Create(IFormFile file, CancellationToken cancellationToken)
+    {
+        string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+        var fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+        string filePath = Path.Combine(uploadFolder, fileName);
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        {
+            file.CopyTo(fileStream);
+        }
+     
+       return  await _imageRepository.create(filePath, cancellationToken);
+    }
+       
 
     public async Task<bool> Delete(int id, CancellationToken cancellationToken)
     {
