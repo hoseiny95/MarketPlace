@@ -29,4 +29,14 @@ public class AppUserService : IAppUserService
     {
         throw new NotImplementedException();
     }
+
+    Task<bool> IAppUserService.Delete(int userId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<int> IAppUserService.Update(AppUserDto appuser, CancellationToken CancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

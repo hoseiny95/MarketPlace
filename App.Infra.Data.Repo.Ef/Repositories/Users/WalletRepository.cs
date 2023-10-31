@@ -22,11 +22,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Users
             _context = context;
             _mapper = mapper;
         }
-        public async Task Create(WalletDto walletDto, CancellationToken cancellationToken)
+        public async Task<int> Create(WalletDto walletDto, CancellationToken cancellationToken)
         {
-            var entity = _mapper.Map<WalletDto>(walletDto);
+            var entity = _mapper.Map<Wallet>(walletDto);
             await _context.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
 
         public async Task Delete(int walletId, CancellationToken cancellationToken)
@@ -44,11 +45,11 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Users
                       => _mapper.Map<WalletDto>(await _context.Wallets
                      .FirstOrDefaultAsync(x => x.Id == walletId, cancellationToken));
 
-        public async Task Update(WalletDto walletDto, CancellationToken cancellationToken)
+        public async Task<int> Update(WalletDto walletDto, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Wallet>(walletDto);
             _context.Wallets.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
-        }
+            return entity.Id;        }
     }
 }

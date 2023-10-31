@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Products;
+using App.Domain.Core.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,28 +12,32 @@ namespace App.Domain.Services.Products;
 
 public class CategoryService : ICategoryService
 {
-    public Task Create(CategoryDto category, CancellationToken cancellationToken)
+    private readonly ICategoryRepository _categoryRepository;
+
+    public CategoryService(ICategoryRepository categoryRepository)
     {
-        throw new NotImplementedException();
+        _categoryRepository = categoryRepository;
     }
 
-    public Task Delete(int categoryId, CancellationToken cancellationToken)
+    public async Task<int> Create(CategoryDto category, CancellationToken cancellationToken)
+        => await _categoryRepository.Create(category, cancellationToken);
+
+    public async Task<bool> Delete(int categoryId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _categoryRepository.Delete(categoryId,cancellationToken);
+            return true;
+        }
+        catch { return false; }
     }
 
-    public Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken)
+        => await _categoryRepository.GetAll(cancellationToken);
 
-    public Task<CategoryDto> GetById(int categoryId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<CategoryDto> GetById(int categoryId, CancellationToken cancellationToken)
+        => await _categoryRepository.GetById(categoryId, cancellationToken);
 
-    public Task Update(CategoryDto category, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<int> Update(CategoryDto category, CancellationToken cancellationToken)
+        => _categoryRepository.Update(category, cancellationToken);
 }

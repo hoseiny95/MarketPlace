@@ -24,11 +24,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Orders
             _context = context;
             _mapper = mapper;
         }
-        public async Task Create(OrderLineDto order, CancellationToken cancellationToken)
+        public async Task<int> Create(OrderLineDto order, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<OrderLine>(order);
             await _context.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
 
         public async Task Delete(int orderLineId, CancellationToken cancellationToken)
@@ -50,11 +51,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Orders
                     => _mapper.Map<OrderLineDto>(await _context.OrderLines.FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken));
 
 
-        public async Task Update(OrderLineDto order, CancellationToken cancellationToken)
+        public async Task<int> Update(OrderLineDto order, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<OrderLine>(order);
             _context.OrderLines.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
     }
 }

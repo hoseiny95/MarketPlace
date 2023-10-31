@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Products;
+using App.Domain.Core.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,28 +12,32 @@ namespace App.Domain.Services.Products;
 
 public class ProductService : IProductService
 {
-    public Task Create(ProductDto newProduct, CancellationToken cancellationToken)
+    private readonly IProductRepository _productRepository;
+
+    public ProductService(IProductRepository productRepository)
     {
-        throw new NotImplementedException();
+        _productRepository = productRepository;
     }
 
-    public Task Delete(int ProductId, CancellationToken cancellationToken)
+    public async Task<int> Create(ProductDto newProduct, CancellationToken cancellationToken)
+        => await _productRepository.Create(newProduct, cancellationToken);
+
+    public async Task<bool> Delete(int ProductId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _productRepository.Delete(ProductId, cancellationToken);
+            return true;
+        }
+        catch { return false; }
     }
 
-    public Task<List<ProductDto>> GetAll(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<ProductDto>> GetAll(CancellationToken cancellationToken)
+        => await _productRepository.GetAll(cancellationToken);
 
-    public Task<ProductDto> GetById(int ProductId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<ProductDto> GetById(int ProductId, CancellationToken cancellationToken)
+        => await _productRepository.GetById(ProductId, cancellationToken);
 
-    public Task Update(ProductDto Product, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<int> Update(ProductDto Product, CancellationToken cancellationToken)
+        => await _productRepository.Update(Product, cancellationToken);
 }

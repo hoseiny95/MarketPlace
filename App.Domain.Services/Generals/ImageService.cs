@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Generals;
+using App.Domain.Core.Entities.Auctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +12,34 @@ namespace App.Domain.Services.Generals;
 
 public class ImageService : IImageService
 {
-    public Task Delete(int id, CancellationToken cancellationToken)
+    private readonly IImageRepository _imageRepository;
+
+    public ImageService(IImageRepository imageRepository)
     {
-        throw new NotImplementedException();
+        _imageRepository = imageRepository;
     }
 
-    public Task<ImageDto> GetById(int imageId, CancellationToken cancellationToken)
+    public async Task<int> Create(string path, CancellationToken cancellationToken)
+        => await _imageRepository.create(path, cancellationToken);
+
+    public async Task<bool> Delete(int id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _imageRepository.Delete(id, cancellationToken);
+            return true;
+        }
+        catch { return false; }
     }
 
-    public Task<List<ImageDto>> GetByProductId(int productId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<ImageDto> GetById(int imageId, CancellationToken cancellationToken)
+        => await _imageRepository.GetById(imageId, cancellationToken);
 
-    public Task Update(string path, int id, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<ImageDto>> GetByProductId(int productId, CancellationToken cancellationToken)
+        => await _imageRepository.GetByProductId(productId, cancellationToken);
+
+    public async Task<int> Update(string path, int id, CancellationToken cancellationToken)
+        => await _imageRepository.Update(path, id, cancellationToken);
+
 }
+

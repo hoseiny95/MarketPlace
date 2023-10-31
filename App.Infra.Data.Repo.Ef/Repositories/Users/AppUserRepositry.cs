@@ -38,10 +38,11 @@ public class AppUserRepositry : IAppUserRepositry
               => _mapper.Map<AppUserDto>(await _context.AppUsers
                      .FirstOrDefaultAsync(x => x.Id == userId, CancellationToken));
 
-    public async Task Update(AppUserDto appuser, CancellationToken CancellationToken)
+    public async Task<int> Update(AppUserDto appuser, CancellationToken CancellationToken)
     {
         var entity = _mapper.Map<AppUser>(appuser);
         _context.AppUsers.Update(entity);
         await _context.SaveChangesAsync(CancellationToken);
+        return entity.Id;
     }
 }

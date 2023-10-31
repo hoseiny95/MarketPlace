@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Auctions;
+using App.Domain.Core.Entities.Auctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +12,33 @@ namespace App.Domain.Services.Auctions
 {
     public class AuctionService : IAuctionService
     {
-        public Task Create(AuctionDto auction, CancellationToken cancellationToken)
+        private readonly IAuctionRepository _auctionRepository;
+
+        public AuctionService(IAuctionRepository auctionRepository)
         {
-            throw new NotImplementedException();
+            _auctionRepository = auctionRepository;
+        }
+        public async Task<int> Create(AuctionDto auction, CancellationToken cancellationToken)
+            => await _auctionRepository.Create(auction, cancellationToken);
+
+        public async Task<bool> Delete(int auctionId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _auctionRepository.Delete(auctionId, cancellationToken);
+                return true;
+            }
+            catch { return false; }
         }
 
-        public Task Delete(int auctionId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<List<AuctionDto>> GetAll(CancellationToken cancellationToken)
+            => await _auctionRepository.GetAll(cancellationToken);
 
-        public Task<List<AuctionDto>> GetAll(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<AuctionDto> GetById(int auctionId, CancellationToken cancellationToken)
+            => await _auctionRepository.GetById(auctionId, cancellationToken);
 
-        public Task<AuctionDto> GetById(int auctionId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(AuctionDto auction, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<int> Update(AuctionDto auction, CancellationToken cancellationToken)
+            => await _auctionRepository.Update(auction, cancellationToken);
+  
     }
 }

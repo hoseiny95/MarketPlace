@@ -8,8 +8,8 @@ public interface IBoothService
 {
     Task<List<BoothDto>> GetAll(CancellationToken cancellationToken);
     Task<BoothDto> GetById(int boothId, CancellationToken cancellationToken);
-    Task Create(BoothDto booth, CancellationToken cancellationToken);
-    Task Update(BoothDto booth, CancellationToken cancellationToken);
-    Task Delete(int boothId, CancellationToken cancellationToken);
+    Task<int> Create(BoothDto booth, CancellationToken cancellationToken);
+    Task<int> Update(BoothDto booth, CancellationToken cancellationToken);
+    Task<bool> Delete(int boothId, CancellationToken cancellationToken);
 
 }

@@ -26,6 +26,15 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Users
             _context = context;
             _mapper = mapper;
         }
+
+        public async Task<int> Create(AddressDto Address, CancellationToken cancellationToken)
+        {
+            var entity = _mapper.Map<Address>(Address);
+            await _context.AddAsync(entity, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
+        }
+
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
             var entity = await _context.Addresses.FindAsync(id, cancellationToken);
@@ -41,11 +50,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Users
                                  .FirstOrDefaultAsync(x => x.Id == AddressId, cancellationToken));
 
 
-        public async Task Update(AddressDto address, CancellationToken cancellationToken)
+        public async Task<int> Update(AddressDto address, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Address>(address);
             _context.Addresses.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
     }
 }

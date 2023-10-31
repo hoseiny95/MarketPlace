@@ -25,11 +25,12 @@ public class SellerRepository : ISellerRepository
         _context = context;
         _mapper = mapper;
     }
-    public async Task Create(SellerDto seller, CancellationToken cancellationToken)
+    public async Task<int> Create(SellerDto seller, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<SellerDto>(seller);
         await _context.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+        return entity.Id;
     }
 
     public async Task Delete(int sellerId, CancellationToken cancellationToken)
@@ -48,10 +49,11 @@ public class SellerRepository : ISellerRepository
                      .FirstOrDefaultAsync(x => x.Id == sellerId, cancellationToken));
     
 
-    public async Task Update(SellerDto seller, CancellationToken cancellationToken)
+    public async Task<int> Update(SellerDto seller, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Seller>(seller);
         _context.Sellers.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
+        return entity.Id;
     }
 }

@@ -1,4 +1,5 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Generals;
 using System;
 using System.Collections.Generic;
@@ -10,24 +11,29 @@ namespace App.Domain.Services.Generals
 {
     public class BaseService : IBaseService
     {
-        public Task<List<CityDto>> GetAllCitis(CancellationToken CancellationToken)
+        private readonly IBaseRepository _baseRepository;
+
+        public BaseService(IBaseRepository baseRepository)
         {
-            throw new NotImplementedException();
+            _baseRepository = baseRepository;
         }
 
-        public Task<List<ProvinceDto>> GetAllProvinces(CancellationToken CancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<List<CityDto>> GetAllCitis(CancellationToken CancellationToken)
+            => await _baseRepository.GetAllCitis(CancellationToken);
+        
 
-        public Task<CityDto> GetCityById(int cityId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<List<ProvinceDto>> GetAllProvinces(CancellationToken CancellationToken)
+            => await _baseRepository.GetAllProvinces(CancellationToken);
 
-        public Task<ProvinceDto> GetProvinceById(int provinceId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+
+
+        public async Task<CityDto> GetCityById(int cityId, CancellationToken cancellationToken)
+            => await _baseRepository.GetCityById(cityId ,cancellationToken);
+
+
+
+        public async Task<ProvinceDto> GetProvinceById(int provinceId, CancellationToken cancellationToken)
+             => await _baseRepository.GetProvinceById(provinceId , cancellationToken);
+
     }
 }

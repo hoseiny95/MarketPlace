@@ -1,6 +1,7 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Dtos.Orders;
 using App.Domain.Core.Dtos.Users;
+using App.Domain.Core.Entities.Auctions;
 using App.Domain.Core.Entities.Orders;
 using App.Domain.Core.Entities.Users;
 using App.Infra.Db.Sql.Models;
@@ -23,9 +24,12 @@ public class OrderRepository : IOrderRepository
         _context = context;
         _mapper = mapper;
     }
-    public Task Create(OrderDto order, CancellationToken cancellationToken)
+    public async Task<int> Create(OrderDto order, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var entity = _mapper.Map<OrderDto>(order);
+        await _context.AddAsync(entity, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+        return entity.Id;
     }
 
     public async Task Delete(int orderId, CancellationToken cancellationToken)
@@ -48,10 +52,11 @@ public class OrderRepository : IOrderRepository
                   => _mapper.Map<OrderDto>(await _context.Orders
                                 .FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken));
 
-    public async Task Update(OrderDto order, CancellationToken cancellationToken)
+    public async Task<int> Update(OrderDto order, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Order>(order);
         _context.Orders.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
+        return entity.Id;   
     }
 }

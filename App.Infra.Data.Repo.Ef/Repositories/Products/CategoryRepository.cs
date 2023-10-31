@@ -21,11 +21,12 @@ public class CategoryRepository : ICategoryRepository
         _context = context;
         _mapper = mapper;
     }
-    public async Task Create(CategoryDto category, CancellationToken cancellationToken)
+    public async Task<int> Create(CategoryDto category, CancellationToken cancellationToken)
     {
-        var entity = _mapper.Map<CategoryDto>(category);
+        var entity = _mapper.Map<Category>(category);
         await _context.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+        return entity.Id;
     }
 
     public async Task Delete(int categoryId, CancellationToken cancellationToken)
@@ -44,10 +45,11 @@ public class CategoryRepository : ICategoryRepository
                                 .FirstOrDefaultAsync(x => x.Id == categoryId, cancellationToken));
 
 
-    public async Task Update(CategoryDto category, CancellationToken cancellationToken)
+    public async Task<int> Update(CategoryDto category, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Category>(category);
         _context.Categories.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
+        return category.Id;
     }
 }

@@ -25,12 +25,15 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             _context = context;
             _mapper = mapper;
         }
-        public async Task Create(CategoryAttributeTitleDto categoryAttribute, CancellationToken cancellationToken)
+        public async Task<int> Create(CategoryAttributeTitleDto categoryAttribute, CancellationToken cancellationToken)
         {
-            var entity = _mapper.Map<CategoryAttributeTitleRepository>(categoryAttribute);
+            var entity = _mapper.Map<CategoryAttributeTitle>(categoryAttribute);
             await _context.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
+           
         }
+    
 
         public async Task Delete(int categoryAttributeId, CancellationToken cancellationToken)
         {
@@ -49,11 +52,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
                                  .FirstOrDefaultAsync(x => x.Id == categoryAttributeId, cancellationToken));
 
 
-        public async Task Update(CategoryAttributeTitleDto categoryAttribute, CancellationToken cancellationToken)
+        public async Task<int> Update(CategoryAttributeTitleDto categoryAttribute, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<CategoryAttributeTitle>(categoryAttribute);
             _context.CategoryAttributeTitles.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
     }
 }

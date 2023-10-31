@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Users;
+using App.Domain.Core.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,30 +10,34 @@ using System.Threading.Tasks;
 
 namespace App.Domain.Services.Users;
 
-internal class SellerService : ISellerService
+public class SellerService : ISellerService
 {
-    public Task Create(SellerDto seller, CancellationToken cancellationToken)
+    private readonly ISellerRepository _sellerRepository;
+
+    public SellerService(ISellerRepository sellerRepository)
     {
-        throw new NotImplementedException();
+        _sellerRepository = sellerRepository;
     }
 
-    public Task Delete(int sellerId, CancellationToken cancellationToken)
+    public async Task<int> Create(SellerDto seller, CancellationToken cancellationToken)
+        => await _sellerRepository.Create(seller, cancellationToken);
+
+    public async Task<bool> Delete(int sellerId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _sellerRepository.Delete(sellerId, cancellationToken);
+            return true;
+        }
+        catch { return false; }
     }
 
-    public Task<List<SellerDto>> GetAll(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<SellerDto>> GetAll(CancellationToken cancellationToken)
+        => await _sellerRepository.GetAll(cancellationToken);
 
-    public Task<SellerDto> GetById(int sellerId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<SellerDto> GetById(int sellerId, CancellationToken cancellationToken)
+        => await _sellerRepository.GetById(sellerId, cancellationToken);
 
-    public Task Update(SellerDto seller, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<int> Update(SellerDto seller, CancellationToken cancellationToken)
+        => await _sellerRepository.Update(seller, cancellationToken);
 }

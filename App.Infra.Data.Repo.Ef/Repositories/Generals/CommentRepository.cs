@@ -24,11 +24,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Generals
             _context = context;
             _mapper = mapper;
         }
-        public async Task Create(CommentDto comment, CancellationToken cancellationToken)
+        public async Task<int> Create(CommentDto comment, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<CommentDto>(comment);
             await _context.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
 
         public async Task<List<CommentDto>> GetAll(CancellationToken cancellationToken)
@@ -47,11 +48,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Generals
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task Update(CommentDto comment, CancellationToken cancellationToken)
+        public async Task<int> Update(CommentDto comment, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Comment>(comment);
             _context.Comments.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
     }
 }

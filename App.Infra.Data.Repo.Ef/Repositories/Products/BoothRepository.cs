@@ -21,11 +21,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             _context = context;
             _mapper = mapper;
         }
-        public async Task Create(BoothDto booth, CancellationToken cancellationToken)
+        public async Task<int> Create(BoothDto booth, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Booth>(booth);
             await _context.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
 
        
@@ -45,11 +46,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
                             => _mapper.Map<BoothDto>(await _context.Booths.FirstOrDefaultAsync(x => x.Id == boothId, cancellationToken));
 
 
-        public async Task Update(BoothDto booth, CancellationToken cancellationToken)
+        public async Task<int> Update(BoothDto booth, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Booth>(booth);
             _context.Booths.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
     }
 }

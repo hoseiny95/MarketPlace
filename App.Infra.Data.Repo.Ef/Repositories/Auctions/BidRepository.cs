@@ -22,11 +22,12 @@ public class BidRepository : IBidRepository
         _context = context;
         _mapper = mapper;
     }
-    public async Task Create(BidDto bid, CancellationToken cancellationToken)
+    public async Task<int> Create(BidDto bid, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Bid>(bid);
         await _context.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+        return entity.Id;
     }
 
     public async Task Delete(int bidId, CancellationToken cancellationToken)

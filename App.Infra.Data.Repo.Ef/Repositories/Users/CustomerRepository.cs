@@ -1,6 +1,8 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Dtos.Generals;
 using App.Domain.Core.Dtos.Products;
 using App.Domain.Core.Dtos.Users;
+using App.Domain.Core.Entities.Generals;
 using App.Domain.Core.Entities.Products;
 using App.Domain.Core.Entities.Users;
 using App.Infra.Db.Sql.Models;
@@ -24,6 +26,16 @@ public class CustomerRepository : ICustomerRepository
         _context = context;
         _mapper = mapper;
     }
+
+    public async Task<int> Create(CustomerDto customer, CancellationToken cancellationToken)
+    {
+        var entity = _mapper.Map<Customer>(customer);
+        await _context.AddAsync(entity, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+        return entity.Id;
+    }
+
+
     public async Task Delete(int CustomerId, CancellationToken cancellationToken)
     {
         var entity = await _context.Customers.FindAsync(CustomerId, cancellationToken);
@@ -38,10 +50,11 @@ public class CustomerRepository : ICustomerRepository
                   => _mapper.Map<CustomerDto>(await _context.Customers
                                 .FirstOrDefaultAsync(x => x.Id == customerId, CancellationToken));
 
-    public async Task Update(CustomerDto customer, CancellationToken CancellationToken)
+    public async Task<int> Update(CustomerDto customer, CancellationToken CancellationToken)
     {
         var entity = _mapper.Map<Customer>(customer);
         _context.Customers.Update(entity);
         await _context.SaveChangesAsync(CancellationToken);
+        return entity.Id;
     }
 }

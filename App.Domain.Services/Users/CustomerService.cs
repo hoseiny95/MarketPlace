@@ -1,4 +1,5 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Users;
 using System;
 using System.Collections.Generic;
@@ -10,23 +11,32 @@ namespace App.Domain.Services.Users;
 
 public class CustomerService : ICustomerService
 {
-    public Task Delete(int CustomerId, CancellationToken cancellationToken)
+    private readonly ICustomerRepository _customerRepository;
+
+    public CustomerService(ICustomerRepository customerRepository)
     {
-        throw new NotImplementedException();
+        _customerRepository = customerRepository;
     }
 
-    public Task<List<CustomerDto>> GetAll(CancellationToken CancellationToken)
+    public async Task<int> Create(CustomerDto customer, CancellationToken CancellationToken)
+        => await _customerRepository.Create(customer,CancellationToken);
+
+    public async Task<bool> Delete(int CustomerId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _customerRepository.Delete(CustomerId, cancellationToken);
+            return true;
+        }
+        catch { return false; }
     }
 
-    public Task<CustomerDto> GetById(int customerId, CancellationToken CancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<CustomerDto>> GetAll(CancellationToken CancellationToken)
+        => await _customerRepository.GetAll(CancellationToken);
 
-    public Task Update(CustomerDto customer, CancellationToken CancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<CustomerDto> GetById(int customerId, CancellationToken CancellationToken)
+        => await _customerRepository.GetById(customerId, CancellationToken);
+
+    public async Task<int> Update(CustomerDto customer, CancellationToken CancellationToken)
+        => await _customerRepository.Update(customer, CancellationToken);
 }

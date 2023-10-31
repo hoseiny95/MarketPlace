@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Products;
+using App.Domain.Core.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,30 +10,34 @@ using System.Threading.Tasks;
 
 namespace App.Domain.Services.Products;
 
-internal class ProductAttributeValueService : IProductAttributeValueService
+public class ProductAttributeValueService : IProductAttributeValueService
 {
-    public Task Create(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken)
+    private readonly IProductAttributeValueRepository _productAttributeValueRepository;
+
+    public ProductAttributeValueService(IProductAttributeValueRepository productAttributeValueRepository)
     {
-        throw new NotImplementedException();
+        _productAttributeValueRepository = productAttributeValueRepository;
     }
 
-    public Task Delete(int productAttributeId, CancellationToken cancellationToken)
+    public async Task<int> Create(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken)
+        => await _productAttributeValueRepository.Create(productAttribute, cancellationToken);
+
+    public async Task<bool> Delete(int productAttributeId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _productAttributeValueRepository.Delete(productAttributeId, cancellationToken);
+            return true;
+        }
+        catch { return false; }
     }
 
-    public Task<List<ProductAttributeValueDto>> GetAll(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<ProductAttributeValueDto>> GetAll(CancellationToken cancellationToken)
+        => await _productAttributeValueRepository.GetAll(cancellationToken);
 
-    public Task<ProductAttributeValueDto> GetById(int productAttributeId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<ProductAttributeValueDto> GetById(int productAttributeId, CancellationToken cancellationToken)
+        => await _productAttributeValueRepository.GetById(productAttributeId, cancellationToken);
 
-    public Task Update(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<int> Update(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken)
+        => await _productAttributeValueRepository.Update(productAttribute, cancellationToken);
 }

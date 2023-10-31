@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Auctions;
+using App.Domain.Core.Entities.Auctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,34 +12,37 @@ namespace App.Domain.Services.Auctions
 {
     public class BidService : IBidService
     {
-        public Task Create(BidDto bid, CancellationToken cancellationToken)
+        private readonly IBidRepository _bidRepository;
+
+        public BidService(IBidRepository bidRepository)
         {
-            throw new NotImplementedException();
+            _bidRepository = bidRepository;
+        }
+        public async Task<int> Create(BidDto bid, CancellationToken cancellationToken)
+                  => await _bidRepository.Create(bid, cancellationToken);
+
+        public async Task<bool> Delete(int bidId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _bidRepository.Delete(bidId, cancellationToken);
+                return true;
+            }
+            catch { return false; }
         }
 
-        public Task Delete(int bidId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<List<BidDto>> GetAll(CancellationToken cancellationToken)
+            => await _bidRepository.GetAll(cancellationToken);
+       
 
-        public Task<List<BidDto>> GetAll(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<List<BidDto>> GetAllByAuctionId(int AuctionId, CancellationToken cancellationToken)
+            => await _bidRepository.GetAllByAuctionId(AuctionId, cancellationToken);
 
-        public Task<List<BidDto>> GetAllByAuctionId(int AuctionId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<BidDto> GetById(int bidId, CancellationToken cancellationToken)
+            => await _bidRepository.GetById(bidId, cancellationToken);
 
-        public Task<BidDto> GetById(int bidId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<BidDto>> GetUserBids(int userID, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<List<BidDto>> GetUserBids(int userID, CancellationToken cancellationToken)
+            => await _bidRepository.GetUserBids(userID, cancellationToken);
+       
     }
 }

@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Orders;
+using App.Domain.Core.Entities.Auctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,33 +12,35 @@ namespace App.Domain.Services.Orders;
 
 public class OrderLineService : IOrderLineService
 {
-    public Task Create(OrderLineDto order, CancellationToken cancellationToken)
+    private readonly IOrderLineRepository orderLineRepository;
+
+    public OrderLineService(IOrderLineRepository orderLineRepository)
     {
-        throw new NotImplementedException();
+        this.orderLineRepository = orderLineRepository;
     }
 
-    public Task Delete(int orderLineId, CancellationToken cancellationToken)
+    public async Task<int> Create(OrderLineDto order, CancellationToken cancellationToken)
+        => await orderLineRepository.Create(order, cancellationToken);
+
+    public async Task<bool> Delete(int orderLineId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await orderLineRepository.Delete(orderLineId, cancellationToken);
+            return true;
+        }
+        catch { return false; }
     }
 
-    public Task<List<OrderLineDto>> GetAll(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<OrderLineDto>> GetAll(CancellationToken cancellationToken)
+        => await orderLineRepository.GetAll(cancellationToken);
 
-    public Task<List<OrderLineDto>> GetAllByOrderId(int orderId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<OrderLineDto>> GetAllByOrderId(int orderId, CancellationToken cancellationToken)
+        => await orderLineRepository.GetAllByOrderId(orderId, cancellationToken);
 
-    public Task<OrderLineDto> GetById(int orderId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<OrderLineDto> GetById(int orderId, CancellationToken cancellationToken)
+        => await orderLineRepository.GetById(orderId, cancellationToken);
 
-    public Task Update(OrderLineDto order, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<int> Update(OrderLineDto order, CancellationToken cancellationToken)
+        => await orderLineRepository.Update(order, cancellationToken);  
 }

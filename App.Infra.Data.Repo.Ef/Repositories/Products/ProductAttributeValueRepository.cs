@@ -25,11 +25,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             _context = context;
             _mapper = mapper;
         }
-        public async Task Create(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken)
+        public async Task<int> Create(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken)
         {
-            var entity = _mapper.Map<ProductAttributeValueDto>(productAttribute);
+            var entity = _mapper.Map<ProductAttributeValue>(productAttribute);
             await _context.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
 
         public async Task Delete(int productAttributeId, CancellationToken cancellationToken)
@@ -47,11 +48,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
                       => _mapper.Map<ProductAttributeValueDto>(await _context.Comments
                                .FirstOrDefaultAsync(x => x.Id == productAttributeId, cancellationToken));
 
-        public async Task Update(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken)
+        public async Task<int> Update(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<ProductAttributeValue>(productAttribute);
             _context.ProductAttributeValues.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
     }
 }

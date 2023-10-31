@@ -9,7 +9,7 @@ public interface IAppUserService
 
     Task<List<AppUserDto>> GetAll(CancellationToken CancellationToken);
     Task<AppUserDto> GetById(int userId, CancellationToken CancellationToken);
-    Task Update(AppUserDto appuser, CancellationToken CancellationToken);
-    Task Delete(int userId, CancellationToken cancellationToken);
+    Task<int> Update(AppUserDto appuser, CancellationToken CancellationToken);
+    Task<bool> Delete(int userId, CancellationToken cancellationToken);
 
 }

@@ -11,8 +11,8 @@ namespace App.Domain.Core.Contracts.Services
     {
         Task<List<ProductAttributeValueDto>> GetAll(CancellationToken cancellationToken);
         Task<ProductAttributeValueDto> GetById(int productAttributeId, CancellationToken cancellationToken);
-        Task Create(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken);
-        Task Update(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken);
-        Task Delete(int productAttributeId, CancellationToken cancellationToken);
+        Task<int> Create(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken);
+        Task<int> Update(ProductAttributeValueDto productAttribute, CancellationToken cancellationToken);
+        Task<bool> Delete(int productAttributeId, CancellationToken cancellationToken);
     }
 }

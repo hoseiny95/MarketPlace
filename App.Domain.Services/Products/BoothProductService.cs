@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Products;
+using App.Domain.Core.Entities.Auctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +12,33 @@ namespace App.Domain.Services.Products
 {
     public class BoothProductService : IBoothProductService
     {
-        public Task Create(BoothProductDto boothProduct, CancellationToken cancellationToken)
+        private readonly IBoothProductRepository _boothProductRepository;
+
+        public BoothProductService(IBoothProductRepository boothProductRepository)
         {
-            throw new NotImplementedException();
+            _boothProductRepository = boothProductRepository;
         }
 
-        public Task Delete(int boothProductId, CancellationToken cancellationToken)
+        public async Task<int> Create(BoothProductDto boothProduct, CancellationToken cancellationToken)
+            => await _boothProductRepository.Create(boothProduct, cancellationToken);
+
+        public async Task<bool> Delete(int boothProductId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _boothProductRepository.Delete(boothProductId, cancellationToken);
+                return true;
+            }
+            catch { return false; }
         }
 
-        public Task<List<BoothProductDto>> GetAll(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<List<BoothProductDto>> GetAll(CancellationToken cancellationToken)
+            => await _boothProductRepository.GetAll(cancellationToken);
 
-        public Task<BoothProductDto> GetById(int boothProductId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<BoothProductDto> GetById(int boothProductId, CancellationToken cancellationToken)
+            => await _boothProductRepository.GetById(boothProductId, cancellationToken);
 
-        public Task Update(BoothProductDto boothProduct, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<int> Update(BoothProductDto boothProduct, CancellationToken cancellationToken)
+            => await _boothProductRepository.Update(boothProduct, cancellationToken);
     }
 }

@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Users;
+using App.Domain.Core.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,28 +12,32 @@ namespace App.Domain.Services.Users;
 
 public class WalletService : IWalletService
 {
-    public Task Create(WalletDto walletDto, CancellationToken cancellationToken)
+    private readonly IWalletRepository _walletRepository;
+
+    public WalletService(IWalletRepository walletRepository)
     {
-        throw new NotImplementedException();
+        _walletRepository = walletRepository;
     }
 
-    public Task Delete(int walletId, CancellationToken cancellationToken)
+    public async Task<int> Create(WalletDto walletDto, CancellationToken cancellationToken)
+        => await _walletRepository.Create(walletDto, cancellationToken);
+
+    public async Task<bool> Delete(int walletId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _walletRepository.Delete(walletId, cancellationToken);
+            return true;
+        }
+        catch { return false; }
     }
 
-    public Task<List<WalletDto>> GetAll(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<WalletDto>> GetAll(CancellationToken cancellationToken)
+        => await _walletRepository.GetAll(cancellationToken);
 
-    public Task<WalletDto> GetById(int walletId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<WalletDto> GetById(int walletId, CancellationToken cancellationToken)
+        => await _walletRepository.GetById(walletId, cancellationToken);
 
-    public Task Update(WalletDto walletDto, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<int> Update(WalletDto walletDto, CancellationToken cancellationToken)
+        => await _walletRepository.Update(walletDto, cancellationToken);
 }

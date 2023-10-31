@@ -1,5 +1,7 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Users;
+using App.Domain.Core.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,30 +10,34 @@ using System.Threading.Tasks;
 
 namespace App.Domain.Services.Users;
 
-internal class WalletHistoryService : IWalletHistoryService
+public class WalletHistoryService : IWalletHistoryService
 {
-    public Task Create(WalletHistoryDto walletHistory, CancellationToken cancellationToken)
+    private readonly IWalletHistoryRepository _historyRepository;
+
+    public WalletHistoryService(IWalletHistoryRepository historyRepository)
     {
-        throw new NotImplementedException();
+        _historyRepository = historyRepository;
     }
 
-    public Task Delete(int walletHistoryId, CancellationToken cancellationToken)
+    public async Task<int> Create(WalletHistoryDto walletHistory, CancellationToken cancellationToken)
+        => await _historyRepository.Create(walletHistory, cancellationToken);
+
+    public async Task<bool> Delete(int walletHistoryId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _historyRepository.Delete(walletHistoryId,cancellationToken);
+            return true;
+        }
+        catch { return false; }
     }
 
-    public Task<List<WalletHistoryDto>> GetAll(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<WalletHistoryDto>> GetAll(CancellationToken cancellationToken)
+        => await _historyRepository.GetAll(cancellationToken);
 
-    public Task<WalletHistoryDto> GetById(int walletHistoryId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<WalletHistoryDto> GetById(int walletHistoryId, CancellationToken cancellationToken)
+        => await _historyRepository.GetById(walletHistoryId, cancellationToken);
 
-    public Task Update(WalletHistoryDto walletHistory, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<int> Update(WalletHistoryDto walletHistory, CancellationToken cancellationToken)
+        => await _historyRepository.Update(walletHistory, cancellationToken);
 }

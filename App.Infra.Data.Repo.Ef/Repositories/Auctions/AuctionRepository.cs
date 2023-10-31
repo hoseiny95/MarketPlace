@@ -22,12 +22,12 @@ public class AuctionRepository : IAuctionRepository
         _context = context;
         _mapper = mapper;
     }
-    public async Task Create(AuctionDto auction, CancellationToken cancellationToken)
+    public async Task<int> Create(AuctionDto auction, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Auction>(auction);
         await _context.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-
+        return entity.Id;
     }
 
     public async Task Delete(int auctionId, CancellationToken cancellationToken)
@@ -47,10 +47,11 @@ public class AuctionRepository : IAuctionRepository
 
 
 
-    public async Task Update(AuctionDto auction, CancellationToken cancellationToken)
+    public async Task<int> Update(AuctionDto auction, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Auction>(auction);
         _context.Auctions.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
+        return entity.Id;
     }
 }

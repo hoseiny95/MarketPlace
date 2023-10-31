@@ -23,6 +23,15 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Generals
             _context = context;
             _mapper = mapper;
         }
+
+        public async Task<int> create(string path, CancellationToken cancellationToken)
+        {
+            var entity = new Image { ImagePath = path };    
+            await _context.AddAsync(entity, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
+        }
+
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
             var entity = await _context.Images.FindAsync(id, cancellationToken);
@@ -35,11 +44,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Generals
             =>  _mapper.Map<List<ImageDto>>( await _context.Images.Include(c => c.ProductImages)
                 .Where(x => x.ProductImages.Any(c => c.BoothProductId == productId)).ToListAsync(cancellationToken));
 
-        public async Task Update(string path, int id, CancellationToken cancellationToken)
+        public async Task<int> Update(string path, int id, CancellationToken cancellationToken)
         {
             var entity = await _context.Images.FindAsync(id);
             entity.ImagePath = path;
             await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
         }
     }
 }

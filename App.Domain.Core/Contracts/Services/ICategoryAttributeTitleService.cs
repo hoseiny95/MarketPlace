@@ -11,7 +11,7 @@ public interface ICategoryAttributeTitleService
 {
     Task<List<CategoryAttributeTitleDto>> GetAll(CancellationToken cancellationToken);
     Task<CategoryAttributeTitleDto> GetById(int categoryAttributeId, CancellationToken cancellationToken);
-    Task Create(CategoryAttributeTitleDto categoryAttribute, CancellationToken cancellationToken);
-    Task Update(CategoryAttributeTitleDto categoryAttribute, CancellationToken cancellationToken);
-    Task Delete(int categoryAttributeId, CancellationToken cancellationToken);
+    Task<int> Create(CategoryAttributeTitleDto categoryAttribute, CancellationToken cancellationToken);
+    Task<int> Update(CategoryAttributeTitleDto categoryAttribute, CancellationToken cancellationToken);
+    Task<bool> Delete(int categoryAttributeId, CancellationToken cancellationToken);
 }
