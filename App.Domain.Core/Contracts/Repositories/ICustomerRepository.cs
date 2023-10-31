@@ -4,7 +4,7 @@ using App.Domain.Core.Dtos.Users;
 
 namespace App.Domain.Core.Contracts.Repositories; 
 
-public interface ICustomerRepositry
+public interface ICustomerRepository
 {
 
     Task<List<CustomerDto>> GetAll(CancellationToken CancellationToken);
