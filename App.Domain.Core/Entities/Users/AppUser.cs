@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace App.Domain.Core.Entities.Users;
 
-public partial class AppUser
+public partial class AppUser : IdentityUser<int>
 {
-    public int Id { get; set; }
+    
 
     public int? WalletId { get; set; }
     public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();

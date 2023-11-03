@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using App.Domain.Core.Entities.Auctions;
 using App.Domain.Core.Entities.Generals;
 using App.Domain.Core.Entities.Orders;
 using App.Domain.Core.Entities.Products;
 using App.Domain.Core.Entities.Users;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
 namespace App.Infra.Db.Sql.Models;
 
-public partial class MarketPlaceContext : DbContext
+public partial class MarketPlaceContext : IdentityDbContext<AppUser, IdentityRole<int>,int>
 {
     public MarketPlaceContext()
     {
@@ -22,7 +24,7 @@ public partial class MarketPlaceContext : DbContext
 
     public virtual DbSet<Address> Addresses { get; set; }
 
-    public virtual DbSet<AppUser> AppUsers { get; set; }
+    //public virtual DbSet<AppUser> AppUsers { get; set; }
 
     public virtual DbSet<Auction> Auctions { get; set; }
 
@@ -68,7 +70,7 @@ public partial class MarketPlaceContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=MarketPlace2;Trusted_Connection=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=MarketPlace3;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -319,9 +321,8 @@ public partial class MarketPlaceContext : DbContext
         {
             entity.Property(e => e.Description).HasMaxLength(150);
             entity.Property(e => e.Name).HasMaxLength(50);
-
+            entity.HasQueryFilter(u => !u.IsDeleted);
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
-                .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Products_Category");
         });
@@ -413,6 +414,7 @@ public partial class MarketPlaceContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+        base.OnModelCreating(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

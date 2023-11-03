@@ -10,37 +10,39 @@ using System.Threading.Tasks;
 
 namespace App.Domain.Services.Orders;
 
-public class OrderService : IOrderLineService
+public class OrderService : IOrderService
 {
-    private readonly IOrderLineRepository _orderLineRepository;
+    private readonly IOrderRepository _orderRepository;
 
-    public OrderService(IOrderLineRepository orderLineRepository)
+    public OrderService(IOrderRepository orderRepository)
     {
-        _orderLineRepository = orderLineRepository;
+        _orderRepository = orderRepository;
     }
 
-    public async Task<int> Create(OrderLineDto order, CancellationToken cancellationToken)
-        => await _orderLineRepository.Create(order, cancellationToken);
+    public async Task<int> Create(OrderDto order, CancellationToken cancellationToken)
+        => await _orderRepository.Create(order, cancellationToken);
 
     public async Task<bool> Delete(int orderLineId, CancellationToken cancellationToken)
     {
         try
         {
-            await _orderLineRepository.Delete(orderLineId, cancellationToken);
+            await _orderRepository.Delete(orderLineId, cancellationToken);
             return true;
         }
         catch { return false; }
     }
 
-    public async Task<List<OrderLineDto>> GetAll(CancellationToken cancellationToken)
-        => await _orderLineRepository.GetAll(cancellationToken);
+    public async Task<List<OrderDto>> GetAll(CancellationToken cancellationToken)
+        => await _orderRepository.GetAll(cancellationToken);
 
-    public async Task<List<OrderLineDto>> GetAllByOrderId(int orderId, CancellationToken cancellationToken)
-        => await _orderLineRepository.GetAllByOrderId(orderId, cancellationToken);  
+    public Task<List<OrderDto>> GetAllByCustmerId(int customerId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 
-    public async Task<OrderLineDto> GetById(int orderId, CancellationToken cancellationToken)
-        => await _orderLineRepository.GetById(orderId, cancellationToken);
+    public async Task<OrderDto> GetById(int orderId, CancellationToken cancellationToken)
+        => await _orderRepository.GetById(orderId, cancellationToken);
 
-    public async Task<int> Update(OrderLineDto order, CancellationToken cancellationToken)
-        => await _orderLineRepository.Update(order, cancellationToken);
+    public async Task<int> Update(OrderDto order, CancellationToken cancellationToken)
+        => await _orderRepository.Update(order, cancellationToken);
 }
