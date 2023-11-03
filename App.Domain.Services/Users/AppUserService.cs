@@ -22,35 +22,29 @@ public class AppUserService : IAppUserService
     public async Task<IdentityResult> Create(AppUserDto user, CancellationToken CancellationToken)
         => await _appRepository.Create(user, CancellationToken);
 
-    public Task Delete(int userId, CancellationToken cancellationToken)
+    public async Task<bool> Delete(int userId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+           await _appRepository.Delete(userId, cancellationToken);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
-    public Task<List<AppUserDto>> GetAll(CancellationToken CancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<List<AppUserDto>> GetAll(CancellationToken CancellationToken)
+        => await _appRepository.GetAll(CancellationToken);
 
-    public Task<AppUserDto> GetById(int userId, CancellationToken CancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<AppUserDto> GetById(int userId, CancellationToken CancellationToken)
+        => await _appRepository.GetById(userId, CancellationToken);
 
     public async Task<SignInResult> Login(AppUserDto userDto, CancellationToken cancellationToken)
         => await _appRepository.Login(userDto, cancellationToken);
-    public Task Update(AppUserDto appuser, CancellationToken CancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<int> Update(AppUserDto appuser, CancellationToken CancellationToken)
+        => await _appRepository.Update(appuser, CancellationToken);
 
-    Task<bool> IAppUserService.Delete(int userId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<int> IAppUserService.Update(AppUserDto appuser, CancellationToken CancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+   
 }

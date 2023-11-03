@@ -37,7 +37,6 @@ public class AppUserRepositry : IAppUserRepositry
     public async Task<IdentityResult> Create(AppUserDto userDto, CancellationToken CancellationToken)
     {
         var user = new AppUser();
-        userDto.Role = "Admin";
         user = new AppUser
         {
             UserName = userDto.Email,
@@ -64,23 +63,47 @@ public class AppUserRepositry : IAppUserRepositry
        var result =  await _signInManager.PasswordSignInAsync(userDto.Email, userDto.Password, true, false);
         return result;
     }
-    public Task Delete(int userId, CancellationToken cancellationToken)
+    public async Task Delete(int userId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        await _userManager.DeleteAsync(user);
     }
 
-    public Task<List<AppUserDto>> GetAll(CancellationToken CancellationToken)
+    public async Task<List<AppUserDto>> GetAll(CancellationToken CancellationToken)
     {
-        throw new NotImplementedException();
+        var res = await _userManager.Users
+              .AsNoTracking()
+              .ToListAsync(CancellationToken);
+        var meee = _mapper.Map<List<AppUserDto>>(res);
+        var users =  _mapper.Map<List<AppUserDto>>(await _userManager.Users
+              .AsNoTracking()
+              .ToListAsync(CancellationToken));
+
+        foreach (var item in users)
+        {
+            var userRole = await _userManager.GetRolesAsync(await _userManager.Users.FirstAsync(x => x.Id == item.Id));
+            item.Role = userRole.First();
+        }
+        return users;
     }
 
-    public Task<AppUserDto> GetById(int userId, CancellationToken CancellationToken)
+    public async Task<AppUserDto> GetById(int userId, CancellationToken CancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        var entity = _mapper.Map<AppUserDto>(user);
+        var userRole = await _userManager.GetRolesAsync(user);
+        entity.Role = userRole.First();
+        return entity;
     }
+   
 
-    public Task<int> Update(AppUserDto appuser, CancellationToken CancellationToken)
+    public async Task<int> Update(AppUserDto appuser, CancellationToken CancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByIdAsync(appuser.Id.ToString());
+        user.UserName = appuser.UserName;
+        user.Email = appuser.Email;
+       
+        var result = await _userManager.UpdateAsync(user);
+        return appuser.Id;
     }
 }
