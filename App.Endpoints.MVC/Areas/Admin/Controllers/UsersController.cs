@@ -1,5 +1,7 @@
 ﻿using App.Domain.Core.Contracts.Services;
+using App.Domain.Core.Dtos.Admin;
 using App.Domain.Core.Dtos.Users;
+using App.Domain.Services.Products;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 
@@ -9,11 +11,11 @@ namespace App.Endpoints.MVC.Areas.Admin.Controllers;
 public class UsersController : Controller
 {
     private readonly IAppUserService _appUserService;
-
     public UsersController(IAppUserService appUserService)
     {
         _appUserService = appUserService;
     }
+
     [HttpGet]
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
@@ -49,4 +51,5 @@ public class UsersController : Controller
         await _appUserService.Update(user, cancellationToken);
         return Redirect("/admin/users");
     }
+
 }

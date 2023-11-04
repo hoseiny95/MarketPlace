@@ -1,4 +1,5 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Dtos.Admin;
 using App.Domain.Core.Dtos.Auctions;
 using App.Domain.Core.Dtos.Products;
 using App.Domain.Core.Entities.Auctions;
@@ -52,6 +53,37 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             _context.BoothProducts.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
+        }
+        public async Task<List<ProductAdminDto>> GetAdminProducts(CancellationToken cancellationToken)
+        {
+            var result = _context.BoothProducts.Include(x => x.Both).Include(x => x.Product)
+                .Include(x => x.ProductImages).ThenInclude(x => x.Image)
+                .Select(c => new ProductAdminDto
+                {
+                    Id = c.Id,
+                    BoothName = c.Both.Name,
+                    Description = c.Both.Description,
+                    ImagePath = c.ProductImages.Select(x => x.Image.ImagePath).ToList(),
+                    Name = c.Product.Name,
+                    price = c.Price.ToString()
+                });
+            var res = result.ToList();
+            return await result.ToListAsync(cancellationToken);
+        }
+        public async Task<ProductAdminDto> GetAdminProductsbyId(int id , CancellationToken cancellationToken)
+        {
+            var result = _context.BoothProducts.Include(x => x.Both).Include(x => x.Product)
+                .Include(x => x.ProductImages).ThenInclude(x => x.Image).Where(x => x.Id == id)
+                .Select(c => new ProductAdminDto
+                {
+                    Id = c.Id,
+                    BoothName = c.Both.Name,
+                    Description = c.Both.Description,
+                    ImagePath = c.ProductImages.Select(x => x.Image.ImagePath).ToList(),
+                    Name = c.Product.Name,
+                    price = c.Price.ToString()
+                });
+            return await result.FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

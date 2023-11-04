@@ -1,5 +1,6 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Contracts.Services;
+using App.Domain.Core.Dtos.Admin;
 using App.Domain.Core.Dtos.Products;
 using App.Domain.Core.Entities.Auctions;
 using System;
@@ -31,6 +32,12 @@ namespace App.Domain.Services.Products
             }
             catch { return false; }
         }
+
+        public async Task<List<ProductAdminDto>> GetAdminProducts(CancellationToken cancellationToken)
+            => await _boothProductRepository.GetAdminProducts(cancellationToken);
+
+        public async Task<ProductAdminDto> GetAdminProductsbyId(int id, CancellationToken cancellationToken)
+            => await _boothProductRepository.GetAdminProductsbyId(id, cancellationToken);
 
         public async Task<List<BoothProductDto>> GetAll(CancellationToken cancellationToken)
             => await _boothProductRepository.GetAll(cancellationToken);

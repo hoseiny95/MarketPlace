@@ -23,4 +23,8 @@
     <ProjectReference Include="..\App.Infra.Db.Sql\App.Infra.Db.Sql.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\smallPic\" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
 ﻿
 
+using App.Domain.Core.Dtos.Admin;
 using App.Domain.Core.Dtos.Products;
 
 namespace App.Domain.Core.Contracts.Repositories;
@@ -11,5 +12,7 @@ public interface IBoothProductRepository
     Task<int> Create(BoothProductDto boothProduct, CancellationToken cancellationToken);
     Task<int> Update(BoothProductDto boothProduct, CancellationToken cancellationToken);
     Task Delete(int boothProductId, CancellationToken cancellationToken);
+    Task<List<ProductAdminDto>> GetAdminProducts(CancellationToken cancellationToken);
+    Task<ProductAdminDto> GetAdminProductsbyId(int id, CancellationToken cancellationToken);
 
 }
