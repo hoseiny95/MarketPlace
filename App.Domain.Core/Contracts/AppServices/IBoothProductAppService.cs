@@ -11,5 +11,6 @@ namespace App.Domain.Core.Contracts.AppServices
     public interface IBoothProductAppService
     {
         Task UpdateAdminProduct(ProductAdminDto adminProduct,IFormFile photo,CancellationToken cancellationToken);
+
     }
 }

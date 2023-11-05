@@ -14,5 +14,6 @@ public interface IBoothProductService
     Task<bool> Delete(int boothProductId, CancellationToken cancellationToken);
     Task<List<ProductAdminDto>> GetAdminProducts(CancellationToken cancellationToken);
     Task<ProductAdminDto> GetAdminProductsbyId(int id, CancellationToken cancellationToken);
+    Task UpdateByPrice(int id, string price, CancellationToken cancellationToken);
 
 }

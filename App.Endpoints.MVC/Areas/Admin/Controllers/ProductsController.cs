@@ -1,4 +1,5 @@
-﻿using App.Domain.Core.Contracts.Services;
+﻿using App.Domain.Core.Contracts.AppServices;
+using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Admin;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +9,12 @@ namespace App.Endpoints.MVC.Areas.Admin.Controllers;
 public class ProductsController : Controller
 {
     private readonly IBoothProductService _boothProductService;
+    private readonly IBoothProductAppService _boothProductAppService;
 
-    public ProductsController(IBoothProductService boothProductService)
+    public ProductsController(IBoothProductService boothProductService, IBoothProductAppService boothProductAppService)
     {
         _boothProductService = boothProductService;
+        _boothProductAppService = boothProductAppService;
     }
 
     [HttpGet]
@@ -28,9 +31,11 @@ public class ProductsController : Controller
         return View(res);
     }
     [HttpPost]
-    public IActionResult EditProduct(ProductAdminDto model,IFormFile photo)
+    public async Task<IActionResult> EditProduct(ProductAdminDto model,IFormFile photo, CancellationToken cancellationToken)
     {
-        return View();
+        await _boothProductAppService.UpdateAdminProduct(model, photo, cancellationToken);
+        var res = await _boothProductService.GetAdminProducts(cancellationToken);
+        return View("Index",res);
     }
 
 }

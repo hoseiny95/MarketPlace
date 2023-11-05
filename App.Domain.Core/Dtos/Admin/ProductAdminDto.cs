@@ -15,5 +15,5 @@ public class ProductAdminDto
     public string price { get; set; }
     public string BoothName { get; set; }
     public List<string> ImagePath { get; set; }
-    //public IFormFile Photo { get; set; }
+
 }

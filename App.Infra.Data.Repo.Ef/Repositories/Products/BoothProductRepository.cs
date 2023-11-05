@@ -50,6 +50,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         public async Task<int> Update(BoothProductDto boothProduct, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<BoothProduct>(boothProduct);
+            _context.ChangeTracker.Clear();
             _context.BoothProducts.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
@@ -70,10 +71,10 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             var res = result.ToList();
             return await result.ToListAsync(cancellationToken);
         }
-        public async Task<ProductAdminDto> GetAdminProductsbyId(int id , CancellationToken cancellationToken)
+        public async Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken)
         {
             var result = _context.BoothProducts.Include(x => x.Both).Include(x => x.Product)
-                .Include(x => x.ProductImages).ThenInclude(x => x.Image).Where(x => x.Id == id)
+                .Include(x => x.ProductImages).ThenInclude(x => x.Image).Where(x=> x.IsConfirm==false)
                 .Select(c => new ProductAdminDto
                 {
                     Id = c.Id,
@@ -83,7 +84,29 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
                     Name = c.Product.Name,
                     price = c.Price.ToString()
                 });
+            var res = result.ToList();
+            return await result.ToListAsync(cancellationToken);
+        }
+        public async Task<ProductAdminDto> GetAdminProductsbyId(int id , CancellationToken cancellationToken)
+        {
+            var result = _context.BoothProducts.Include(x => x.Both).Include(x => x.Product)
+                .Include(x => x.ProductImages).ThenInclude(x => x.Image).Where(x => x.Id == id)
+                .Select(c => new ProductAdminDto
+                {
+                    Id = c.Id,
+                    BoothName = c.Both.Name,
+                    Description = c.Product.Description,
+                    ImagePath = c.ProductImages.Select(x => x.Image.ImagePath).ToList(),
+                    Name = c.Product.Name,
+                    price = c.Price.ToString()
+                });
             return await result.FirstOrDefaultAsync(cancellationToken);
+        }
+        public async Task UpdateByPrice(int id,string price,CancellationToken cancellationToken)
+        {
+            var entity = await _context.BoothProducts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            entity.Price = double.Parse(price);
+             await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

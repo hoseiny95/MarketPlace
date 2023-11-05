@@ -40,6 +40,11 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Generals
         }
         public async Task<ImageDto> GetById(int imageId, CancellationToken cancellationToken)
                        => _mapper.Map<ImageDto>(await _context.Comments.FirstOrDefaultAsync(x => x.Id == imageId, cancellationToken));
+        public async Task<ImageDto> GetByBothProductId(int BothproductId, CancellationToken cancellationToken)
+        {
+           var image =  _context.ProductImages.Where(x=> x.BoothProductId == BothproductId).Select(c => c.Image);
+           return _mapper.Map<ImageDto>(await  image.FirstOrDefaultAsync(cancellationToken) );
+        }
         public async Task<List<ImageDto>> GetByProductId(int productId, CancellationToken cancellationToken)
             =>  _mapper.Map<List<ImageDto>>( await _context.Images.Include(c => c.ProductImages)
                 .Where(x => x.ProductImages.Any(c => c.BoothProductId == productId)).ToListAsync(cancellationToken));

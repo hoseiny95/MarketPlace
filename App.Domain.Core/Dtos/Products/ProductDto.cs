@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Domain.Core.Entities.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace App.Domain.Core.Dtos.Products
 {
     public class ProductDto
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
 
         public int CategoryId { get; set; }
@@ -17,5 +19,10 @@ namespace App.Domain.Core.Dtos.Products
         public double? BasePrice { get; set; }
 
         public bool IsDeleted { get; set; }
+        public virtual ICollection<BoothProductDto> BoothProducts { get; set; } = new List<BoothProductDto>();
+
+        public virtual CategoryDto Category { get; set; } = null!;
+
+        public virtual ICollection<ProductAttributeValueDto> ProductAttributeValues { get; set; } = new List<ProductAttributeValueDto>();
     }
 }

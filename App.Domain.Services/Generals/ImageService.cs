@@ -29,7 +29,43 @@ public class ImageService : IImageService
      
        return  await _imageRepository.create(filePath, cancellationToken);
     }
-       
+    //public string CreateImagePath(IFormFile file)
+    //{
+    //    string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/pic");
+    //    var fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+    //    string filePath = Path.Combine(uploadFolder, fileName);
+    //    using (var fileStream = new FileStream(filePath, FileMode.Create))
+    //    {
+    //        file.CopyTo(fileStream);
+    //    }
+    //    return filePath;
+    //}
+    public string CreateSmallImagePath(IFormFile file)
+    {
+        string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/smallPic");
+        var fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+        string filePath = Path.Combine(uploadFolder, fileName);
+
+        return filePath;
+    }
+    public List<string> CreateImagePath(IFormFile file)
+    {
+        var list = new List<string>();
+        string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/pic");
+        string uploadSmallFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/smallPic");
+        var fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+        string filePath = Path.Combine(uploadFolder, fileName);
+        string fileSmallPath = Path.Combine(uploadSmallFolder, fileName);
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        {
+            file.CopyTo(fileStream);
+        }
+        list.Add(filePath);
+        list.Add(fileSmallPath);
+        list.Add("smallPic/" + fileName);
+        return list;
+    }
+
 
     public async Task<bool> Delete(int id, CancellationToken cancellationToken)
     {
@@ -134,17 +170,15 @@ public class ImageService : IImageService
 
             }
 
-            //--</ Output as .Jpg >--
 
             graphic_of_DrawArea.Dispose();
 
         }
 
         source_Bitmap.Dispose();
-
-        //---------------</ Image_resize() >---------------
-
     }
 
+    public async Task<ImageDto> GetByBothProductId(int BothproductId, CancellationToken cancellationToken)
+        => await _imageRepository.GetByBothProductId(BothproductId, cancellationToken);
 }
 

@@ -28,9 +28,6 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
         }
-
-       
-
         public async Task Delete(int boothId, CancellationToken cancellationToken)
         {
             var entity = await _context.Booths.FindAsync(boothId, cancellationToken);
@@ -43,13 +40,21 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
 
 
         public async Task<BoothDto> GetById(int boothId, CancellationToken cancellationToken)
-                            => _mapper.Map<BoothDto>(await _context.Booths.FirstOrDefaultAsync(x => x.Id == boothId, cancellationToken));
+        {
+            var res = await _context.Booths.ToListAsync(cancellationToken);
+               var res22 = res.FirstOrDefault(x => x.Id == boothId);
+            return _mapper.Map<BoothDto>(res22);
+
+        }
 
 
         public async Task<int> Update(BoothDto booth, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Booth>(booth);
+            //var me2 = await GetById(booth.Id, cancellationToken);
+            _context.ChangeTracker.Clear();
             _context.Booths.Update(entity);
+            //var me = await GetById(booth.Id, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
         }

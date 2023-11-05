@@ -11,5 +11,6 @@ public interface IImageRepository
     Task<int> Update(string path,int id, CancellationToken cancellationToken);
     Task<int> create(string path, CancellationToken cancellationToken);
     Task Delete(int id, CancellationToken cancellationToken);
+    Task<ImageDto> GetByBothProductId(int BothproductId, CancellationToken cancellationToken);
 
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -102,8 +103,14 @@ public class AppUserRepositry : IAppUserRepositry
         var user = await _userManager.FindByIdAsync(appuser.Id.ToString());
         user.UserName = appuser.UserName;
         user.Email = appuser.Email;
-       
-        var result = await _userManager.UpdateAsync(user);
+        var userRole = (await _userManager.GetRolesAsync(user)).First();
+        if (appuser.Role != userRole)
+        {
+           await _userManager.RemoveFromRoleAsync(user, userRole);
+            await _userManager.AddToRoleAsync(user, appuser.Role);
+        }
+
+        await _userManager.UpdateAsync(user);
         return appuser.Id;
     }
 }

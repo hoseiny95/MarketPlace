@@ -1,5 +1,9 @@
-﻿using App.Domain.Core.Entities.Auctions;
+﻿using App.Domain.Core.Dtos.Auctions;
+using App.Domain.Core.Dtos.Generals;
+using App.Domain.Core.Dtos.Users;
+using App.Domain.Core.Entities.Auctions;
 using App.Domain.Core.Entities.Generals;
+using App.Domain.Core.Entities.Products;
 using App.Domain.Core.Entities.Users;
 using System;
 using System.Collections.Generic;
@@ -26,5 +30,13 @@ public  class BoothDto
 
     public int CityId { get; set; }
 
+    public virtual ICollection<AuctionDto> Auctions { get; set; } = new List<AuctionDto>();
 
+    public virtual ICollection<BoothProductDto> BoothProducts { get; set; } = new List<BoothProductDto>();
+
+    public virtual CityDto City { get; set; } = null!;
+
+    public virtual ImageDto Image { get; set; } = null!;
+
+    public virtual SellerDto? Seller { get; set; }
 }

@@ -47,5 +47,8 @@ namespace App.Domain.Services.Products
 
         public async Task<int> Update(BoothProductDto boothProduct, CancellationToken cancellationToken)
             => await _boothProductRepository.Update(boothProduct, cancellationToken);
+
+        public async Task UpdateByPrice(int id, string price, CancellationToken cancellationToken)
+            => await _boothProductRepository.UpdateByPrice(id, price, cancellationToken);
     }
 }

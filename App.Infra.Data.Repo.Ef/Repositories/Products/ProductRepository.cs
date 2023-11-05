@@ -50,6 +50,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         public async Task<int> Update(ProductDto product, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Product>(product);
+            _context.ChangeTracker.Clear();
             _context.Products.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;

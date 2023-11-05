@@ -14,7 +14,7 @@ public partial class Booth
 
     public string Name { get; set; } = null!;
 
-    public int ImageId { get; set; }
+    public int? ImageId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -24,15 +24,15 @@ public partial class Booth
 
     public bool IsSuprior { get; set; }
 
-    public int CityId { get; set; }
+    public int? CityId { get; set; }
 
     public virtual ICollection<Auction> Auctions { get; set; } = new List<Auction>();
 
     public virtual ICollection<BoothProduct> BoothProducts { get; set; } = new List<BoothProduct>();
 
-    public virtual City City { get; set; } = null!;
+    public virtual City? City { get; set; } = null!;
 
-    public virtual Image Image { get; set; } = null!;
+    public virtual Image? Image { get; set; } = null!;
 
     public virtual Seller? Seller { get; set; }
 }

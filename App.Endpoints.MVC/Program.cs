@@ -1,3 +1,5 @@
+using App.Domain.AppServices.Products;
+using App.Domain.Core.Contracts.AppServices;
 using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Entities.Users;
@@ -100,6 +102,7 @@ builder.Services.AddScoped<ISellerService, SellerService>();
 builder.Services.AddScoped<IWalletHistoryService, WalletHistoryService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 
+builder.Services.AddScoped<IBoothProductAppService, BoothProductAppService>();
 
 #endregion
 
