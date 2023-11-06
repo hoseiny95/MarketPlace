@@ -31,23 +31,45 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         public async Task Delete(int boothId, CancellationToken cancellationToken)
         {
             var entity = await _context.Booths.FindAsync(boothId, cancellationToken);
-            _context.Booths.Remove(entity);
+            entity.IsDeleted = true;
             await _context.SaveChangesAsync(cancellationToken);
         }
-
         public async Task<List<BoothDto>> GetAll(CancellationToken cancellationToken)
-                            => _mapper.Map<List<BoothDto>>(await _context.Booths.ToListAsync(cancellationToken));
-
-
+        {
+            var result = _context.Booths.Include(c => c.Image)
+                                .Include(c => c.City).Where(c=> c.IsDeleted == false)
+                                .Select(c=> new BoothDto()
+                                {
+                                    Id = c.Id,
+                                    Name = c.Name,
+                                    City =c.City,
+                                    Image = c.Image,
+                                    Phone = c.Phone,
+                                    CreatedAt = c.CreatedAt,
+                                    Description = c.Description,
+                                    
+                                });
+            return await result.ToListAsync(cancellationToken);
+        }             
         public async Task<BoothDto> GetById(int boothId, CancellationToken cancellationToken)
         {
-            var res = await _context.Booths.ToListAsync(cancellationToken);
-               var res22 = res.FirstOrDefault(x => x.Id == boothId);
-            return _mapper.Map<BoothDto>(res22);
+            var result = _context.Booths.Include(c => c.Image)
+                          .Include(c => c.City).Where(c=> c.Id ==boothId)
+                          .Select(c => new BoothDto()
+                          {
+                              Id = c.Id,
+                              Name = c.Name,
+                              City = c.City,
+                              Image = c.Image,
+                              Phone = c.Phone,
+                              CreatedAt = c.CreatedAt,
+                              Description = c.Description,
+                              CityId = (int)c.CityId,
+                              ImageId = (int)c.ImageId,
 
+                          });
+            return await result.FirstOrDefaultAsync(cancellationToken);
         }
-
-
         public async Task<int> Update(BoothDto booth, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Booth>(booth);
@@ -57,6 +79,23 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             //var me = await GetById(booth.Id, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
+        }
+        public async Task<List<BoothDto>> GetAllDeleted(CancellationToken cancellationToken)
+        {
+            var result = _context.Booths.Include(c => c.Image)
+                                .Include(c => c.City).Where(c => c.IsDeleted == true)
+                                .Select(c => new BoothDto()
+                                {
+                                    Id = c.Id,
+                                    Name = c.Name,
+                                    City = c.City,
+                                    Image = c.Image,
+                                    Phone = c.Phone,
+                                    CreatedAt = c.CreatedAt,
+                                    Description = c.Description,
+
+                                });
+            return await result.ToListAsync(cancellationToken);
         }
     }
 }

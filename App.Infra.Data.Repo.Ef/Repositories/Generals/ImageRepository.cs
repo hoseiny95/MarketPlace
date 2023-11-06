@@ -39,7 +39,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Generals
             await _context.SaveChangesAsync(cancellationToken);
         }
         public async Task<ImageDto> GetById(int imageId, CancellationToken cancellationToken)
-                       => _mapper.Map<ImageDto>(await _context.Comments.FirstOrDefaultAsync(x => x.Id == imageId, cancellationToken));
+                       => _mapper.Map<ImageDto>(await _context.Images.FirstOrDefaultAsync(x => x.Id == imageId, cancellationToken));
         public async Task<ImageDto> GetByBothProductId(int BothproductId, CancellationToken cancellationToken)
         {
            var image =  _context.ProductImages.Where(x=> x.BoothProductId == BothproductId).Select(c => c.Image);

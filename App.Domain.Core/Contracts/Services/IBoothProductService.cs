@@ -15,5 +15,6 @@ public interface IBoothProductService
     Task<List<ProductAdminDto>> GetAdminProducts(CancellationToken cancellationToken);
     Task<ProductAdminDto> GetAdminProductsbyId(int id, CancellationToken cancellationToken);
     Task UpdateByPrice(int id, string price, CancellationToken cancellationToken);
-
+    Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken);
+    Task ConfirmProduct(int id, CancellationToken cancellationToken);
 }

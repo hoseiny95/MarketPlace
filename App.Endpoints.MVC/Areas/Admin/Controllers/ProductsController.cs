@@ -37,5 +37,19 @@ public class ProductsController : Controller
         var res = await _boothProductService.GetAdminProducts(cancellationToken);
         return View("Index",res);
     }
+    [HttpGet]
+    public async Task<IActionResult> ConfirmProduct( CancellationToken cancellationToken)
+    {
+        var res = await _boothProductService.GetAdminProductsNotConfirm( cancellationToken);
+        return View(res);
+    }
+    [HttpPost]
+    public async  Task<IActionResult> ConfirmProduct(int id, CancellationToken cancellationToken)
+    {
+        await _boothProductAppService.ConfirmProduct(id, cancellationToken);
+        var res = await _boothProductService.GetAdminProductsNotConfirm(cancellationToken);
+
+        return View(res);
+    }
 
 }

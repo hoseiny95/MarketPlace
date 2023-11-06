@@ -1,0 +1,66 @@
+﻿@using App.Domain.Core.Dtos.Products;
+@model BoothDto;
+@{
+    var photopath = "~/images/" + Model.Image.ImagePath;
+}
+<br />
+<br />
+<br />
+<h1>ویرایش کالا</h1>
+
+
+<div class="mt-6">
+    <form method="post" class="m-8 mt-10" enctype="multipart/form-data" style="border:solid gray 2px padding:20px">
+        <input hidden asp-for="Id" />
+        <input hidden asp-for="ImageId" />
+        <input hidden asp-for="CityId" />
+        <input hidden asp-for="CreatedAt" />
+        
+        <div class="form-group row mb-2 ">
+            <label class="col-sm-2 col-form-label">
+                نام فروشگاه
+            </label>
+            <div class="col-sm-8">
+                <input asp-for="Name" class="form-control" placeholder="Barcode" />
+            </div>
+        </div>
+        <div class="form-group row mb-2  ">
+            <label class="col-sm-2 col-form-label">
+                تلفن
+            </label>
+            <div class="col-sm-8">
+                <input type="number" asp-for="Phone" class="form-control" placeholder="Price" />
+            </div>
+        </div>
+        <div class="form-group row mb-2  ">
+            <label class="col-sm-2 col-form-label">
+                توضیحات
+            </label>
+            <div class="col-sm-8">
+                <textarea asp-for="Description" class="form-control" placeholder="Description"></textarea>
+            </div>
+        </div>
+        <div class="form-group row mb-2  ">
+            <label class="col-sm-2 col-form-label">
+                تغییر عکس
+            </label>
+            <div class="col-sm-8">
+                <div class="custom-file">
+                    <input type="file" name="photo" class="custom-file-input form-control" />
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row col-sm-4 offset-4">
+            <img class="card-img-top imageThumbnail" src="@photopath" asp-append-version="true" />
+        </div>
+        <div class="form-group row mb-2">
+
+            <div class="col-sm-8">
+                <input type="submit" value="ویرایش اطلاعات" class="btn btn-primary">
+                <a class="btn btn-primary">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

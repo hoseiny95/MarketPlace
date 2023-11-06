@@ -34,9 +34,9 @@ public  class BoothDto
 
     public virtual ICollection<BoothProductDto> BoothProducts { get; set; } = new List<BoothProductDto>();
 
-    public virtual CityDto City { get; set; } = null!;
+    public virtual City City { get; set; } = null!;
 
-    public virtual ImageDto Image { get; set; } = null!;
+    public virtual Image Image { get; set; } = null!;
 
     public virtual SellerDto? Seller { get; set; }
 }

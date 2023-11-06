@@ -1,6 +1,7 @@
 ﻿using App.Domain.Core.Contracts.AppServices;
 using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Admin;
+using App.Domain.Core.Dtos.Products;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,12 @@ namespace App.Domain.AppServices.Products
             _boothService = boothService;
             _imageService = imageService;
         }
+
+        public async Task ConfirmProduct(int id, CancellationToken cancellationToken)
+            => await _boothProductService.ConfirmProduct(id, cancellationToken);
+
+        public async Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken)
+            => await _boothProductService.GetAdminProductsNotConfirm(cancellationToken);
 
         public async Task UpdateAdminProduct(ProductAdminDto adminProduct, IFormFile photo, 
             CancellationToken cancellationToken)

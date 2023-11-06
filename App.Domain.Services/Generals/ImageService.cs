@@ -17,18 +17,9 @@ public class ImageService : IImageService
         _imageRepository = imageRepository;
     }
 
-    public async Task<int> Create(IFormFile file, CancellationToken cancellationToken)
-    {
-        string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-        var fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-        string filePath = Path.Combine(uploadFolder, fileName);
-        using (var fileStream = new FileStream(filePath, FileMode.Create))
-        {
-            file.CopyTo(fileStream);
-        }
-     
-       return  await _imageRepository.create(filePath, cancellationToken);
-    }
+    public async Task<int> Create(string imagePath, CancellationToken cancellationToken)
+        => await _imageRepository.create(imagePath, cancellationToken);
+    
     //public string CreateImagePath(IFormFile file)
     //{
     //    string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/pic");
@@ -53,7 +44,8 @@ public class ImageService : IImageService
         var list = new List<string>();
         string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/pic");
         string uploadSmallFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/smallPic");
-        var fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+        string ext = Path.GetExtension(file.FileName);
+        var fileName = Guid.NewGuid().ToString() + "_" + ext;
         string filePath = Path.Combine(uploadFolder, fileName);
         string fileSmallPath = Path.Combine(uploadSmallFolder, fileName);
         using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -180,5 +172,22 @@ public class ImageService : IImageService
 
     public async Task<ImageDto> GetByBothProductId(int BothproductId, CancellationToken cancellationToken)
         => await _imageRepository.GetByBothProductId(BothproductId, cancellationToken);
+
+    public bool Delete(string path)
+    {
+        try
+        {
+            string imagepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/" + path);
+            FileInfo file = new FileInfo(imagepath);
+            file.Delete();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+       
+
+    }
 }
 

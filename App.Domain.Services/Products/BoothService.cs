@@ -34,6 +34,10 @@ namespace App.Domain.Services.Products
 
         public async Task<List<BoothDto>> GetAll(CancellationToken cancellationToken)
             => await _boothRepository.GetAll(cancellationToken);
+
+        public async Task<List<BoothDto>> GetAllDeleted(CancellationToken cancellationToken)
+            => await _boothRepository.GetAllDeleted(cancellationToken);
+
         public async Task<BoothDto> GetById(int boothId, CancellationToken cancellationToken)
             => await _boothRepository.GetById(boothId, cancellationToken);
 

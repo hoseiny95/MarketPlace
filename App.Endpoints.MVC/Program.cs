@@ -103,6 +103,7 @@ builder.Services.AddScoped<IWalletHistoryService, WalletHistoryService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 
 builder.Services.AddScoped<IBoothProductAppService, BoothProductAppService>();
+builder.Services.AddScoped<IBoothAppService, BoothAppService>();
 
 #endregion
 

@@ -74,7 +74,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         public async Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken)
         {
             var result = _context.BoothProducts.Include(x => x.Both).Include(x => x.Product)
-                .Include(x => x.ProductImages).ThenInclude(x => x.Image).Where(x=> x.IsConfirm==false)
+                .Include(x => x.ProductImages).ThenInclude(x => x.Image).Where(x => x.IsConfirm == false)
                 .Select(c => new ProductAdminDto
                 {
                     Id = c.Id,
@@ -87,7 +87,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             var res = result.ToList();
             return await result.ToListAsync(cancellationToken);
         }
-        public async Task<ProductAdminDto> GetAdminProductsbyId(int id , CancellationToken cancellationToken)
+        public async Task<ProductAdminDto> GetAdminProductsbyId(int id, CancellationToken cancellationToken)
         {
             var result = _context.BoothProducts.Include(x => x.Both).Include(x => x.Product)
                 .Include(x => x.ProductImages).ThenInclude(x => x.Image).Where(x => x.Id == id)
@@ -102,11 +102,18 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
                 });
             return await result.FirstOrDefaultAsync(cancellationToken);
         }
-        public async Task UpdateByPrice(int id,string price,CancellationToken cancellationToken)
+        public async Task UpdateByPrice(int id, string price, CancellationToken cancellationToken)
         {
             var entity = await _context.BoothProducts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
             entity.Price = double.Parse(price);
-             await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        public async Task ConfirmProduct(int id, CancellationToken cancellationToken)
+        {
+            var entity = await _context.BoothProducts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            entity.IsConfirm = true;
+            await _context.SaveChangesAsync(cancellationToken);
+
         }
     }
 }

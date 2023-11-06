@@ -11,5 +11,6 @@ public interface IBoothRepository
     Task<int> Create(BoothDto booth, CancellationToken cancellationToken);
     Task<int> Update(BoothDto booth, CancellationToken cancellationToken);
     Task Delete(int boothId, CancellationToken cancellationToken);
+    Task<List<BoothDto>> GetAllDeleted(CancellationToken cancellationToken);
 
 }

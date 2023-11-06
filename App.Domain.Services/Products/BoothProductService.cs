@@ -20,6 +20,9 @@ namespace App.Domain.Services.Products
             _boothProductRepository = boothProductRepository;
         }
 
+        public async Task ConfirmProduct(int id, CancellationToken cancellationToken)
+            => await _boothProductRepository.ConfirmProduct(id, cancellationToken);
+
         public async Task<int> Create(BoothProductDto boothProduct, CancellationToken cancellationToken)
             => await _boothProductRepository.Create(boothProduct, cancellationToken);
 
@@ -38,6 +41,9 @@ namespace App.Domain.Services.Products
 
         public async Task<ProductAdminDto> GetAdminProductsbyId(int id, CancellationToken cancellationToken)
             => await _boothProductRepository.GetAdminProductsbyId(id, cancellationToken);
+
+        public async Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken)
+            => await _boothProductRepository.GetAdminProductsNotConfirm(cancellationToken);
 
         public async Task<List<BoothProductDto>> GetAll(CancellationToken cancellationToken)
             => await _boothProductRepository.GetAll(cancellationToken);
