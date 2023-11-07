@@ -12,6 +12,7 @@ public class AppUserDto
     public string Password { get; set; }
     public string Email { get; set; }
     public string Role { get; set; }
+    public bool IsSeller { get; set; }
     public bool RememberMe { get; set; }
 
     public virtual ICollection<AddressDto> Addresses { get; set; } = new List<AddressDto>();

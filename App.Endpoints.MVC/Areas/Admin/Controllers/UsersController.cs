@@ -2,12 +2,14 @@
 using App.Domain.Core.Dtos.Admin;
 using App.Domain.Core.Dtos.Users;
 using App.Domain.Services.Products;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 
 namespace App.Endpoints.MVC.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = "Admin")]
 public class UsersController : Controller
 {
     private readonly IAppUserService _appUserService;

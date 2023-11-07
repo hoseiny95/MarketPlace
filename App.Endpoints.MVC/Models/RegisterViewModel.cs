@@ -25,5 +25,7 @@ public class RegisterViewModel
     [MaxLength(200, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
     [Compare("Password", ErrorMessage = "کلمه های عبور مغایرت دارند")]
     public string RePassword { get; set; }
-    public string Role { get; set; }
+    public string? Role { get; set; }
+    public bool IsSeller { get; set; }
+
 }

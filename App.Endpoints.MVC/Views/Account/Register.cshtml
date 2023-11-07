@@ -21,7 +21,7 @@
 
                 <div class="input-group">
                     <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
-                    <input asp-for="UserName" type="text" class="form-control" placeholder="نام و نام خانوادگی" aria-describedby="username">
+                    <input asp-for="UserName" type="text" class="form-control" placeholder="نام کاربری" aria-describedby="username">
                 </div>
 
                 <div class="input-group">
@@ -38,14 +38,16 @@
                     <span class="input-group-addon" id="password"><i class="zmdi zmdi-lock"></i></span>
                     <input asp-for="RePassword" type="password" class="form-control" placeholder="تکرار رمز عبور " aria-describedby="password">
                 </div>
-                <div class="input-group">
-                    <span class="input-group-addon" id=""><i class="zmdi zmdi-lock"></i></span>
-                    <select asp-for="Role" class="form-select" aria-label="Default select example">
-                        <option selected>انتخاب نقش</option>
-                        <option value="Customer">خریدار</option>
-                        <option value="Sllere">قروشنده</option>
-                        <option value="3">Three</option>
-                    </select>
+                <div class="form-group">
+                    <label>انتخاب نقش کاربر</label>
+                    
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsSeller" type="checkbox" >فروشنده هستید؟
+                            </label>
+                        </div>
+                    
+
                 </div>
                 
 

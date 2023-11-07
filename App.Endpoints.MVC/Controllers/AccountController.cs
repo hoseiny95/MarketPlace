@@ -41,7 +41,7 @@ namespace App.Endpoints.MVC.Controllers
                 var result = await _userService.Create(_mapper.Map<AppUserDto>(model), cancellationToken);
                 if (result.Succeeded)
                 {
-                    return LocalRedirect("/Home/Index");
+                    return View(nameof(Login));
                 }
                 else
                 {
@@ -54,6 +54,7 @@ namespace App.Endpoints.MVC.Controllers
             }
             return View(model);
         }
+        [HttpGet]
         public IActionResult Login()
         {
             return View();

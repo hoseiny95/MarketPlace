@@ -37,10 +37,9 @@ public class AppUserRepositry : IAppUserRepositry
 
     public async Task<IdentityResult> Create(AppUserDto userDto, CancellationToken CancellationToken)
     {
-        var user = new AppUser();
-        user = new AppUser
+        var user = new AppUser
         {
-            UserName = userDto.Email,
+            UserName = userDto.UserName,
             Email = userDto.Email,
         };
         var result = await _userManager.CreateAsync(user, userDto.Password);
@@ -61,7 +60,8 @@ public class AppUserRepositry : IAppUserRepositry
 
     public async Task<SignInResult> Login(AppUserDto userDto, CancellationToken cancellationToken)
     {
-       var result =  await _signInManager.PasswordSignInAsync(userDto.Email, userDto.Password, true, false);
+        var user = await _userManager.FindByEmailAsync(userDto.Email);
+        var result =  await _signInManager.PasswordSignInAsync(user.UserName, userDto.Password, true, false);
         return result;
     }
     public async Task Delete(int userId, CancellationToken cancellationToken)
@@ -83,7 +83,7 @@ public class AppUserRepositry : IAppUserRepositry
         foreach (var item in users)
         {
             var userRole = await _userManager.GetRolesAsync(await _userManager.Users.FirstAsync(x => x.Id == item.Id));
-            item.Role = userRole.First();
+            item.Role = userRole.FirstOrDefault();
         }
         return users;
     }

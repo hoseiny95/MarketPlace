@@ -1,11 +1,13 @@
 ﻿using App.Domain.Core.Contracts.AppServices;
 using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Admin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Endpoints.MVC.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = "Admin")]
 public class ProductsController : Controller
 {
     private readonly IBoothProductService _boothProductService;

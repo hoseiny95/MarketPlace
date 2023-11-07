@@ -20,7 +20,13 @@ public class AppUserService : IAppUserService
     }
 
     public async Task<IdentityResult> Create(AppUserDto user, CancellationToken CancellationToken)
-        => await _appRepository.Create(user, CancellationToken);
+    {
+        if (user.IsSeller == true)
+            user.Role = "Seller";
+        else
+            user.Role = "Customer";
+       return await _appRepository.Create(user, CancellationToken);
+    }
 
     public async Task<bool> Delete(int userId, CancellationToken cancellationToken)
     {

@@ -20,6 +20,11 @@
                                 <a href=""> همکاری در فروش </a>
                                 <a href=""> درباره ما </a>
                                 <a href=""> تماس با ما </a>
+                                @if (User.IsInRole("Admin") && User.Identity.IsAuthenticated)
+                                {
+                                    <a href="/Admin"> پنل ادمین </a>
+                                }
+
                             </li>
                         </ul>
                     </div>
