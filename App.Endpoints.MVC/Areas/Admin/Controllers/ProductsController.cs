@@ -35,7 +35,7 @@ public class ProductsController : Controller
     {
         await _boothProductAppService.UpdateAdminProduct(model, photo, cancellationToken);
         var res = await _boothProductService.GetAdminProducts(cancellationToken);
-        return View("Index",res);
+        return View(nameof(Index), res);
     }
     [HttpGet]
     public async Task<IActionResult> ConfirmProduct( CancellationToken cancellationToken)
@@ -44,12 +44,18 @@ public class ProductsController : Controller
         return View(res);
     }
     [HttpPost]
-    public async  Task<IActionResult> ConfirmProduct(int id, CancellationToken cancellationToken)
+    public async  Task<IActionResult> ConfirmProduct(int id,string confitm,string refuse, CancellationToken cancellationToken)
     {
-        await _boothProductAppService.ConfirmProduct(id, cancellationToken);
+        await _boothProductAppService.ConfirmProduct(id, confitm, refuse, cancellationToken);
         var res = await _boothProductService.GetAdminProductsNotConfirm(cancellationToken);
-
         return View(res);
+    }
+    [HttpGet]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+    {
+         await _boothProductService.Delete(id,cancellationToken);
+        var res = await _boothProductService.GetAdminProducts(cancellationToken);
+        return View(nameof(Index),res);
     }
 
 }

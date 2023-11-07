@@ -1,3 +1,4 @@
+using App.Domain.AppServices.Generals;
 using App.Domain.AppServices.Products;
 using App.Domain.Core.Contracts.AppServices;
 using App.Domain.Core.Contracts.Repositories;
@@ -104,6 +105,7 @@ builder.Services.AddScoped<IWalletService, WalletService>();
 
 builder.Services.AddScoped<IBoothProductAppService, BoothProductAppService>();
 builder.Services.AddScoped<IBoothAppService, BoothAppService>();
+builder.Services.AddScoped<ICommentAppService, CommentAppService>();
 
 #endregion
 

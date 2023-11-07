@@ -13,6 +13,8 @@ namespace App.Domain.Core.Contracts.AppServices
     {
         Task UpdateAdminProduct(ProductAdminDto adminProduct,IFormFile photo,CancellationToken cancellationToken);
         Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken);
-        Task ConfirmProduct(int id, CancellationToken cancellationToken);
+        Task ConfirmProduct(int id,string confirm,string refuse, CancellationToken cancellationToken);
+        Task<bool> Delete(int boothProductId, CancellationToken cancellationToken);
+
     }
 }

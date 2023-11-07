@@ -33,7 +33,22 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Generals
         }
 
         public async Task<List<CommentDto>> GetAll(CancellationToken cancellationToken)
-                        => _mapper.Map<List<CommentDto>>(await _context.Comments.ToListAsync(cancellationToken));
+        {
+            var res =  _context.Comments.Include(x => x.Customer).Include(x => x.BoothProduct)
+                .ThenInclude(x => x.Both).Include(x => x.BoothProduct).ThenInclude(x => x.Product)
+                .Where(x => x.IsConfirm == false && x.IsRefuse == false)
+                .Select(c => new CommentDto
+                {
+                    Id = c.Id,
+                    CreateAt = c.CreateAt,
+                    BoothName = c.BoothProduct.Both.Name,
+                    CustomerName = c.Customer.Name +" " + c.Customer.Lastname,
+                    BoothProductName = c.BoothProduct.Product.Name,
+                    Descriotion = c.Descriotion
+                });
+            return await res.ToListAsync(cancellationToken);
+        }
+                       
 
 
         public async Task<CommentDto> GetById(int commentId, CancellationToken cancellationToken)
@@ -51,6 +66,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Generals
         public async Task<int> Update(CommentDto comment, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Comment>(comment);
+            _context.ChangeTracker.Clear();
             _context.Comments.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;

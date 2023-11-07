@@ -30,7 +30,7 @@ public class BoothsController : Controller
     {
         await _boothAppService.Update(model, photo, cancellationToken);
         var result = await _boothAppService.GetAll(cancellationToken);
-        return View("Index",result);
+        return View(nameof(Index), result);
     }
     public async Task<IActionResult> DeletedBooth(CancellationToken cancellationToken)
     {
@@ -41,12 +41,12 @@ public class BoothsController : Controller
     {
         await _boothAppService.Delete(id , cancellationToken);
         var result = await _boothAppService.GetAllDeleted(cancellationToken);
-        return View("DeletedBooth", result);
+        return View(nameof(DeletedBooth), result);
     }
     public async Task<IActionResult> ReturnBooth(int id, CancellationToken cancellationToken)
     {
         await _boothAppService.Return(id , cancellationToken);
         var result = await _boothAppService.GetAll(cancellationToken);
-        return View("Index", result);
+        return View(nameof(Index), result);
     }
 }

@@ -12,6 +12,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.9" />
   </ItemGroup>
 
@@ -21,6 +25,7 @@
     <ProjectReference Include="..\App.Domain.Services\App.Domain.Services.csproj" />
     <ProjectReference Include="..\App.Infra.Data.Repo.Ef\App.Infra.Data.Repo.Ef.csproj" />
     <ProjectReference Include="..\App.Infra.Db.Sql\App.Infra.Db.Sql.csproj" />
+    <ProjectReference Include="..\Framework\Framework.csproj" />
   </ItemGroup>
 
   <ItemGroup>

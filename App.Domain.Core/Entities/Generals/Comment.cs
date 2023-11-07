@@ -21,6 +21,8 @@ public partial class Comment
     public int OrderId { get; set; }
 
     public DateTime CreateAt { get; set; }
+    public bool IsRefuse { get; set; }
+
 
     public virtual BoothProduct BoothProduct { get; set; } = null!;
 

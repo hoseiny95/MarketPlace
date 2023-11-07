@@ -16,6 +16,9 @@ public  class CommentDto
     public string Descriotion { get; set; } = null!;
 
     public int CustomerId { get; set; }
+    public  string CustomerName { get; set; }
+    public  string BoothProductName { get; set; }
+    public  string BoothName { get; set; }
 
     public int BoothProductId { get; set; }
 
@@ -24,10 +27,11 @@ public  class CommentDto
     public int OrderId { get; set; }
 
     public DateTime CreateAt { get; set; }
+    public bool IsRefuse { get; set; }
 
-    public virtual BoothProductDto BoothProduct { get; set; } = null!;
+    public virtual BoothProduct BoothProduct { get; set; } = null!;
 
-    public virtual CustomerDto Customer { get; set; } = null!;
+    public virtual Customer Customer { get; set; } = null!;
 
-    public virtual OrderDto Order { get; set; } = null!;
+    public virtual Order Order { get; set; } = null!;
 }

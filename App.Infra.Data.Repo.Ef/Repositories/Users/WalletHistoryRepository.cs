@@ -38,7 +38,21 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Users
         }
 
         public async Task<List<WalletHistoryDto>> GetAll(CancellationToken cancellationToken)
-                       => _mapper.Map<List<WalletHistoryDto>>(await _context.WalletHistories.ToListAsync(cancellationToken));
+        {
+            var result = _context.WalletHistories.Include(x => x.Wallet).ThenInclude(x => x.AppUser)
+                .ThenInclude(x => x.Seller).ThenInclude(x => x.Booth).Where(x => x.IsSellerFees == true)
+                .Select(c => new WalletHistoryDto
+                {
+                    SellerName = c.Wallet.AppUser.Seller.Name + " " + c.Wallet.AppUser.Seller.Lastname,
+                    Amount = c.Amount,
+                    CreateAt = c.CreateAt,
+                    IsDebit = c.IsDebit,
+                    BoothName = c.Wallet.AppUser.Seller.Booth.Name,
+                    
+                });
+            return await result.ToListAsync(cancellationToken);
+        }
+           
 
 
         public async Task<WalletHistoryDto> GetById(int walletHistoryId, CancellationToken cancellationToken)

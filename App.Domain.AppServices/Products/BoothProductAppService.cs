@@ -27,8 +27,22 @@ namespace App.Domain.AppServices.Products
             _imageService = imageService;
         }
 
-        public async Task ConfirmProduct(int id, CancellationToken cancellationToken)
-            => await _boothProductService.ConfirmProduct(id, cancellationToken);
+        public async Task ConfirmProduct(int id, string confitm, string refuse, CancellationToken cancellationToken)
+        {
+            if(confitm == null)
+            {
+                await _boothProductService.RefuseProduct(id, cancellationToken);
+
+            }
+            if (refuse == null)
+            {
+                await _boothProductService.ConfirmProduct(id, cancellationToken);
+
+            }
+        }
+
+        public async Task<bool> Delete(int boothProductId, CancellationToken cancellationToken)
+            => await _boothProductService.Delete(boothProductId, cancellationToken);
 
         public async Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken)
             => await _boothProductService.GetAdminProductsNotConfirm(cancellationToken);

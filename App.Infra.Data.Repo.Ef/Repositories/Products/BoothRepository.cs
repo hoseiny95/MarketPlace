@@ -73,10 +73,8 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         public async Task<int> Update(BoothDto booth, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Booth>(booth);
-            //var me2 = await GetById(booth.Id, cancellationToken);
             _context.ChangeTracker.Clear();
             _context.Booths.Update(entity);
-            //var me = await GetById(booth.Id, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
         }

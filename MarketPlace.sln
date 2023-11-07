@@ -15,21 +15,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{6FC9B294-D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{5C67AD3A-2F9D-40F4-8971-61CE6FA595D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Domain.Core", "App.Domain.Core\App.Domain.Core.csproj", "{A32256BF-2F64-4BFB-B18A-D2520F7A328A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain.Core", "App.Domain.Core\App.Domain.Core.csproj", "{A32256BF-2F64-4BFB-B18A-D2520F7A328A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Domain.Services", "App.Domain.Services\App.Domain.Services.csproj", "{7C7DFCD1-0E40-43FF-9836-552E3180EFF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain.Services", "App.Domain.Services\App.Domain.Services.csproj", "{7C7DFCD1-0E40-43FF-9836-552E3180EFF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Domain.AppServices", "App.Domain.AppServices\App.Domain.AppServices.csproj", "{C776E82B-2AE7-4D5D-AB71-6500410BD066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain.AppServices", "App.Domain.AppServices\App.Domain.AppServices.csproj", "{C776E82B-2AE7-4D5D-AB71-6500410BD066}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{41BA2B56-750F-417D-9128-56A6C3B2951B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Db", "Db", "{9AE955C9-BEDF-4490-BE8A-9124D44D5301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Infra.Data.Repo.Ef", "App.Infra.Data.Repo.Ef\App.Infra.Data.Repo.Ef.csproj", "{0006D697-8BD1-497B-8411-41ED366A9EF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Infra.Data.Repo.Ef", "App.Infra.Data.Repo.Ef\App.Infra.Data.Repo.Ef.csproj", "{0006D697-8BD1-497B-8411-41ED366A9EF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Infra.Db.Sql", "App.Infra.Db.Sql\App.Infra.Db.Sql.csproj", "{91188E6A-7AFD-4BBC-9A8F-8AAC85AF77FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Infra.Db.Sql", "App.Infra.Db.Sql\App.Infra.Db.Sql.csproj", "{91188E6A-7AFD-4BBC-9A8F-8AAC85AF77FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Endpoints.MVC", "App.Endpoints.MVC\App.Endpoints.MVC.csproj", "{9775C6AF-4147-4E67-A8B2-8DC0B3C6D501}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Endpoints.MVC", "App.Endpoints.MVC\App.Endpoints.MVC.csproj", "{9775C6AF-4147-4E67-A8B2-8DC0B3C6D501}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00-Framework", "00-Framework", "{3B6475D2-74C4-448C-8A8A-AB2E5974F1FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework", "Framework\Framework.csproj", "{744A88A0-B7E3-4E26-A04C-DB920A537878}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,10 @@ Global
 		{9775C6AF-4147-4E67-A8B2-8DC0B3C6D501}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9775C6AF-4147-4E67-A8B2-8DC0B3C6D501}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9775C6AF-4147-4E67-A8B2-8DC0B3C6D501}.Release|Any CPU.Build.0 = Release|Any CPU
+		{744A88A0-B7E3-4E26-A04C-DB920A537878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{744A88A0-B7E3-4E26-A04C-DB920A537878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{744A88A0-B7E3-4E26-A04C-DB920A537878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{744A88A0-B7E3-4E26-A04C-DB920A537878}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +87,8 @@ Global
 		{0006D697-8BD1-497B-8411-41ED366A9EF3} = {41BA2B56-750F-417D-9128-56A6C3B2951B}
 		{91188E6A-7AFD-4BBC-9A8F-8AAC85AF77FE} = {9AE955C9-BEDF-4490-BE8A-9124D44D5301}
 		{9775C6AF-4147-4E67-A8B2-8DC0B3C6D501} = {9CF55472-A680-4C81-94AA-9F6AA106A8D1}
+		{3B6475D2-74C4-448C-8A8A-AB2E5974F1FF} = {69940FA0-3712-4F4C-8405-C55DD1EB6BA6}
+		{744A88A0-B7E3-4E26-A04C-DB920A537878} = {3B6475D2-74C4-448C-8A8A-AB2E5974F1FF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F8A2480-014D-477B-888C-A761803637CE}

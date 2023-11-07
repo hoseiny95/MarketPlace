@@ -16,7 +16,9 @@ public class WalletHistoryDto
     public bool IsCredit { get; set; }
 
     public int WalletId { get; set; }
-
+    public string SellerName { get; set; }
+    public string BoothName { get; set; }
+    public string SumOfAmount { get; set; }
     public string Description { get; set; } = null!;
 
     public bool IsSellerFees { get; set; }

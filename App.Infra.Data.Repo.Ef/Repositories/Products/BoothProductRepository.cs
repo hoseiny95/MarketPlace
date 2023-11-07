@@ -35,7 +35,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         public async Task Delete(int boothProductId, CancellationToken cancellationToken)
         {
             var entity = await _context.BoothProducts.FindAsync(boothProductId, cancellationToken);
-            _context.BoothProducts.Remove(entity);
+            entity.IsAvailable = false;
             await _context.SaveChangesAsync(cancellationToken);
         }
 
@@ -58,7 +58,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         public async Task<List<ProductAdminDto>> GetAdminProducts(CancellationToken cancellationToken)
         {
             var result = _context.BoothProducts.Include(x => x.Both).Include(x => x.Product)
-                .Include(x => x.ProductImages).ThenInclude(x => x.Image)
+                .Include(x => x.ProductImages).ThenInclude(x => x.Image).Where(c => c.IsConfirm == true && c.IsAvailable == true)
                 .Select(c => new ProductAdminDto
                 {
                     Id = c.Id,
@@ -68,13 +68,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
                     Name = c.Product.Name,
                     price = c.Price.ToString()
                 });
-            var res = result.ToList();
             return await result.ToListAsync(cancellationToken);
         }
         public async Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken)
         {
             var result = _context.BoothProducts.Include(x => x.Both).Include(x => x.Product)
-                .Include(x => x.ProductImages).ThenInclude(x => x.Image).Where(x => x.IsConfirm == false)
+                .Include(x => x.ProductImages).ThenInclude(x => x.Image).Where(x => x.IsConfirm == false && x.IsAvailable == true)
                 .Select(c => new ProductAdminDto
                 {
                     Id = c.Id,
@@ -114,6 +113,13 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             entity.IsConfirm = true;
             await _context.SaveChangesAsync(cancellationToken);
 
+        }
+
+        public async Task RefuseProduct(int id, CancellationToken cancellationToken)
+        {
+            var entity = await _context.BoothProducts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            entity.IsAvailable = false;
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }
