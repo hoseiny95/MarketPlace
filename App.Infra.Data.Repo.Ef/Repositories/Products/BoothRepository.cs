@@ -1,5 +1,7 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Dtos.Orders;
 using App.Domain.Core.Dtos.Products;
+using App.Domain.Core.Entities.Orders;
 using App.Domain.Core.Entities.Products;
 using App.Infra.Db.Sql.Models;
 using AutoMapper;
@@ -53,22 +55,25 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         }             
         public async Task<BoothDto> GetById(int boothId, CancellationToken cancellationToken)
         {
+            //var result = _mapper.Map<BoothDto>(await _context.Booths.Include(c => c.Image)
+            //               .Include(c => c.City).Where(c => c.Id == boothId).FirstOrDefaultAsync(cancellationToken));
             var result = _context.Booths.Include(c => c.Image)
-                          .Include(c => c.City).Where(c=> c.Id ==boothId)
-                          .Select(c => new BoothDto()
-                          {
-                              Id = c.Id,
-                              Name = c.Name,
-                              City = c.City,
-                              Image = c.Image,
-                              Phone = c.Phone,
-                              CreatedAt = c.CreatedAt,
-                              Description = c.Description,
-                              CityId = (int)c.CityId,
-                              ImageId = (int)c.ImageId,
+                          .Include(c => c.City).Where(c => c.Id == boothId)
+            .Select(c => new BoothDto()
+            {
+                Id = c.Id,
+                Name = c.Name,
+                City = c.City,
+                Image = c.Image,
+                Phone = c.Phone,
+                CreatedAt = c.CreatedAt,
+                Description = c.Description,
+                CityId = (int)c.CityId,
+                ImageId = (int)c.ImageId,
 
-                          });
+            });
             return await result.FirstOrDefaultAsync(cancellationToken);
+            //return result;
         }
         public async Task<int> Update(BoothDto booth, CancellationToken cancellationToken)
         {

@@ -57,4 +57,11 @@ public class CustomerRepository : ICustomerRepository
         await _context.SaveChangesAsync(CancellationToken);
         return entity.Id;
     }
+    public async Task<CustomerDto> GetByUserId(int userId, CancellationToken CancellationToken)
+    {
+        var customer =  await _context.Customers.Include(c => c.User).ThenInclude(c=> c.Wallet).Include(c=> c.Orders)
+            .Include(c=> c.Bids).Include(c => c.Image)
+            .FirstOrDefaultAsync(x=> x.UserId == userId, CancellationToken);
+        return _mapper.Map<CustomerDto>(customer);  
+    }
 }

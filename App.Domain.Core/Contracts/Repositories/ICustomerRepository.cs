@@ -12,5 +12,5 @@ public interface ICustomerRepository
     Task<CustomerDto> GetById(int customerId, CancellationToken CancellationToken);
     Task<int> Update(CustomerDto customer, CancellationToken CancellationToken);
     Task Delete(int CustomerId, CancellationToken cancellationToken);
-
+    Task<CustomerDto> GetByUserId(int userId, CancellationToken CancellationToken);
 }

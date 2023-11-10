@@ -13,6 +13,5 @@ public interface IAppUserService
     Task<int> Update(AppUserDto appuser, CancellationToken CancellationToken);
     Task<bool> Delete(int userId, CancellationToken cancellationToken);
     public Task<SignInResult> Login(AppUserDto userDto, CancellationToken cancellationToken);
-
-
+    Task<AppUserDto> GetByUserName(string userName, CancellationToken cancellationToken);
 }

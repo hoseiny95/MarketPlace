@@ -113,4 +113,9 @@ public class AppUserRepositry : IAppUserRepositry
         await _userManager.UpdateAsync(user);
         return appuser.Id;
     }
+    public async Task<AppUserDto> GetByUserName(string userName,CancellationToken cancellationToken)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
+        return _mapper.Map<AppUserDto>(user);   
+    }
 }

@@ -47,6 +47,9 @@ public class AppUserService : IAppUserService
     public async Task<AppUserDto> GetById(int userId, CancellationToken CancellationToken)
         => await _appRepository.GetById(userId, CancellationToken);
 
+    public async Task<AppUserDto> GetByUserName(string userName, CancellationToken cancellationToken)
+        => await _appRepository.GetByUserName(userName, cancellationToken);
+
     public async Task<SignInResult> Login(AppUserDto userDto, CancellationToken cancellationToken)
         => await _appRepository.Login(userDto, cancellationToken);
     public async Task<int> Update(AppUserDto appuser, CancellationToken CancellationToken)

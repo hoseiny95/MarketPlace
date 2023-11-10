@@ -12,6 +12,8 @@ namespace App.Endpoints.MVC.Models
             //CreateMap<AppUserDto, RegisterViewModel>();
             CreateMap<RegisterViewModel, AppUserDto > ();
             CreateMap<LoginViewModel, AppUserDto > ();
+            CreateMap<CustomerViewModel, CustomerDto > ();
+
         }
     }
 }

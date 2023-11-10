@@ -16,7 +16,7 @@ public partial class Customer
 
     public int UserId { get; set; }
 
-    public int ImageId { get; set; }
+    public int? ImageId { get; set; }
 
     public long? Phone { get; set; }
 
@@ -28,9 +28,9 @@ public partial class Customer
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    public virtual Image Image { get; set; } = null!;
+    public virtual Image? Image { get; set; } = null!;
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    public virtual AppUser User { get; set; } = null!;
+    public virtual AppUser? User { get; set; } = null!;
 }
