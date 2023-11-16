@@ -1,0 +1,104 @@
+﻿<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/Home">TopShop.Com</a>
+    </div>
+    <!-- /.navbar-header -->
+
+
+
+    <div class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="sidebar-search">
+                    <div class="input-group custom-search-form">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <!-- /input-group -->
+                </li>
+                <li>
+                    <a href="/Admin"><i class="fa fa-dashboard fa-fw"></i> پنل @User.Identity.Name</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> مدیریت کاربران<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/admin/roles">دسترسی ها</a>
+                        </li>
+                        <li>
+                            <a href="/admin/users">کاربران</a>
+                        </li>
+                        <li>
+                            <a href="/admin/users/ListDeleteUsers"> کاربران حذف شده</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> مدیریت کالاها<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/admin/products">مشاهده ی تمام کالاها</a>
+                        </li>
+                        <li>
+                            <a href="/admin/products/confirmproduct">کالاهای در انتظار تایید</a>
+                        </li>
+
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> مدیریت فروشگاه ها<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/admin/booths">مشاهده ی تمام فروشگاه ها</a>
+                        </li>
+                        <li>
+                            <a href="/admin/booths/DeletedBooth">مشاهده فروشگاه های حذف شده</a>
+                        </li>
+
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> مدیریت نظرات<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/admin/comments">مشاهده ی نظرات</a>
+                        </li>
+                        <li>
+                            <a href="#">مشاهده نظرات حذف شده</a>
+                        </li>
+
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> مدیریت کارمزد ها<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/admin/comments">مشاهده ی کارمزدها</a>
+                        </li>
+
+
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+
+            </ul>
+            <!-- /#side-menu -->
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+    <!-- /.navbar-static-side -->
+</nav>
