@@ -10,11 +10,11 @@ public class CustomerViewModel
 
     public string Lastname { get; set; } = null!;
 
-    public string ImagePath { get; set; }
+    //public string ImagePath { get; set; }
 
-    public long? Phone { get; set; }
+    //public long? Phone { get; set; }
 
-    public string? Email { get; set; }
+    public string Email { get; set; }
   
 
 }

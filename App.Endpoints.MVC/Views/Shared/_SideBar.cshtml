@@ -3,6 +3,15 @@
 @inject ICustomerAppService _customerService;
 @{
     CustomerDto user = await _customerService.GetCustomerInformation(User.Identity.Name, default);
+    string imgePath = null;
+    if (user.Image == null)
+    {
+        imgePath = "/images/pic/avatar.jpg";
+    }
+    else
+    {
+        imgePath = "images/" + @user.Image.ImagePath;
+    }
 }
 
 <div class="col-md-3 col-sm-4 col-xs-12">
@@ -11,7 +20,7 @@
         <div class="avatar-layer">
             <div class="img-layer">
                 <a href="" class="change-image"><i class="zmdi zmdi-edit"></i></a>
-                <img src="images/@user.Image.ImagePath">
+                <img src= "@imgePath">
             </div>
             <div class="detail">
                 <span> @(user.Name + " " +user.Lastname )</span>

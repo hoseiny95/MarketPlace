@@ -13,9 +13,9 @@ public class CustomerDto
 {
     public int Id { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; } = null!;
 
-    public string Lastname { get; set; } = null!;
+    public string? Lastname { get; set; } = null!;
 
     public int UserId { get; set; }
 
@@ -34,7 +34,7 @@ public class CustomerDto
 
     public virtual ICollection<CommentDto> Comments { get; set; } = new List<CommentDto>();
 
-    public virtual ImageDto Image { get; set; } = null!;
+    public virtual ImageDto? Image { get; set; } = new ImageDto();
 
     public virtual ICollection<OrderDto> Orders { get; set; } = new List<OrderDto>();
 

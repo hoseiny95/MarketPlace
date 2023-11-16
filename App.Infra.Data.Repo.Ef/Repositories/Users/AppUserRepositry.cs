@@ -104,7 +104,7 @@ public class AppUserRepositry : IAppUserRepositry
         user.UserName = appuser.UserName;
         user.Email = appuser.Email;
         var userRole = (await _userManager.GetRolesAsync(user)).First();
-        if (appuser.Role != userRole)
+        if (appuser.Role != userRole && appuser.Role != null)
         {
            await _userManager.RemoveFromRoleAsync(user, userRole);
             await _userManager.AddToRoleAsync(user, appuser.Role);

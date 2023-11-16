@@ -42,4 +42,12 @@ public class CustomerService : ICustomerService
 
     public async Task<int> Update(CustomerDto customer, CancellationToken CancellationToken)
         => await _customerRepository.Update(customer, CancellationToken);
+
+    public async Task UpdateBaseInfo(CustomerDto customer, CancellationToken CancellationToken)
+        => await _customerRepository.UpdateBaseInfo(customer, CancellationToken);
+
+    public Task UpdateCustomerBaseInfo(CustomerDto customer, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

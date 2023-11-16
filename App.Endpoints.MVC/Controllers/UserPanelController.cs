@@ -27,20 +27,20 @@ public class UserPanelController : Controller
     }
     public async Task<IActionResult> EditProfile(CancellationToken cancellationToken)
     {
-        return View(await _customerAppService.GetCustomerInformation(User.Identity.Name, cancellationToken));
+        var res = await _customerAppService.GetCustomerInformation(User.Identity.Name, cancellationToken);
+        var meee = _mapper.Map<CustomerViewModel>(res);
+        return View(meee);
     }
     [HttpPost]
-    public IActionResult EditProfile(CustomerViewModel model , FormFile photo)
+    public async Task<IActionResult> EditProfile( CustomerViewModel model , IFormFile photo, CancellationToken cancellationToken)
     {
        
-       if (ModelState.IsValid)
-        {
+      
             var customer = _mapper.Map<CustomerDto>(model);
+            await _customerAppService.EditProfile(customer, photo, cancellationToken);
 
-        }
+      
 
-        //Log Out User
-        HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         return Redirect("/Login?EditProfile=true");
 

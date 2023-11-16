@@ -56,7 +56,7 @@
     </div>
 
     <!-- main manu -->
-    <partial name="_MainMenu" />
+    @await Component.InvokeAsync("CategoryGroupComponent")
     <!-- /main manu -->
     <!-- content -->
    @RenderBody()

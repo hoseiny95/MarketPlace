@@ -1,6 +1,15 @@
 ﻿@model CustomerViewModel
 @{
     ViewData["Title"] = "ویرایش حساب کاربری";
+    string imgePath = null;
+    // if (Model.ImagePath == null)
+    // {
+    //     imgePath = "/images/pic/avatar.jpg";
+    // }
+    // else
+    // {
+    //     imgePath = "images/" +Model.ImagePath;
+    // }
 }
 
 <div class="container">
@@ -29,18 +38,19 @@
                                     </div>
                                 }
 
-                                <input type="hidden"  />
+                                
                                 <div class="row">
+                                    <input type="hidden" asp-for="Id" />
                                     <div class="col-md-7 col-sm-8 col-xs-12">
                                         <div class="input-group">
                                             <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
-                                            <input type="text" class="form-control" asp-for="userName" placeholder="نام کاربری" aria-describedby="username">
+                                            <input disabled type="text" class="form-control" asp-for="userName" placeholder="نام کاربری" aria-describedby="username">
                                         </div>
                                     </div>
                                     <div class="col-md-7 col-sm-8 col-xs-12">
                                         <div class="input-group">
                                             <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
-                                            <input type="text" class="form-control" asp-for="Email"  placeholder="ایمیل" aria-describedby="email-address">
+                                            <input disabled type="text" class="form-control" asp-for="Email"  placeholder="ایمیل" aria-describedby="email-address">
                                         </div>
                                     </div>
                                     <div class="col-md-7 col-sm-8 col-xs-12">
@@ -59,9 +69,9 @@
                                         <p class="help-block">
                                             آواتار
                                         </p>
-                                        <input type="file"  />
+                                        <input type="file" name="photo" class="custom-file-input form-control" />
                                         <p>لطفا فقط تصویر انتخاب کنید</p>
-                                        <img class="thumbnail" src="/UserAvatar/@Model.ImagePath" style="max-width: 150px" />
+                                        <img class="thumbnail" src="/UserAvatar/@imgePath" style="max-width: 150px" />
                                     </div>
                                     <div class="col-md-7 col-sm-8 col-xs-12">
                                         <button class="btn btn-success"> ویرایش اطلاعات </button>

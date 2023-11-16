@@ -13,4 +13,6 @@ public interface ICustomerService
     Task<int> Create(CustomerDto customer, CancellationToken CancellationToken);
     Task<bool> Delete(int CustomerId, CancellationToken cancellationToken);
     Task<CustomerDto> GetByUserId(int userId, CancellationToken CancellationToken);
+    Task UpdateCustomerBaseInfo(CustomerDto customer, CancellationToken cancellationToken);
+    Task UpdateBaseInfo(CustomerDto customer, CancellationToken CancellationToken);
 }

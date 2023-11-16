@@ -64,4 +64,10 @@ public class CustomerRepository : ICustomerRepository
             .FirstOrDefaultAsync(x=> x.UserId == userId, CancellationToken);
         return _mapper.Map<CustomerDto>(customer);  
     }
+    public async Task UpdateBaseInfo(CustomerDto customer, CancellationToken CancellationToken)
+    {
+        var custom = await _context.Customers.FirstOrDefaultAsync(c => c.Id == customer.Id, CancellationToken);
+        custom.Name = customer.Name; custom.Lastname = custom.Lastname; custom.ImageId = customer.ImageId;
+        await _context.SaveChangesAsync(CancellationToken);
+    }
 }
