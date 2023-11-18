@@ -15,6 +15,7 @@ namespace App.Domain.Core.Contracts.AppServices
         Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken);
         Task ConfirmProduct(int id,string confirm,string refuse, CancellationToken cancellationToken);
         Task<bool> Delete(int boothProductId, CancellationToken cancellationToken);
+        Task Create(BoothProductDto boothProductDto, IFormFile photo, int imageId, CancellationToken cancellationToken);
 
     }
 }

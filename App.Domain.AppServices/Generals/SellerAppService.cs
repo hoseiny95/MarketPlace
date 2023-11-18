@@ -27,8 +27,8 @@ namespace App.Domain.AppServices.Generals
         public async Task<int> GetSellerBoothId(string userName, CancellationToken cancellationToken)
         {
             var user = await _appUserService.GetByUserName(userName, cancellationToken);
-            return await _sellerService.GetBoothId(user.Id, cancellationToken);
-
+            var mee = await _sellerService.GetBoothId(user.Id, cancellationToken);
+            return mee;
         }
     }
 }

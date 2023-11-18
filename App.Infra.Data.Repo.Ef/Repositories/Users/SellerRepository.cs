@@ -82,6 +82,7 @@ public class SellerRepository : ISellerRepository
     }
     public async Task<int> GetBoothId(int userId, CancellationToken cancellationToken)
     {
-        return await _context.Sellers.Where(x => x.Id == userId).Select(c => c.BoothId).FirstOrDefaultAsync(cancellationToken);
+        return await _context.Sellers.Where(x => x.UserId == userId).Select(c => c.BoothId).FirstOrDefaultAsync(cancellationToken);
+     
     }
 }

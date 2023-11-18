@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -119,6 +120,16 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         {
             var entity = await _context.BoothProducts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
             entity.IsAvailable = false;
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        public async Task CreateProductImage(int boothProductId, int imageId, CancellationToken cancellationToken)
+        {
+            var proimg = new ProductImage()
+            {
+                BoothProductId = boothProductId,
+                ImageId = imageId,
+            };
+            await _context.AddAsync(proimg, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

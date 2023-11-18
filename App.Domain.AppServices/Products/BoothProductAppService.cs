@@ -18,7 +18,7 @@ namespace App.Domain.AppServices.Products
         private IBoothService _boothService;
         private IImageService _imageService;
 
-        public BoothProductAppService(IBoothProductService boothProductService, 
+        public BoothProductAppService(IBoothProductService boothProductService,
             IProductService productService, IBoothService boothService, IImageService imageService)
         {
             _boothProductService = boothProductService;
@@ -29,7 +29,7 @@ namespace App.Domain.AppServices.Products
 
         public async Task ConfirmProduct(int id, string confitm, string refuse, CancellationToken cancellationToken)
         {
-            if(confitm == null)
+            if (confitm == null)
             {
                 await _boothProductService.RefuseProduct(id, cancellationToken);
 
@@ -41,40 +41,57 @@ namespace App.Domain.AppServices.Products
             }
         }
 
+        public async Task Create(BoothProductDto boothProductDto, IFormFile photo, int imageId, CancellationToken cancellationToken)
+        {
+
+
+            if (photo != null)
+            {
+                var path = _imageService.CreateImagePath(photo);
+                _imageService.Image_resize(path[0], path[1], 150);
+                imageId = await _imageService.Create(path[2], cancellationToken);
+                //boothProductDto.ProductImages.FirstOrDefault().Image.Id = imageId;
+
+            }
+            var boothId = await _boothProductService.Create(boothProductDto, cancellationToken);
+
+            await _boothProductService.CreateProductImage(boothId, imageId, cancellationToken);
+        }
+
         public async Task<bool> Delete(int boothProductId, CancellationToken cancellationToken)
             => await _boothProductService.Delete(boothProductId, cancellationToken);
 
         public async Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken)
             => await _boothProductService.GetAdminProductsNotConfirm(cancellationToken);
 
-        public async Task UpdateAdminProduct(ProductAdminDto adminProduct, IFormFile photo, 
+        public async Task UpdateAdminProduct(ProductAdminDto adminProduct, IFormFile photo,
             CancellationToken cancellationToken)
         {
             var entity = await _boothProductService.GetById(adminProduct.Id, cancellationToken);
             var product = await _productService.GetById(entity.ProductId, cancellationToken);
-            var booth = await  _boothService.GetById(entity.BothId, cancellationToken);
-            if(entity.Price.ToString() != adminProduct.price)
-               await _boothProductService.UpdateByPrice(adminProduct.Id, adminProduct.price, cancellationToken);
-            if(product.Name != adminProduct.Name || product.Description != adminProduct.Description)
+            var booth = await _boothService.GetById(entity.BothId, cancellationToken);
+            if (entity.Price.ToString() != adminProduct.price)
+                await _boothProductService.UpdateByPrice(adminProduct.Id, adminProduct.price, cancellationToken);
+            if (product.Name != adminProduct.Name || product.Description != adminProduct.Description)
             {
                 product.Description = adminProduct.Description;
                 product.Name = adminProduct.Name;
-               await _productService.Update(product, cancellationToken);
+                await _productService.Update(product, cancellationToken);
             }
-            if(booth.Name != adminProduct.BoothName)
+            if (booth.Name != adminProduct.BoothName)
             {
                 booth.Name = adminProduct.BoothName;
                 await _boothService.Update(booth, cancellationToken);
             }
-            if(photo != null)
+            if (photo != null)
             {
                 var path = _imageService.CreateImagePath(photo);
-                _imageService.Image_resize(path[0], path[1] , 150);
+                _imageService.Image_resize(path[0], path[1], 150);
                 var image = await _imageService.GetByBothProductId(adminProduct.Id, cancellationToken);
-                await _imageService.Update(path[2], image.Id,cancellationToken);
+                await _imageService.Update(path[2], image.Id, cancellationToken);
 
             }
-            
+
         }
     }
 }

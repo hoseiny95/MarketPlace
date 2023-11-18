@@ -18,5 +18,6 @@ public interface IBoothProductService
     Task<List<ProductAdminDto>> GetAdminProductsNotConfirm(CancellationToken cancellationToken);
     Task ConfirmProduct(int id, CancellationToken cancellationToken);
     Task RefuseProduct(int id, CancellationToken cancellationToken);
+    Task CreateProductImage(int boothProductId, int imageId, CancellationToken cancellationToken);
 
 }

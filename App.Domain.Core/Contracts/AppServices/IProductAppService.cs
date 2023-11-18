@@ -11,5 +11,6 @@ namespace App.Domain.Core.Contracts.AppServices;
 public interface IProductAppService
 {
     Task<List<ProductDto>> GetBySubCategoryId(int categoryId, int subcategoryId, int subcategory2Id, CancellationToken cancellationToken);
+    Task<ProductDto> GetbyId(int id, CancellationToken cancellationToken);
 
 }

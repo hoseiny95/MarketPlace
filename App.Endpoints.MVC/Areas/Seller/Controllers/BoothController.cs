@@ -1,4 +1,5 @@
 ﻿using App.Domain.Core.Contracts.AppServices;
+using App.Domain.Core.Dtos.Products;
 using App.Domain.Core.Dtos.Users;
 using App.Endpoints.MVC.Areas.Seller.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,15 @@ public class BoothController : Controller
     private readonly ICategoryAppService _categoryAppService;
     private readonly IProductAppService _productAppService;
     private readonly ISellerAppService _sellerAppService;
+    private readonly IBoothProductAppService _boothProductAppService;
 
-    public BoothController(ICategoryAppService categoryAppService, IProductAppService productAppService, 
-        ISellerAppService sellerAppService)
+    public BoothController(ICategoryAppService categoryAppService, IProductAppService productAppService,
+        ISellerAppService sellerAppService, IBoothProductAppService boothProductAppService)
     {
         _categoryAppService = categoryAppService;
         _productAppService = productAppService;
         _sellerAppService = sellerAppService;
+        _boothProductAppService = boothProductAppService;
     }
 
     public IActionResult Index()
@@ -70,9 +73,32 @@ public class BoothController : Controller
         return Json(new SelectList(subGrous, "Value", "Text"));
 
     }
-    public async Task<IActionResult> AddProduct(int id)
+    public async Task<IActionResult> AddProduct(int id, CancellationToken cancellationToken)
     {
-        
-        return View();
+        var res = await _productAppService.GetbyId(id, cancellationToken);
+        var model = new AddProductViewModel()
+        {
+            productId = id,
+            imagepath = res.BoothProducts.First().ProductImages.First().Image.ImagePath,
+            productName = res.Name,
+            ImageId = res.BoothProducts.First().ProductImages.First().Image.Id
+        };
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddProduct(AddProductViewModel model, IFormFile photo, CancellationToken cancellationToken)
+    {
+        int boothId = await _sellerAppService.GetSellerBoothId(User.Identity.Name, cancellationToken);
+        var boothProduct = new BoothProductDto()
+        {
+            BothId = boothId,
+            ProductId = model.productId,
+            Price = model.price,
+            Quantity = model.quantity,
+            IsBid = model.IsBid,
+        };
+        await _boothProductAppService.Create(boothProduct, photo, model.ImageId, cancellationToken);
+        return LocalRedirect("/Seller/home");
     }
 }

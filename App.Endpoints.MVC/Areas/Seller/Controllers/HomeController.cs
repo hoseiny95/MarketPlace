@@ -14,11 +14,12 @@ namespace App.Endpoints.MVC.Areas.Seller.Controllers
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
-        
         {
             var res = await _sellerAppService.GetSellerBooths(User.Identity.Name, cancellationToken);
-            var name = res.First().Both.Name;
+            var item = res.First().ProductImages.Select(c => c.Image.ImagePath).First().ToString();
             return View(res);
+        
+        
         }
     }
 }

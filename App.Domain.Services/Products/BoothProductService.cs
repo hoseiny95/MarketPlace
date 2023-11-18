@@ -26,6 +26,9 @@ namespace App.Domain.Services.Products
         public async Task<int> Create(BoothProductDto boothProduct, CancellationToken cancellationToken)
             => await _boothProductRepository.Create(boothProduct, cancellationToken);
 
+        public async Task CreateProductImage(int boothProductId, int imageId, CancellationToken cancellationToken)
+            => await _boothProductRepository.CreateProductImage(boothProductId, imageId, cancellationToken);
+
         public async Task<bool> Delete(int boothProductId, CancellationToken cancellationToken)
         {
             try
