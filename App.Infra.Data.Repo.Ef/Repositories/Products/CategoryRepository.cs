@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace App.Infra.Data.Repo.Ef.Repositories.Products;
 
@@ -41,7 +42,7 @@ public class CategoryRepository : ICategoryRepository
 
 
     public async Task<CategoryDto> GetById(int categoryId, CancellationToken cancellationToken)
-                            => _mapper.Map<CategoryDto>(await _context.Categories
+                            => _mapper.Map<CategoryDto>(await _context.Categories.Include(c => c.InverseParent)
                                 .FirstOrDefaultAsync(x => x.Id == categoryId, cancellationToken));
 
 
@@ -52,4 +53,47 @@ public class CategoryRepository : ICategoryRepository
         await _context.SaveChangesAsync(cancellationToken);
         return category.Id;
     }
+    public async Task<List<SelectListItem>> GetBaseCategoryItems(CancellationToken cancellationToken)
+    {
+        var categories = await _context.Categories.Where(x => x.ParentId == null)
+            .Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.Id.ToString()
+            }).ToListAsync(cancellationToken);
+        return categories;
+
+    }
+    public async Task<List<SelectListItem>> GetFirstSubCategoryItems(int parentId, CancellationToken cancellationToken)
+    {
+        var categories = await _context.Categories.Where(x => x.ParentId == parentId)
+          .Select(c => new SelectListItem
+          {
+              Text = c.Name,
+              Value = c.Id.ToString()
+          }).ToListAsync(cancellationToken);
+        categories.Insert(0, new SelectListItem
+        {
+            Text = "انتخاب کنید",
+            Value = 0.ToString()
+        });
+        return categories;
+    }
+    public async Task<List<SelectListItem>> GetSecondSubCategoryItems(int parentId, CancellationToken cancellationToken)
+    {
+        var categories = await _context.Categories.Where(x => x.ParentId == parentId)
+          .Select(c => new SelectListItem
+          {
+              Text = c.Name,
+              Value = c.Id.ToString()
+          }).ToListAsync(cancellationToken);
+        categories.Insert(0, new SelectListItem
+        {
+            Text = "انتخاب کنید",
+            Value = 0.ToString()
+        });
+        return categories;
+    }
+
+  
 }

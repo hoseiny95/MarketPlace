@@ -20,7 +20,7 @@ public partial class Seller
 
     public long Phone { get; set; }
 
-    public virtual Booth Booth { get; set; } = null!;
+    public virtual Booth? Booth { get; set; } 
 
     public virtual MedalStatus MedalNavigation { get; set; } = null!;
 

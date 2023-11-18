@@ -1,5 +1,6 @@
 ﻿
 
+using App.Domain.Core.Dtos.Products;
 using App.Domain.Core.Dtos.Users;
 
 namespace App.Domain.Core.Contracts.Repositories;
@@ -11,4 +12,6 @@ public interface ISellerRepository
     Task<int> Create(SellerDto seller, CancellationToken cancellationToken);
     Task<int> Update(SellerDto seller, CancellationToken cancellationToken);
     Task Delete(int sellerId, CancellationToken cancellationToken);
+    Task<List<BoothProductDto>> GetBoothsByUserId(int userId, CancellationToken cancellationToken);
+    Task<int> GetBoothId(int userId, CancellationToken cancellationToken);
 }

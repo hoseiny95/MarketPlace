@@ -21,7 +21,7 @@ public class SellerDto
 
     public long Phone { get; set; }
 
-    public virtual BoothDto Booth { get; set; } = null!;
+    public virtual Booth Booth { get; set; } = null!;
 
     public virtual MedalStatusDto MedalNavigation { get; set; } = null!;
 

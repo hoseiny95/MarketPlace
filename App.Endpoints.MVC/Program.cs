@@ -30,7 +30,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MarketProfiles)));
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MarketUiProfile)));
 builder.Services.AddDbContext<MarketPlaceContext>(options =>
-    options.UseSqlServer());
+    options.UseSqlServer()) ;
 #region Identity
 builder.Services.AddIdentity<AppUser, IdentityRole<int>>()
 .AddEntityFrameworkStores<MarketPlaceContext>()
@@ -108,6 +108,10 @@ builder.Services.AddScoped<IBoothProductAppService, BoothProductAppService>();
 builder.Services.AddScoped<IBoothAppService, BoothAppService>();
 builder.Services.AddScoped<ICommentAppService, CommentAppService>();
 builder.Services.AddScoped<ICustomerAppService, CustomerAppService>();
+builder.Services.AddScoped<ISellerAppService, SellerAppService>();
+builder.Services.AddScoped<ICategoryAppService, CategoryAppService>();
+builder.Services.AddScoped<IProductAppService, ProductAppService>();
+
 
 #endregion
 

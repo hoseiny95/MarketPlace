@@ -11,5 +11,7 @@ public interface IProductRepository
     Task<int> Create(ProductDto newProduct, CancellationToken cancellationToken);
     Task<int> Update(ProductDto Product, CancellationToken cancellationToken);
     Task Delete(int ProductId, CancellationToken cancellationToken);
-    
+    Task<List<ProductDto>> GetByCategoryId(List<CategoryDto> categories, CancellationToken cancellationToken);
+
+
 }

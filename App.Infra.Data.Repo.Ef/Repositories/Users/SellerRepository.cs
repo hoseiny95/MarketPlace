@@ -1,7 +1,9 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Dtos.Generals;
+using App.Domain.Core.Dtos.Products;
 using App.Domain.Core.Dtos.Users;
 using App.Domain.Core.Entities.Generals;
+using App.Domain.Core.Entities.Products;
 using App.Domain.Core.Entities.Users;
 using App.Infra.Db.Sql.Models;
 using AutoMapper;
@@ -47,7 +49,7 @@ public class SellerRepository : ISellerRepository
     public async Task<SellerDto> GetById(int sellerId, CancellationToken cancellationToken)
                  => _mapper.Map<SellerDto>(await _context.Sellers
                      .FirstOrDefaultAsync(x => x.Id == sellerId, cancellationToken));
-    
+
 
     public async Task<int> Update(SellerDto seller, CancellationToken cancellationToken)
     {
@@ -55,5 +57,31 @@ public class SellerRepository : ISellerRepository
         _context.Sellers.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
         return entity.Id;
+    }
+    public async Task<List<BoothProductDto>> GetBoothsByUserId(int userId, CancellationToken cancellationToken)
+    {
+        var booths = await _context.Sellers.Where(x => x.UserId == userId)
+        .Include(c => c.Booth)
+        .ThenInclude(c => c.BoothProducts)
+        .ThenInclude(c => c.ProductImages).ThenInclude(c => c.Image).Include(c => c.Booth).ThenInclude(c => c.BoothProducts)
+        .ThenInclude(c => c.Product).Include(c => c.Booth)
+        .SelectMany(x => x.Booth.BoothProducts).ToListAsync(cancellationToken);
+
+
+        var re = await (from p in _context.Sellers.Where(x => x.UserId == userId)
+                  from c in _context.Booths
+                  where p.BoothId == c.Id
+                  select c
+
+                  ).FirstOrDefaultAsync(cancellationToken);
+        booths.ForEach(x => x.Both = re);
+
+
+        var boothDtos = _mapper.Map<List<BoothProductDto>>(booths);
+        return boothDtos;
+    }
+    public async Task<int> GetBoothId(int userId, CancellationToken cancellationToken)
+    {
+        return await _context.Sellers.Where(x => x.Id == userId).Select(c => c.BoothId).FirstOrDefaultAsync(cancellationToken);
     }
 }

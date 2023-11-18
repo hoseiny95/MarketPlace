@@ -1,5 +1,6 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Contracts.Services;
+using App.Domain.Core.Dtos.Products;
 using App.Domain.Core.Dtos.Users;
 using App.Domain.Core.Entities.Users;
 using System;
@@ -35,6 +36,11 @@ public class SellerService : ISellerService
     public async Task<List<SellerDto>> GetAll(CancellationToken cancellationToken)
         => await _sellerRepository.GetAll(cancellationToken);
 
+    public async Task<int> GetBoothId(int userId, CancellationToken cancellationToken)
+        => await _sellerRepository.GetBoothId(userId, cancellationToken);
+
+    public async Task<List<BoothProductDto>> GetBoothsByUserId(int userId, CancellationToken cancellationToken)
+        => await _sellerRepository.GetBoothsByUserId(userId, cancellationToken);
     public async Task<SellerDto> GetById(int sellerId, CancellationToken cancellationToken)
         => await _sellerRepository.GetById(sellerId, cancellationToken);
 

@@ -44,7 +44,9 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
 
 
         public async Task<ProductDto> GetById(int ProductId, CancellationToken cancellationToken)
-                     => _mapper.Map<ProductDto>(await _context.Products.FirstOrDefaultAsync(x => x.Id == ProductId, cancellationToken));
+                     => _mapper.Map<ProductDto>(await _context.Products.Include(c => c.BoothProducts)
+                         .ThenInclude(c => c.ProductImages).ThenInclude(c => c.Image)
+                         .FirstOrDefaultAsync(x => x.Id == ProductId, cancellationToken));
 
 
         public async Task<int> Update(ProductDto product, CancellationToken cancellationToken)
@@ -54,6 +56,18 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             _context.Products.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
+        }
+        public async Task<List<ProductDto>> GetByCategoryId(List<CategoryDto> categories, CancellationToken cancellationToken)
+        {
+            var productList = new List<ProductDto>();
+            foreach(var item in categories)
+            {
+                var product = _mapper.Map<List<ProductDto>>(await _context.Products.Include(c => c.BoothProducts)
+                         .ThenInclude(c => c.ProductImages).ThenInclude(c => c.Image).Where(x => x.CategoryId == item.Id).ToListAsync(cancellationToken));
+                productList.AddRange(product);
+            }
+            productList.RemoveAll(item => item == null);
+            return productList;
         }
     }
 }
