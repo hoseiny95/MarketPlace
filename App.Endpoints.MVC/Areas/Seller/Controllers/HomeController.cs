@@ -1,5 +1,6 @@
 ﻿using App.Domain.Core.Contracts.AppServices;
 using App.Endpoints.MVC.Areas.Seller.Models;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using System.Threading;
@@ -11,11 +12,14 @@ namespace App.Endpoints.MVC.Areas.Seller.Controllers
     {
         private readonly ISellerAppService _sellerAppService;
         private readonly IAuctionAppService _auctionAppService;
+        private readonly IRecurringJobManager _recurringJobManager;
 
-        public HomeController(ISellerAppService sellerAppService, IAuctionAppService auctionAppService)
+        public HomeController(ISellerAppService sellerAppService, IAuctionAppService auctionAppService,
+            IRecurringJobManager recurringJobManager)
         {
             _sellerAppService = sellerAppService;
             _auctionAppService = auctionAppService;
+            _recurringJobManager = recurringJobManager;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -38,7 +42,9 @@ namespace App.Endpoints.MVC.Areas.Seller.Controllers
             model.BoothId = boothId;
             if (ModelState.IsValid)
             {
-                await _auctionAppService.StartAuction(boothId, model.MinPrice, model.Duration, model.BoothProductId, cancellationToken);
+                var id = await _auctionAppService.StartAuction(boothId, model.MinPrice, model.Duration, model.BoothProductId, 
+                    cancellationToken);
+                BackgroundJob.Schedule<IAuctionAppService>(x => x.EndAuction(id,default), DateTime.Now.AddHours(model.Duration));
             }
             return View(model);
         }
