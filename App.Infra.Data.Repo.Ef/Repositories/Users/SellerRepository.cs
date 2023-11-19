@@ -72,7 +72,6 @@ public class SellerRepository : ISellerRepository
                   from c in _context.Booths
                   where p.BoothId == c.Id
                   select c
-
                   ).FirstOrDefaultAsync(cancellationToken);
         booths.ForEach(x => x.Both = re);
 
@@ -81,8 +80,7 @@ public class SellerRepository : ISellerRepository
         return boothDtos;
     }
     public async Task<int> GetBoothId(int userId, CancellationToken cancellationToken)
-    {
-        return await _context.Sellers.Where(x => x.UserId == userId).Select(c => c.BoothId).FirstOrDefaultAsync(cancellationToken);
+        => await _context.Sellers.Where(x => x.UserId == userId).Select(c => c.BoothId).FirstOrDefaultAsync(cancellationToken);
      
-    }
+   
 }
