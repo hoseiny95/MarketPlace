@@ -23,6 +23,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Reflection;
 using Hangfire;
+using App.Domain.AppServices.Auctions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -112,6 +113,7 @@ builder.Services.AddScoped<ICustomerAppService, CustomerAppService>();
 builder.Services.AddScoped<ISellerAppService, SellerAppService>();
 builder.Services.AddScoped<ICategoryAppService, CategoryAppService>();
 builder.Services.AddScoped<IProductAppService, ProductAppService>();
+builder.Services.AddScoped<IAuctionAppService, AuctionAppService>();
 
 
 #endregion

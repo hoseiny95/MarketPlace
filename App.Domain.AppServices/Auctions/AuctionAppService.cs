@@ -15,12 +15,14 @@ public class AuctionAppService : IAuctionAppService
     private readonly IAuctionService _auctionService;
     private readonly IBoothProductService _boothProductService;
 
-    public AuctionAppService(IAuctionService auctionService)
+    public AuctionAppService(IAuctionService auctionService, IBoothProductService boothProductService)
     {
         _auctionService = auctionService;
+        _boothProductService = boothProductService;
     }
 
-    public async Task<int> StartAuction(int boothId, double minPrice, int duration, int BoothProdectId, CancellationToken cancellationToken)
+    public async Task<int> StartAuction(int boothId, double minPrice, int duration, int BoothProdectId, 
+        CancellationToken cancellationToken)
     {
         var AuctionDto = new AuctionDto()
         {
@@ -29,9 +31,13 @@ public class AuctionAppService : IAuctionAppService
             MinPrice = minPrice,
             Starttime = DateTime.Now,
             Endtime = DateTime.Now.AddHours(duration),
+            CreateAt = DateTime.Now,
+            IsSold = false,
+            LastPrice = minPrice
+          
         };
         int AuctionId = await _auctionService.Create(AuctionDto, cancellationToken);
-        var boothProduct = await _boothProductService.GetById(boothId, cancellationToken);
+        var boothProduct = await _boothProductService.GetById(BoothProdectId, cancellationToken);
         boothProduct.IsBid = true;
         await _boothProductService.Update(boothProduct, cancellationToken);
         return AuctionId;
@@ -42,13 +48,12 @@ public class AuctionAppService : IAuctionAppService
         foreach(var item in auction.Bids)
         {
             if (item.Price == auction.LastPrice )
-                auction.WinnerId = item.CustomerId ;
+                auction.WinnerId = item.CustomerId;
         }
-        var boothProduct = await _boothProductService.GetById(auction.BothId, cancellationToken);
+        var boothProduct = await _boothProductService.GetById(auction.BothProductId, cancellationToken);
         boothProduct.IsBid = false;
         if (auction.WinnerId == 0)
             boothProduct.IsAvailable = false;
         await _boothProductService.Update(boothProduct, cancellationToken);
-
     }
 }

@@ -22,7 +22,7 @@ public partial class Customer
 
     public string? Email { get; set; }
 
-    public virtual ICollection<Auction> Auctions { get; set; } = new List<Auction>();
+    public virtual ICollection<Auction>? Auctions { get; set; } = new List<Auction>();
 
     public virtual ICollection<Bid> Bids { get; set; } = new List<Bid>();
 

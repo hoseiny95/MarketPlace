@@ -41,11 +41,15 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         }
 
         public async Task<List<BoothProductDto>> GetAll(CancellationToken cancellationToken)
-                    => _mapper.Map<List<BoothProductDto>>(await _context.BoothProducts.ToListAsync(cancellationToken));
+                    => _mapper.Map<List<BoothProductDto>>(await _context.BoothProducts.Include(c => c.Auctions)
+                        .Include(c => c.ProductImages).ThenInclude(c => c.Image)
+                        .ToListAsync(cancellationToken));
 
 
         public async Task<BoothProductDto> GetById(int boothProductId, CancellationToken cancellationToken)
-                    => _mapper.Map<BoothProductDto>(await _context.BoothProducts.FirstOrDefaultAsync(x => x.Id == boothProductId, cancellationToken));
+            =>  _mapper.Map<BoothProductDto>(await _context.BoothProducts.FirstOrDefaultAsync(x => x.Id == boothProductId, cancellationToken));
+
+        
 
 
         public async Task<int> Update(BoothProductDto boothProduct, CancellationToken cancellationToken)

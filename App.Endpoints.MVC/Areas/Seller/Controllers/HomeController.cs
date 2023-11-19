@@ -25,6 +25,7 @@ namespace App.Endpoints.MVC.Areas.Seller.Controllers
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             var res = await _sellerAppService.GetSellerBooths(User.Identity.Name, cancellationToken);
+            res.RemoveAll(item => item.IsBid == true);
             return View(res);
         }
         public async Task<IActionResult> StartAuction(int id, CancellationToken cancellationToken)

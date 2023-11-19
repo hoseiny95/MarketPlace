@@ -1,0 +1,23 @@
+﻿@using App.Domain.Core.Dtos.Products;
+
+@model List<BoothProductDto>
+
+
+
+
+
+
+@foreach (var item in Model.Where(g => g.IsBid == true && g.IsAvailable == true))
+{
+    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
+        <article>
+            <a href="" class="img-layer"><img src="/images/@item.ProductImages.First().Image.ImagePath"></a>
+            <h2><a href=""> پیشنهاد قیمت </a></h2>
+            <span> آخرین قیمت : @item.Auctions.First().LastPrice </span>
+            <i>@(item.Auctions.First().Endtime - DateTime.Now)</i>
+        </article>
+    </div>
+}
+
+
+
