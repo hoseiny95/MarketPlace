@@ -43,6 +43,10 @@ public class CustomerAppService : ICustomerAppService
             customer.ImageId = imageId;
          
         }
+        else
+        {
+            var image = await _imageService.GetById(customer.ImageId, cancellationToken);
+        }
         await _customerService.UpdateBaseInfo(customer, cancellationToken);
         //var user = new AppUserDto()
         //{

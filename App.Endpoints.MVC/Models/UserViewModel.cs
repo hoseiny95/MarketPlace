@@ -2,13 +2,14 @@
 
 namespace App.Endpoints.MVC.Models;
 
-public class CustomerViewModel
+public class UserViewModel
 {
     public int Id { get; set; }
     public string userName { get; set; }
     public string Name { get; set; } = null!;
 
     public string Lastname { get; set; } = null!;
+    public long phone { get; set; }
 
     //public string ImagePath { get; set; }
 

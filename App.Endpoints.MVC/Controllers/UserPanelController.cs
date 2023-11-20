@@ -7,6 +7,8 @@ using App.Domain.Core.Dtos.Users;
 using App.Endpoints.MVC.Models;
 using AutoMapper;
 using App.Domain.AppServices.Users;
+using App.Domain.Core.Entities.Users;
+using App.Domain.Core.Contracts.Services;
 
 namespace App.Endpoints.MVC.Controllers;
 
@@ -14,13 +16,15 @@ public class UserPanelController : Controller
 {
     private readonly ICustomerAppService _customerAppService;
     private readonly ISellerAppService _sellerAppService;
-
+    private readonly IAppUserService _appUserService;
     private readonly IMapper _mapper;
 
-    public UserPanelController(ICustomerAppService customerAppService, ISellerAppService sellerAppService, IMapper mapper)
+    public UserPanelController(ICustomerAppService customerAppService, ISellerAppService sellerAppService,
+        IAppUserService appUserService, IMapper mapper)
     {
         _customerAppService = customerAppService;
         _sellerAppService = sellerAppService;
+        _appUserService = appUserService;
         _mapper = mapper;
     }
 
@@ -34,22 +38,38 @@ public class UserPanelController : Controller
     }
     public async Task<IActionResult> EditProfile(CancellationToken cancellationToken)
     {
-        var res = await _customerAppService.GetCustomerInformation(User.Identity.Name, cancellationToken);
-        var meee = _mapper.Map<CustomerViewModel>(res);
-        return View(meee);
+        var user = await _appUserService.GetByUserName(User.Identity.Name, default);
+        if (User.IsInRole("Customer"))
+        {
+            var res = await _customerAppService.GetCustomerInformation(User.Identity.Name, cancellationToken);
+            var model = _mapper.Map<UserViewModel>(res);
+            model.userName = user.UserName;
+            model.Email = user.Email;
+            return View(model);
+        }
+        else
+        {
+            var res = await _customerAppService.GetCustomerInformation(User.Identity.Name, cancellationToken);
+            var model = _mapper.Map<UserViewModel>(res);
+            model.userName = user.UserName;
+            model.Email = user.Email;
+            return View(model);
+        }
     }
     [HttpPost]
-    public async Task<IActionResult> EditProfile( CustomerViewModel model , IFormFile photo, CancellationToken cancellationToken)
+    public async Task<IActionResult> EditProfile( UserViewModel model , IFormFile photo, CancellationToken cancellationToken)
     {
-       
-      
+        if (User.IsInRole("Customer"))
+        {
             var customer = _mapper.Map<CustomerDto>(model);
             await _customerAppService.EditProfile(customer, photo, cancellationToken);
-
-      
-
-
-        return Redirect("/Login?EditProfile=true");
+        }
+        else
+        {
+            var seller = _mapper.Map<SellerDto>(model);
+            //await _sellerAppService.EditProfile(seller, photo, cancellationToken);
+        }
+        return RedirectToAction(nameof(Index));
 
     }
 }

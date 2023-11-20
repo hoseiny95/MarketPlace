@@ -1,16 +1,40 @@
-﻿@model CustomerViewModel
+﻿@model UserViewModel
+@using App.Domain.Core.Contracts.AppServices;
+@using App.Domain.Core.Dtos.Users;
+@inject ICustomerAppService _customerService;
+@inject ISellerAppService _sellerAppService;
 @{
     ViewData["Title"] = "ویرایش حساب کاربری";
+    CustomerDto user = await _customerService.GetCustomerInformation(User.Identity.Name, default);
+    SellerDto seller = await _sellerAppService.GetSellerByUserName(User.Identity.Name, default);
     string imgePath = null;
-    // if (Model.ImagePath == null)
-    // {
-    //     imgePath = "/images/pic/avatar.jpg";
-    // }
-    // else
-    // {
-    //     imgePath = "images/" +Model.ImagePath;
-    // }
+    if (user != null)
+    {
+        if (user.Image == null)
+        {
+            imgePath = "/images/pic/avatar.jpg";
+        }
+        else if (user.Image != null)
+        {
+            imgePath = "images/" + @user.Image.ImagePath;
+        }
+    }
+    if (seller != null)
+    {
+
+        if (seller.Booth == null)
+        {
+            imgePath = "/images/pic/avatar.jpg";
+        }
+        else if (seller.Booth != null)
+        {
+            imgePath = "images/" + seller.Booth.Image.ImagePath;
+        }
+    }
 }
+
+    
+ 
 
 <div class="container">
     <nav aria-label="breadcrumb">
@@ -20,70 +44,75 @@
         </ul>
     </nav>
 </div>
+@if (User.IsInRole("Customer"))
+{
+    <main>
+        <div class="container">
+            <div class="user-account">
+                <div class="row">
+                    <partial name="_SideBar" />
+                    <div class="col-md-9 col-sm-8 col-xs-12">
+                        <section class="user-account-content">
+                            <header><h1> ویرایش حساب کاربری </h1></header>
+                            <div class="inner form-layer">
+                                <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+                                    @if (ViewBag.IsSuccess != null)
+                                    {
+                                        <div class="alert alert-success">
+                                            اطلاعات کاربری شما با موفقیت ویرایش شد
+                                        </div>
+                                    }
 
-<main>
-    <div class="container">
-        <div class="user-account">
-            <div class="row">
-                <partial name="_SideBar" />
-                <div class="col-md-9 col-sm-8 col-xs-12">
-                    <section class="user-account-content">
-                        <header><h1> ویرایش حساب کاربری </h1></header>
-                        <div class="inner form-layer">
-                            <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
-                                @if (ViewBag.IsSuccess != null)
-                                {
-                                    <div class="alert alert-success">
-                                        اطلاعات کاربری شما با موفقیت ویرایش شد
+
+                                    <div class="row">
+                                        <input type="hidden" asp-for="Id" />
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
+                                                <input disabled type="text" class="form-control" asp-for="userName" placeholder="نام کاربری" aria-describedby="username">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
+                                                <input disabled type="text" class="form-control" asp-for="Email" placeholder="ایمیل" aria-describedby="email-address">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
+                                                <input type="text" class="form-control" asp-for="Name" placeholder="نام " aria-describedby="username">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-account"></i></span>
+                                                <input type="text" class="form-control" asp-for="Lastname" placeholder="نام خانوادگی" aria-describedby="email-address">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <p class="help-block">
+                                                آواتار
+                                            </p>
+                                            <input type="file" name="photo" class="custom-file-input form-control" />
+                                            <p>لطفا فقط تصویر انتخاب کنید</p>
+                                            <img src="~/@imgePath" />
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <button class="btn btn-success"> ویرایش اطلاعات </button>
+                                        </div>
                                     </div>
-                                }
 
+                                </form>
+                               
                                 
-                                <div class="row">
-                                    <input type="hidden" asp-for="Id" />
-                                    <div class="col-md-7 col-sm-8 col-xs-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
-                                            <input disabled type="text" class="form-control" asp-for="userName" placeholder="نام کاربری" aria-describedby="username">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 col-sm-8 col-xs-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
-                                            <input disabled type="text" class="form-control" asp-for="Email"  placeholder="ایمیل" aria-describedby="email-address">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 col-sm-8 col-xs-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
-                                            <input type="text" class="form-control" asp-for="Name" placeholder="نام " aria-describedby="username">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 col-sm-8 col-xs-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-account"></i></span>
-                                            <input type="text" class="form-control" asp-for="Lastname" placeholder="نام خانوادگی" aria-describedby="email-address">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7 col-sm-8 col-xs-12">
-                                        <p class="help-block">
-                                            آواتار
-                                        </p>
-                                        <input type="file" name="photo" class="custom-file-input form-control" />
-                                        <p>لطفا فقط تصویر انتخاب کنید</p>
-                                        <img class="thumbnail" src="/UserAvatar/@imgePath" style="max-width: 150px" />
-                                    </div>
-                                    <div class="col-md-7 col-sm-8 col-xs-12">
-                                        <button class="btn btn-success"> ویرایش اطلاعات </button>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
-                    </section>
+                            </div>
+                        </section>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+
+}
 
