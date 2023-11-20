@@ -41,6 +41,10 @@ public class SellerService : ISellerService
 
     public async Task<List<BoothProductDto>> GetBoothsByUserId(int userId, CancellationToken cancellationToken)
         => await _sellerRepository.GetBoothsByUserId(userId, cancellationToken);
+
+    public async Task<SellerDto> GetByBoothProductId(int boothProductId, CancellationToken cancellationToken)
+        => await _sellerRepository.GetByBoothProductId(boothProductId, cancellationToken);
+
     public async Task<SellerDto> GetById(int sellerId, CancellationToken cancellationToken)
         => await _sellerRepository.GetById(sellerId, cancellationToken);
 

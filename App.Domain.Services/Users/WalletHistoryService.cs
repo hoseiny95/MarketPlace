@@ -19,6 +19,9 @@ public class WalletHistoryService : IWalletHistoryService
         _historyRepository = historyRepository;
     }
 
+    public async Task AddRange(List<WalletHistoryDto> walletHistories, CancellationToken cancellationToken)
+        => await _historyRepository.AddRange(walletHistories, cancellationToken);
+
     public async Task<int> Create(WalletHistoryDto walletHistory, CancellationToken cancellationToken)
         => await _historyRepository.Create(walletHistory, cancellationToken);
 
@@ -37,6 +40,9 @@ public class WalletHistoryService : IWalletHistoryService
 
     public async Task<WalletHistoryDto> GetById(int walletHistoryId, CancellationToken cancellationToken)
         => await _historyRepository.GetById(walletHistoryId, cancellationToken);
+
+    public async Task<List<WalletHistoryDto>> GetbySellrId(int sellerId, CancellationToken cancellationToken)
+        => await _historyRepository.GetbySellrId(sellerId, cancellationToken);
 
     public async Task<int> Update(WalletHistoryDto walletHistory, CancellationToken cancellationToken)
         => await _historyRepository.Update(walletHistory, cancellationToken);

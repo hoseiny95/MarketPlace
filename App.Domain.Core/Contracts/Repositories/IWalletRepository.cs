@@ -11,6 +11,7 @@ public interface IWalletRepository
     Task<int> Create(WalletDto walletDto, CancellationToken cancellationToken);
     Task<int> Update(WalletDto walletDto, CancellationToken cancellationToken);
     Task Delete(int walletId, CancellationToken cancellationToken);
+    Task<int> GetByBoothproductId(int boothProductId, CancellationToken cancellationToken);
 
 
 }

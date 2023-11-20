@@ -1,4 +1,5 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
+using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Dtos.Users;
 using App.Domain.Core.Entities.Users;
 using App.Infra.Db.Sql.Models;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,6 +52,13 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Users
             var entity = _mapper.Map<Wallet>(walletDto);
             _context.Wallets.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
-            return entity.Id;        }
+            return entity.Id;
+        }
+        public async Task<int> GetByBoothproductId(int boothProductId, CancellationToken cancellationToken)
+        {
+          var query = _context.Wallets.Include(c => c.AppUser).ThenInclude(c => c.Seller).ThenInclude(c => c.Booth)
+                .ThenInclude(c => c.BoothProducts).Where(x => x.AppUser.Seller.Booth.BoothProducts.Any(c => c.Id == boothProductId));
+            return await query.Select(x => x.Id).FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }

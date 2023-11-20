@@ -81,6 +81,13 @@ public class SellerRepository : ISellerRepository
     }
     public async Task<int> GetBoothId(int userId, CancellationToken cancellationToken)
         => await _context.Sellers.Where(x => x.UserId == userId).Select(c => c.BoothId).FirstOrDefaultAsync(cancellationToken);
+
+    public async Task<SellerDto> GetByBoothProductId(int boothProductId, CancellationToken cancellationToken)
+    {
+        var query = _context.Sellers.Include(c => c.Booth)
+        .ThenInclude(c => c.BoothProducts).Where(x => x.Booth.BoothProducts.First().Id == boothProductId);
+        return _mapper.Map<SellerDto>(await query.FirstOrDefaultAsync(cancellationToken));
+    }
      
    
 }

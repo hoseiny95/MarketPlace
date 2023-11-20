@@ -11,4 +11,6 @@ public interface IWalletHistoryService
     Task<int> Create(WalletHistoryDto walletHistory, CancellationToken cancellationToken);
     Task<int> Update(WalletHistoryDto walletHistory, CancellationToken cancellationToken);
     Task<bool> Delete(int walletHistoryId, CancellationToken cancellationToken);
+    Task AddRange(List<WalletHistoryDto> walletHistories, CancellationToken cancellationToken);
+    Task<List<WalletHistoryDto>> GetbySellrId(int sellerId, CancellationToken cancellationToken);
 }

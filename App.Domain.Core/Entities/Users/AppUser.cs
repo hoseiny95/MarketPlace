@@ -6,8 +6,6 @@ namespace App.Domain.Core.Entities.Users;
 
 public partial class AppUser : IdentityUser<int>
 {
-    
-
     public int? WalletId { get; set; }
     public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
 

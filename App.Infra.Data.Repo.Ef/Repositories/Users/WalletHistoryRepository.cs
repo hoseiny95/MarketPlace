@@ -24,7 +24,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Users
         }
         public async Task<int> Create(WalletHistoryDto walletHistory, CancellationToken cancellationToken)
         {
-            var entity = _mapper.Map<WalletHistoryDto>(walletHistory);
+            var entity = _mapper.Map<WalletHistory>(walletHistory);
             await _context.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
@@ -65,6 +65,19 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Users
             _context.WalletHistories.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;   
+        }
+        public async Task AddRange(List<WalletHistoryDto> walletHistories, CancellationToken cancellationToken)
+        {
+            var entity = _mapper.Map<List<WalletHistory>>(walletHistories);
+            await _context.AddRangeAsync(entity, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+           
+        }
+        public async Task<List<WalletHistoryDto>> GetbySellrId(int sellerId , CancellationToken cancellationToken)
+        {
+            var result = _context.WalletHistories.Include(x => x.Wallet).ThenInclude(x => x.AppUser)
+                .ThenInclude(x => x.Seller).Where(x => x.IsSellerFees == false).Where(x => x.Wallet.AppUser.Seller.Id == sellerId) ;
+            return _mapper.Map<List<WalletHistoryDto>>(await result.ToListAsync(cancellationToken)) ;
         }
     }
 }

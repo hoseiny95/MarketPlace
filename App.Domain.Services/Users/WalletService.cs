@@ -35,6 +35,9 @@ public class WalletService : IWalletService
     public async Task<List<WalletDto>> GetAll(CancellationToken cancellationToken)
         => await _walletRepository.GetAll(cancellationToken);
 
+    public async Task<int> GetByBoothproductId(int boothProductId, CancellationToken cancellationToken)
+        => await _walletRepository.GetByBoothproductId(boothProductId, cancellationToken);
+
     public async Task<WalletDto> GetById(int walletId, CancellationToken cancellationToken)
         => await _walletRepository.GetById(walletId, cancellationToken);
 
