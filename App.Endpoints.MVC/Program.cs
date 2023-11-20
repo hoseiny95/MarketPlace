@@ -24,6 +24,7 @@ using System.Data;
 using System.Reflection;
 using Hangfire;
 using App.Domain.AppServices.Auctions;
+using App.Domain.AppServices.Orders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -114,6 +115,7 @@ builder.Services.AddScoped<ISellerAppService, SellerAppService>();
 builder.Services.AddScoped<ICategoryAppService, CategoryAppService>();
 builder.Services.AddScoped<IProductAppService, ProductAppService>();
 builder.Services.AddScoped<IAuctionAppService, AuctionAppService>();
+builder.Services.AddScoped<IOrderAppService, OrderAppService>();
 
 
 #endregion

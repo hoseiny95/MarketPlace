@@ -1,6 +1,12 @@
-﻿@using App.Domain.Core.Dtos.Users;
-@using Framework.Utilities;
-@model CustomerDto;
+﻿@using App.Domain.AppServices.Users;
+@using App.Domain.Core.Contracts.AppServices;
+@using App.Domain.Core.Dtos.Users;
+@inject ICustomerAppService _customerService;
+@inject ISellerAppService _sellerAppService;
+@{
+    CustomerDto user = await _customerService.GetCustomerInformation(User.Identity.Name, default);
+    SellerDto seller = await _sellerAppService.GetSellerByUserName(User.Identity.Name, default);
+}
 @{
     ViewData["Title"] = "پنل کاربری " + User.Identity.Name;
 }
@@ -13,30 +19,64 @@
         </ul>
     </nav>
 </div>
-
-<main>
-    <div class="container">
-        <div class="user-account">
-            <div class="row">
-                <partial name="_SideBar" />
-                <div class="col-md-9 col-sm-8 col-xs-12">
-                    <section class="user-account-content">
-                        <header><h1> داشبورد </h1></header>
-                        <div class="inner">
-                            <div class="account-information">
-                                <h3> اطلاعات کاربری </h3>
-                                <ul>
-                                    <li> <i class="zmdi zmdi-assignment-account"></i> نام کاربری :  @Model.User.UserName </li>
-                                    <li> <i class="zmdi zmdi-email"></i> ایمیل : @Model.Email </li>
-                                    <li> <i class="zmdi zmdi-calendar-check"></i> تاریخ عضویت :  </li>
-                                    <li> <i class="zmdi zmdi-account"></i> موجودی حساب : @Model.User.Wallet.Balance تومان </li>
-                                </ul>
+@if (User.IsInRole("Customer"))
+{
+    <main>
+        <div class="container">
+            <div class="user-account">
+                <div class="row">
+                    <partial name="_SideBar" />
+                    <div class="col-md-9 col-sm-8 col-xs-12">
+                        <section class="user-account-content">
+                            <header><h1> داشبورد </h1></header>
+                            <div class="inner">
+                                <div class="account-information">
+                                    <h3> اطلاعات کاربری </h3>
+                                    <ul>
+                                        <li> <i class="zmdi zmdi-assignment-account"></i> نام کاربری :  @user.User.UserName </li>
+                                        <li> <i class="zmdi zmdi-email"></i> ایمیل : @user.Email </li>
+                                        <li> <i class="zmdi zmdi-calendar-check"></i> تاریخ عضویت :  </li>
+                                        <li> <i class="zmdi zmdi-account"></i> موجودی حساب : @user.User.Wallet.Balance تومان </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+
+}
+@if (User.IsInRole("Seller"))
+{
+    <main>
+        <div class="container">
+            <div class="user-account">
+                <div class="row">
+                    <partial name="_SideBar" />
+                    <div class="col-md-9 col-sm-8 col-xs-12">
+                        <section class="user-account-content">
+                            <header><h1> داشبورد </h1></header>
+                            <div class="inner">
+                                <div class="account-information">
+                                    <h3> اطلاعات کاربری </h3>
+                                    <ul>
+                                        <li> <i class="zmdi zmdi-assignment-account"></i> نام کاربری : @seller.User.UserName </li>
+                                        <li> <i class="zmdi zmdi-email"></i> ایمیل : @seller.User.Email </li>
+                                        <li> <i class="zmdi zmdi-calendar-check"></i> تاریخ عضویت :  </li>
+                                        <li> <i class="zmdi zmdi-account"></i> موجودی حساب : @seller.User.Wallet.Balance تومان </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+}
+
+
 

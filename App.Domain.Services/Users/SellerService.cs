@@ -48,6 +48,9 @@ public class SellerService : ISellerService
     public async Task<SellerDto> GetById(int sellerId, CancellationToken cancellationToken)
         => await _sellerRepository.GetById(sellerId, cancellationToken);
 
+    public async Task<SellerDto> GetbyUserId(int userId, CancellationToken cancellationToken)
+        => await _sellerRepository.GetbyUserId(userId, cancellationToken);
+
     public async Task<int> Update(SellerDto seller, CancellationToken cancellationToken)
         => await _sellerRepository.Update(seller, cancellationToken);
 }

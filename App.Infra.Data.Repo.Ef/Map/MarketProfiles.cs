@@ -66,6 +66,9 @@ public class MarketProfiles : Profile
 
         CreateMap<AppUser, AppUserDto>();
         CreateMap<AppUserDto, AppUser>();
+        
+        CreateMap<MedalStatus, MedalStatusDto>();
+        CreateMap<MedalStatusDto, MedalStatus>();
 
         CreateMap<Customer, CustomerDto>();
         CreateMap<CustomerDto, Customer>();

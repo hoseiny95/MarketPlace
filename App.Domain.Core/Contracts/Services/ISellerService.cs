@@ -15,4 +15,5 @@ public interface ISellerService
     Task<List<BoothProductDto>> GetBoothsByUserId(int userId, CancellationToken cancellationToken);
     Task<int> GetBoothId(int userId, CancellationToken cancellationToken);
     Task<SellerDto> GetByBoothProductId(int boothProductId, CancellationToken cancellationToken);
+    Task<SellerDto> GetbyUserId(int userId, CancellationToken cancellationToken);
 }

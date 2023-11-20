@@ -1,45 +1,97 @@
-﻿@using App.Domain.Core.Contracts.AppServices;
+﻿@using App.Domain.AppServices.Users;
+@using App.Domain.Core.Contracts.AppServices;
 @using App.Domain.Core.Dtos.Users;
 @inject ICustomerAppService _customerService;
+@inject ISellerAppService  _sellerAppService;
 @{
     CustomerDto user = await _customerService.GetCustomerInformation(User.Identity.Name, default);
+    SellerDto seller = await _sellerAppService.GetSellerByUserName(User.Identity.Name, default);
     string imgePath = null;
-    if (user.Image == null)
+    if(user != null)
     {
-        imgePath = "/images/pic/avatar.jpg";
+        if (user.Image == null )
+        {
+            imgePath = "/images/pic/avatar.jpg";
+        }
+        else if (user.Image != null)
+        {
+            imgePath = "images/" + @user.Image.ImagePath;
+        }
     }
-    else
+    if(seller != null)
     {
-        imgePath = "images/" + @user.Image.ImagePath;
+
+        if (seller.Booth == null)
+        {
+            imgePath = "/images/pic/avatar.jpg";
+        }
+        else if (seller.Booth != null)
+        {
+            imgePath = "images/" + seller.Booth.Image.ImagePath;
+        }
     }
 }
+@if (User.IsInRole("Seller"))
+{
+    <div class="col-md-3 col-sm-4 col-xs-12">
+        <aside>
 
-<div class="col-md-3 col-sm-4 col-xs-12">
-    <aside>
+            <div class="avatar-layer">
+                <div class="img-layer">
+                    <a href="" class="change-image"><i class="zmdi zmdi-edit"></i></a>
+                    <img src="@imgePath">
+                </div>
+                <div class="detail">
+                    <span> @(seller.Name + " " + seller.Lastname)</span>
+                    <span> ایمل : @seller.User.Email </span>
+                </div>
+            </div>
 
-        <div class="avatar-layer">
-            <div class="img-layer">
-                <a href="" class="change-image"><i class="zmdi zmdi-edit"></i></a>
-                <img src= "@imgePath">
-            </div>
-            <div class="detail">
-                <span> @(user.Name + " " +user.Lastname )</span>
-                <span> ایمل : @user.Email </span>
-            </div>
-        </div>
+            <section>
+                <header><h3> میز کار </h3></header>
+                <div class="inner">
+                    <ul>
+                        <li><a href="/UserPanel"> مشاهده حساب کابری </a></li>
+                        <li><a href="/UserPanel/EditProfile"> ویرایش حساب کابری </a></li>
+                        <li><a href="/UserPanel/ChangePassword"> تغییر رمز عبور </a></li>
+                        <li><a href="/UserPanel/Wallet"> کیف پول شما </a></li>
+                        <li><a href=""> تنظیمات حساب کاربری </a></li>
+                        <li><a href="/Logout"> خروج از حساب کاربری </a></li>
+                    </ul>
+                </div>
+            </section>
+        </aside>
+    </div>
+}@if (User.IsInRole("Customer"))
+{
+    <div class="col-md-3 col-sm-4 col-xs-12">
+        <aside>
 
-        <section>
-            <header><h3> میز کار </h3></header>
-            <div class="inner">
-                <ul>
-                    <li><a href="/UserPanel"> مشاهده حساب کابری </a></li>
-                    <li><a href="/UserPanel/EditProfile"> ویرایش حساب کابری </a></li>
-                    <li><a href="/UserPanel/ChangePassword"> تغییر رمز عبور </a></li>
-                    <li><a href="/UserPanel/Wallet"> کیف پول شما </a></li>
-                    <li><a href=""> تنظیمات حساب کاربری </a></li>
-                    <li><a href="/Logout"> خروج از حساب کاربری </a></li>
-                </ul>
+            <div class="avatar-layer">
+                <div class="img-layer">
+                    <a href="" class="change-image"><i class="zmdi zmdi-edit"></i></a>
+                    <img src="@imgePath">
+                </div>
+                <div class="detail">
+                    <span> @(user.Name + " " + user.Lastname)</span>
+                    <span> ایمل : @user.Email </span>
+                </div>
             </div>
-        </section>
-    </aside>
-</div>
+
+            <section>
+                <header><h3> میز کار </h3></header>
+                <div class="inner">
+                    <ul>
+                        <li><a href="/UserPanel"> مشاهده حساب کابری </a></li>
+                        <li><a href="/UserPanel/EditProfile"> ویرایش حساب کابری </a></li>
+                        <li><a href="/UserPanel/ChangePassword"> تغییر رمز عبور </a></li>
+                        <li><a href="/UserPanel/Wallet"> کیف پول شما </a></li>
+                        <li><a href=""> تنظیمات حساب کاربری </a></li>
+                        <li><a href="/Logout"> خروج از حساب کاربری </a></li>
+                    </ul>
+                </div>
+            </section>
+        </aside>
+    </div>
+}
+

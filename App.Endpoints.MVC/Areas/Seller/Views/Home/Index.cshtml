@@ -1,7 +1,11 @@
 ﻿
-
 @using App.Domain.Core.Dtos.Products;
 @model List<BoothProductDto>;
+@inject IConfiguration config
+@{
+    var name = Model.First().Both.Seller.MedalNavigation.Title;
+    var fee = config.GetValue<int>("WageConfig:" + name);
+}
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header"> فروشگاه شما </h1>
@@ -11,10 +15,13 @@
 <div class="row">
     <div class="col-lg-12">
         <h2 class="page-header"> @Model.First().Both.Name</h2>
+        <h3 class="page-header"> @Model.First().Both.Description</h3>
     </div>
     <!-- /.col-lg-12 -->
 </div>
 
+ درصد پرداختی شما @fee درصد میباشد
+ با افزایش فروش درصد خود را کاهش دهید
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
