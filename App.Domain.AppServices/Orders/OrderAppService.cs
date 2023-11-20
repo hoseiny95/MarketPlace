@@ -56,9 +56,7 @@ public class OrderAppService : IOrderAppService
                     IsSellerFees = true,
                     Description = "کارمزد"
                 }
-
             };
-           
             await _walletHistoryService.AddRange(walletHistory, cancellationToken);
             var result = await _walletHistoryService.GetbySellrId(seller.Id, cancellationToken);
             var AllSells = result.Sum(x => x.Amount);
