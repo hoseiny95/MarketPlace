@@ -49,7 +49,7 @@ public class UserPanelController : Controller
         }
         else
         {
-            var res = await _customerAppService.GetCustomerInformation(User.Identity.Name, cancellationToken);
+            var res = await _sellerAppService.GetSellerByUserName(User.Identity.Name, cancellationToken);
             var model = _mapper.Map<UserViewModel>(res);
             model.userName = user.UserName;
             model.Email = user.Email;

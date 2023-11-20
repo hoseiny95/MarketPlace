@@ -115,4 +115,74 @@
     </main>
 
 }
+@if (User.IsInRole("Seller"))
+{
+    <main>
+        <div class="container">
+            <div class="user-account">
+                <div class="row">
+                    <partial name="_SideBar" />
+                    <div class="col-md-9 col-sm-8 col-xs-12">
+                        <section class="user-account-content">
+                            <header><h1> ویرایش حساب کاربری </h1></header>
+                            <div class="inner form-layer">
+                                <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+                                    @if (ViewBag.IsSuccess != null)
+                                    {
+                                        <div class="alert alert-success">
+                                            اطلاعات کاربری شما با موفقیت ویرایش شد
+                                        </div>
+                                    }
+
+
+                                    <div class="row">
+                                        <input type="hidden" asp-for="Id" />
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
+                                                <input disabled type="text" class="form-control" asp-for="userName" placeholder="نام کاربری" aria-describedby="username">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
+                                                <input disabled type="text" class="form-control" asp-for="Email" placeholder="ایمیل" aria-describedby="email-address">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
+                                                <input type="text" class="form-control" asp-for="Name" placeholder="نام " aria-describedby="username">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-account"></i></span>
+                                                <input type="text" class="form-control" asp-for="Lastname" placeholder="نام خانوادگی" aria-describedby="email-address">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <p class="help-block">
+                                                آواتار
+                                            </p>
+                                            <input type="file" name="photo" class="custom-file-input form-control" />
+                                            <p>لطفا فقط تصویر انتخاب کنید</p>
+                                            <img src="~/@imgePath" />
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <button class="btn btn-success"> ویرایش اطلاعات </button>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+}
 
