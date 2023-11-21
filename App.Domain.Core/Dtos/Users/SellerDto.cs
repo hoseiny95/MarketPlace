@@ -14,14 +14,16 @@ public class SellerDto
     public string Name { get; set; } = null!;
 
     public string Lastname { get; set; } = null!;
+    public string UserName { get; set; } = null!;
 
-    public int UserId { get; set; }
+    public int UserId { get; set; } 
+    public string Email { get; set; }
 
     public int Medal { get; set; }
 
     public long Phone { get; set; }
 
-    public virtual Booth Booth { get; set; } = null!;
+    public virtual BoothDto Booth { get; set; } = null!;
 
     public virtual MedalStatusDto MedalNavigation { get; set; } = null!;
 

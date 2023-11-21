@@ -30,11 +30,7 @@ public class UserPanelController : Controller
 
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        //return View(await _customerAppService.GetCustomerInformation(User.Identity.Name, cancellationToken));
-        CustomerDto user = await _customerAppService.GetCustomerInformation(User.Identity.Name, default);
-        SellerDto seller = await _sellerAppService.GetSellerByUserName(User.Identity.Name, default);
         return View();
-
     }
     public async Task<IActionResult> EditProfile(CancellationToken cancellationToken)
     {
@@ -53,6 +49,7 @@ public class UserPanelController : Controller
             var model = _mapper.Map<UserViewModel>(res);
             model.userName = user.UserName;
             model.Email = user.Email;
+            model.UserId = user.Id;
             return View(model);
         }
     }
@@ -67,7 +64,7 @@ public class UserPanelController : Controller
         else
         {
             var seller = _mapper.Map<SellerDto>(model);
-            //await _sellerAppService.EditProfile(seller, photo, cancellationToken);
+            await _sellerAppService.EditProfile(seller, photo, cancellationToken);
         }
         return RedirectToAction(nameof(Index));
 
