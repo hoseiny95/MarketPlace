@@ -25,11 +25,23 @@ using System.Reflection;
 using Hangfire;
 using App.Domain.AppServices.Auctions;
 using App.Domain.AppServices.Orders;
+using System.Reflection.Metadata;
+using NLog;
+using NLog.Extensions.Logging;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
+LogManager.Configuration = new NLogLoggingConfiguration(builder.Configuration.GetSection("NLog"));
+var logger = NLogBuilder.ConfigureNLog(LogManager.Configuration).GetCurrentClassLogger();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.ClearProviders();
+    loggingBuilder.AddNLog();
+    loggingBuilder.AddSeq();
+});
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MarketProfiles)));
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MarketUiProfile)));
 builder.Services.AddDbContext<MarketPlaceContext>(options =>
