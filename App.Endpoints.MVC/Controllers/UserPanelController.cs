@@ -56,17 +56,41 @@ public class UserPanelController : Controller
     [HttpPost]
     public async Task<IActionResult> EditProfile( UserViewModel model , IFormFile photo, CancellationToken cancellationToken)
     {
-        if (User.IsInRole("Customer"))
+        ModelState.Remove("photo");
+        if (ModelState.IsValid)
         {
-            var customer = _mapper.Map<CustomerDto>(model);
-            await _customerAppService.EditProfile(customer, photo, cancellationToken);
+            if (User.IsInRole("Customer"))
+            {
+                var customer = _mapper.Map<CustomerDto>(model);
+                await _customerAppService.EditProfile(customer, photo, cancellationToken);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                var seller = _mapper.Map<SellerDto>(model);
+                var result = await _sellerAppService.EditProfile(seller, photo, cancellationToken);
+                if (result.Item2)
+                {
+                    if (result.Item1.Succeeded)
+                    {
+                        return RedirectToAction("Logout", "Account");
+                    }
+                    else
+                    {
+                        foreach (var item in result.Item1.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, item.Description);
+                            return View(model);
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction(nameof (Index));
+                }
+                
+            }
         }
-        else
-        {
-            var seller = _mapper.Map<SellerDto>(model);
-            await _sellerAppService.EditProfile(seller, photo, cancellationToken);
-        }
-        return RedirectToAction(nameof(Index));
-
+        return View(model);
     }
 }

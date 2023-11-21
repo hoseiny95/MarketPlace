@@ -100,5 +100,12 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
                                 });
             return await result.ToListAsync(cancellationToken);
         }
+        public async Task ImageUpdate(int boothId, int imageId, CancellationToken cancellationToken)
+        {
+            var booth = await _context.Booths.Where(x => x.Id == boothId).FirstOrDefaultAsync(cancellationToken);
+            booth.ImageId = imageId;
+             await _context.SaveChangesAsync(cancellationToken);
+
+        }
     }
 }

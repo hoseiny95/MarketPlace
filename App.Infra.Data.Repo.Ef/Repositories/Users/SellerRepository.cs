@@ -48,13 +48,14 @@ public class SellerRepository : ISellerRepository
 
 
     public async Task<SellerDto> GetById(int sellerId, CancellationToken cancellationToken)
-                 => _mapper.Map<SellerDto>(await _context.Sellers
+                 => _mapper.Map<SellerDto>(await _context.Sellers.Include(c=> c.Booth).ThenInclude(c => c.Image)
                      .FirstOrDefaultAsync(x => x.Id == sellerId, cancellationToken));
 
 
     public async Task<int> Update(SellerDto seller, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Seller>(seller);
+        _context.ChangeTracker.Clear();
         _context.Sellers.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
         return entity.Id;

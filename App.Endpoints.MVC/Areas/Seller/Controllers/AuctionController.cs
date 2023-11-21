@@ -1,11 +1,14 @@
 ﻿using App.Domain.Core.Contracts.AppServices;
 using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
+
 
 namespace App.Endpoints.MVC.Areas.Seller.Controllers;
 
 [Area("Seller")]
+[Authorize(Roles = "Seller")]
 public class AuctionController : Controller
 {
     private readonly ISellerAppService _sellerAppService;

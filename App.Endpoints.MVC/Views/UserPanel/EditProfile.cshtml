@@ -65,6 +65,9 @@
 
 
                                     <div class="row">
+                                        <div asp-validation-summary="All" class="text-danger">
+                                        </div>
+
                                         <input type="hidden" asp-for="Id" />
                                         <div class="col-md-7 col-sm-8 col-xs-12">
                                             <div class="input-group">
@@ -136,17 +139,22 @@
 
 
                                     <div class="row">
+                                        <div asp-validation-summary="All" class="text-danger">
+                                        </div>
+
                                         <input type="hidden" asp-for="Id" />
+                                        <input type="hidden" asp-for="UserId" />
                                         <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <div class="alert-dark"> در صورت تعویض نام کاربری و ایمیل لازم است دوباره وارد شوید</div>
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
-                                                <input disabled type="text" class="form-control" asp-for="userName" placeholder="نام کاربری" aria-describedby="username">
+                                                <input  type="text" class="form-control" asp-for="userName" placeholder="نام کاربری" aria-describedby="username">
                                             </div>
                                         </div>
                                         <div class="col-md-7 col-sm-8 col-xs-12">
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
-                                                <input disabled type="text" class="form-control" asp-for="Email" placeholder="ایمیل" aria-describedby="email-address">
+                                                <input  type="text" class="form-control" asp-for="Email" placeholder="ایمیل" aria-describedby="email-address">
                                             </div>
                                         </div>
                                         <div class="col-md-7 col-sm-8 col-xs-12">
@@ -162,6 +170,12 @@
                                             </div>
                                         </div>
                                         <div class="col-md-7 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-phone"></i></span>
+                                                <input  type="text" class="form-control" asp-for="phone" placeholder="تلفن" aria-describedby="email-address">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-sm-8 col-xs-12">
                                             <p class="help-block">
                                                 آواتار
                                             </p>
@@ -170,7 +184,7 @@
                                             <img src="~/@imgePath" />
                                         </div>
                                         <div class="col-md-7 col-sm-8 col-xs-12">
-                                            <button class="btn btn-success"> ویرایش اطلاعات </button>
+                                            <button class="btn btn-success mt-2"> ویرایش اطلاعات </button>
                                         </div>
                                     </div>
 

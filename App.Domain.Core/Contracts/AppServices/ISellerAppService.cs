@@ -2,6 +2,7 @@
 using App.Domain.Core.Dtos.Users;
 using App.Domain.Core.Entities.Users;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,6 @@ namespace App.Domain.Core.Contracts.AppServices
         Task<List<BoothProductDto>> GetSellerBooths(string userName, CancellationToken cancellationToken);
         Task<int> GetSellerBoothId(string userName, CancellationToken cancellationToken);
         Task<SellerDto> GetSellerByUserName(string userName, CancellationToken cancellationToken);
-        Task EditProfile(SellerDto seller, IFormFile photo, CancellationToken cancellationToken);
+        Task<Tuple<IdentityResult, bool>> EditProfile(SellerDto seller, IFormFile photo, CancellationToken cancellationToken);
     }
 }

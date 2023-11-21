@@ -41,6 +41,9 @@ namespace App.Domain.Services.Products
         public async Task<BoothDto> GetById(int boothId, CancellationToken cancellationToken)
             => await _boothRepository.GetById(boothId, cancellationToken);
 
+        public async Task ImageUpdate(int boothId, int imageId, CancellationToken cancellationToken)
+            => await _boothRepository.ImageUpdate(boothId, imageId, cancellationToken);
+
         public async Task<int> Update(BoothDto booth, CancellationToken cancellationToken)
             => await _boothRepository.Update(booth, cancellationToken);
     }

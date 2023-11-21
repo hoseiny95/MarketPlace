@@ -2,6 +2,7 @@
 using App.Domain.Core.Dtos.Products;
 using App.Domain.Core.Dtos.Users;
 using App.Endpoints.MVC.Areas.Seller.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NuGet.Packaging;
@@ -10,6 +11,7 @@ using System.Text.RegularExpressions;
 namespace App.Endpoints.MVC.Areas.Seller.Controllers;
 
 [Area("Seller")]
+[Authorize(Roles = "Seller")]
 public class BoothController : Controller
 {
     private readonly ICategoryAppService _categoryAppService;

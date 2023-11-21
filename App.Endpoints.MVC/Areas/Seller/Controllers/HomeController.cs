@@ -1,6 +1,7 @@
 ﻿using App.Domain.Core.Contracts.AppServices;
 using App.Endpoints.MVC.Areas.Seller.Models;
 using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using System.Threading;
@@ -8,6 +9,7 @@ using System.Threading;
 namespace App.Endpoints.MVC.Areas.Seller.Controllers
 {
     [Area("Seller")]
+    [Authorize(Roles = "Seller")]
     public class HomeController : Controller
     {
         private readonly ISellerAppService _sellerAppService;

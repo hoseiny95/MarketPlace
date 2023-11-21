@@ -52,7 +52,7 @@ public class AppUserService : IAppUserService
 
     public async Task<SignInResult> Login(AppUserDto userDto, CancellationToken cancellationToken)
         => await _appRepository.Login(userDto, cancellationToken);
-    public async Task<int> Update(AppUserDto appuser, CancellationToken CancellationToken)
+    public async Task<IdentityResult> Update(AppUserDto appuser, CancellationToken CancellationToken)
         => await _appRepository.Update(appuser, CancellationToken);
 
    

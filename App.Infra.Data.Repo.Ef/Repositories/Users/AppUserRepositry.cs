@@ -61,7 +61,7 @@ public class AppUserRepositry : IAppUserRepositry
     public async Task<SignInResult> Login(AppUserDto userDto, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(userDto.Email);
-        var result =  await _signInManager.PasswordSignInAsync(user.UserName, userDto.Password, true, false);
+        var result = await _signInManager.PasswordSignInAsync(user.UserName, userDto.Password, true, false);
         return result;
     }
     public async Task Delete(int userId, CancellationToken cancellationToken)
@@ -76,7 +76,7 @@ public class AppUserRepositry : IAppUserRepositry
               .AsNoTracking()
               .ToListAsync(CancellationToken);
         var meee = _mapper.Map<List<AppUserDto>>(res);
-        var users =  _mapper.Map<List<AppUserDto>>(await _userManager.Users
+        var users = _mapper.Map<List<AppUserDto>>(await _userManager.Users
               .AsNoTracking()
               .ToListAsync(CancellationToken));
 
@@ -96,9 +96,9 @@ public class AppUserRepositry : IAppUserRepositry
         entity.Role = userRole.First();
         return entity;
     }
-   
 
-    public async Task<int> Update(AppUserDto appuser, CancellationToken CancellationToken)
+
+    public async Task<IdentityResult> Update(AppUserDto appuser, CancellationToken CancellationToken)
     {
         var user = await _userManager.FindByIdAsync(appuser.Id.ToString());
         user.UserName = appuser.UserName;
@@ -106,16 +106,17 @@ public class AppUserRepositry : IAppUserRepositry
         var userRole = (await _userManager.GetRolesAsync(user)).First();
         if (appuser.Role != userRole && appuser.Role != null)
         {
-           await _userManager.RemoveFromRoleAsync(user, userRole);
+            await _userManager.RemoveFromRoleAsync(user, userRole);
             await _userManager.AddToRoleAsync(user, appuser.Role);
         }
 
-        await _userManager.UpdateAsync(user);
-        return appuser.Id;
+        var result = await _userManager.UpdateAsync(user);
+        return result;
     }
-    public async Task<AppUserDto> GetByUserName(string userName,CancellationToken cancellationToken)
+    public async Task<AppUserDto> GetByUserName(string userName, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByNameAsync(userName);
-        return _mapper.Map<AppUserDto>(user);   
+        return _mapper.Map<AppUserDto>(user);
     }
+   
 }

@@ -1,10 +1,12 @@
 ﻿using App.Domain.Core.Contracts.AppServices;
 using App.Domain.Core.Contracts.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Endpoints.MVC.Areas.Seller.Controllers;
 
 [Area("Seller")]
+[Authorize(Roles = "Seller")]
 public class UserPanelController : Controller
 {
     private readonly ISellerAppService _sellerAppService;
