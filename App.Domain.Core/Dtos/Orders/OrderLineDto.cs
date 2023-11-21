@@ -9,13 +9,13 @@ public partial class OrderLineDto
 {
     public int Id { get; set; }
 
-    public int? OrderId { get; set; }
+    public int OrderId { get; set; }
 
-    public int? Count { get; set; }
+    public int Count { get; set; }
 
-    public int? BothProductId { get; set; }
+    public int BothProductId { get; set; }
 
-    public double? PriceSum { get; set; }
+    public double PriceSum { get; set; }
 
     public virtual BoothProductDto? BothProduct { get; set; }
 

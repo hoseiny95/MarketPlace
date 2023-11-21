@@ -33,14 +33,14 @@ public class OrderAppService : IOrderAppService
         var order = await _orderService.GetById(orderId, cancellationToken);
         foreach (var item in order.OrderLines)
         {
-            var walletId = await _walletService.GetByBoothproductId((int)item.BothProductId, cancellationToken);
-            var seller = await _sellerService.GetByBoothProductId((int)item.BothProductId, cancellationToken);
+            var walletId = await _walletService.GetByBoothproductId(item.BothProductId, cancellationToken);
+            var seller = await _sellerService.GetByBoothProductId(item.BothProductId, cancellationToken);
             var medal = seller.Medal;
             var walletHistory = new List<WalletHistoryDto>()
             {
                 new WalletHistoryDto()
                 {
-                    Amount = (double)item.PriceSum,
+                    Amount = item.PriceSum,
                     CreateAt = DateTime.Now,
                     IsCredit = true,
                     WalletId =  walletId,
@@ -49,7 +49,7 @@ public class OrderAppService : IOrderAppService
                 },
                 new WalletHistoryDto()
                 {
-                    Amount = (double)((double)item.PriceSum *seller.MedalNavigation.FeePercentage*(1/100)) ,
+                    Amount = (double)(item.PriceSum *seller.MedalNavigation.FeePercentage*(1/100)) ,
                     CreateAt = DateTime.Now,
                     IsCredit = false,
                     WalletId =  walletId,

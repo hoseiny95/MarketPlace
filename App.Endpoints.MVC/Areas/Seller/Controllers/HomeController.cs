@@ -43,11 +43,12 @@ namespace App.Endpoints.MVC.Areas.Seller.Controllers
         {
             int boothId = await _sellerAppService.GetSellerBoothId(User.Identity.Name, cancellationToken);
             model.BoothId = boothId;
-            if (ModelState.IsValid)
+            if (model.Duration != 0 && model.MinPrice != 0)
             {
                 var id = await _auctionAppService.StartAuction(boothId, model.MinPrice, model.Duration, model.BoothProductId, 
                     cancellationToken);
                 BackgroundJob.Schedule<IAuctionAppService>(x => x.EndAuction(id,default), DateTime.Now.AddHours(model.Duration));
+                return LocalRedirect("/Seller/home");
             }
             return View(model);
         }

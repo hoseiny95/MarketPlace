@@ -12,15 +12,17 @@
     <!-- /.col-lg-12 -->
 </div>
 <div class="mt-6">
+
     <form method="post" class="m-8 mt-10" enctype="multipart/form-data" style="border:solid gray 2px padding:20px">
         <input hidden asp-for="BoothProductId" />
-     
+        <div asp-validation-summary="All" class="text-danger">
+        </div>
         <div class="form-group row mb-2 ">
             <label class="col-sm-2 col-form-label">
                 مدت مزایده به ساعت
             </label>
             <div class="col-sm-8">
-                <input asp-for="Duration" class="form-control" placeholder="Barcode" />
+                <input asp-for="Duration" class="form-control" placeholder="duration" />
             </div>
         </div>
         <div class="form-group row mb-2  ">
@@ -40,7 +42,7 @@
 
             <div class="col-sm-8">
                 <input type="submit" value="اضافه کردن کالا به مزایده" class="btn btn-primary">
-                <a class="btn btn-primary">Cancel</a>
+                <a href="/seller/home" class="btn btn-primary">بازگشت</a>
             </div>
         </div>
     </form>
