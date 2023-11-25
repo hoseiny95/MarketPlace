@@ -115,4 +115,6 @@ public class BoothProductAppService : IBoothProductAppService
         return me;
     }
 
+    public async Task<BoothProductDto> GetById(int id, CancellationToken cancellationToken)
+        => await _boothProductService.GetById(id, cancellationToken);
 }

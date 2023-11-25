@@ -1,5 +1,6 @@
 ﻿using App.Domain.Core.Contracts.AppServices;
 using App.Domain.Core.Contracts.Services;
+using App.Domain.Core.Dtos.Orders;
 using App.Domain.Core.Dtos.Users;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -16,17 +17,79 @@ public class OrderAppService : IOrderAppService
     private readonly IWalletHistoryService _walletHistoryService;
     private readonly IWalletService _walletService;
     private readonly ISellerService _sellerService;
-   
+    private readonly IAppUserService _userService;
+    private readonly ICustomerService _customerService;
+    private readonly IBoothProductService _boothProductService;
+    private readonly IOrderLineService _orderLineService;
 
-    public OrderAppService(IOrderService orderService, IWalletHistoryService walletHistoryService,
-        IWalletService walletService, ISellerService sellerService, IConfiguration configuration)
+    public OrderAppService(IOrderService orderService, IWalletHistoryService walletHistoryService, IWalletService walletService, ISellerService sellerService, IAppUserService userService, ICustomerService customerService,
+        IBoothProductService boothProductService, IOrderLineService orderLineService)
     {
         _orderService = orderService;
         _walletHistoryService = walletHistoryService;
         _walletService = walletService;
         _sellerService = sellerService;
-        
+        _userService = userService;
+        _customerService = customerService;
+        _boothProductService = boothProductService;
+        _orderLineService = orderLineService;
     }
+
+    public async Task<int> ByeProduct(int BoothProductId, string username, CancellationToken cancellationToken)
+    {
+        var user = await _userService.GetByUserName(username, cancellationToken);
+        var customer = await _customerService.GetByUserId(user.Id, cancellationToken);
+        var product = await _boothProductService.GetById(BoothProductId, cancellationToken);
+        if(customer.Orders.Any(c => c.OrderStatusId == 1))
+        {
+            var order = customer.Orders.Where(x => x.OrderStatusId ==1).FirstOrDefault();
+            var orderline = order.OrderLines.Where(c => c.BothProductId == BoothProductId).FirstOrDefault();
+            if (orderline == null)
+            {
+                var newline = new OrderLineDto()
+                {
+                    OrderId = order.Id,
+                    BothProductId = BoothProductId,
+                    Count = 1,
+                    PriceSum = product.Price
+                };
+                await _orderLineService.Create(newline, cancellationToken);
+                order.PriceSum = order.PriceSum + product.Price;
+                await _orderService.Update(order, cancellationToken);
+            }
+            else
+            {
+                orderline.Count = orderline.Count + 1;  
+                orderline.PriceSum = product.Price * orderline.Count;
+                await _orderLineService.Update(orderline, cancellationToken);
+                order.PriceSum = order.PriceSum + product.Price;
+                await _orderService.Update(order, cancellationToken);
+            }
+            return order.Id;
+        }
+        else
+        {
+            var order = new OrderDto()
+            {
+                CustomerId = customer.Id,
+                IsBid = false,
+                OrderStatusId = 1,
+                PriceSum = product.Price,
+                OrderLines =new List<OrderLineDto>() {new OrderLineDto()
+                {
+                    BothProductId = BoothProductId,
+                    Count = 1,
+                    PriceSum = product.Price
+                } }
+
+            };
+           return await _orderService.Create(order, cancellationToken);
+
+        }        
+    }
+
+    public async Task<OrderDto> GetbyId(int orderId, CancellationToken cancellationToken)
+        => await _orderService.GetById(orderId, cancellationToken);
 
     public async Task UpdateSellersWallet(int orderId, CancellationToken cancellationToken)
     {

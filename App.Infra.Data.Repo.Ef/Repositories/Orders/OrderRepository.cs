@@ -49,7 +49,9 @@ public class OrderRepository : IOrderRepository
 
 
     public async Task<OrderDto> GetById(int orderId, CancellationToken cancellationToken)
-                  => _mapper.Map<OrderDto>(await _context.Orders
+                  => _mapper.Map<OrderDto>(await _context.Orders.Include(c => c.OrderLines).ThenInclude(c => c.BothProduct)
+                      .ThenInclude(c => c.ProductImages).ThenInclude(c => c.Image)
+                      .Include(c => c.OrderLines).ThenInclude(c => c.BothProduct).ThenInclude(c => c.Both)
                                 .FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken));
 
     public async Task<int> Update(OrderDto order, CancellationToken cancellationToken)
