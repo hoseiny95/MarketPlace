@@ -32,5 +32,8 @@ namespace App.Domain.AppServices.Products
 
             return res;
         }
+        public async Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken)
+            => await _categoryService.GetAll(cancellationToken);   
+        
     }
 }

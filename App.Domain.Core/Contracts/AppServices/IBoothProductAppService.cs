@@ -16,6 +16,7 @@ namespace App.Domain.Core.Contracts.AppServices
         Task ConfirmProduct(int id,string confirm,string refuse, CancellationToken cancellationToken);
         Task<bool> Delete(int boothProductId, CancellationToken cancellationToken);
         Task Create(BoothProductDto boothProductDto, IFormFile photo, int imageId, CancellationToken cancellationToken);
-
+        Task<Tuple<List<BoothProductDto>, int>> GetAllPaging(CancellationToken cancellationToken, List<int> selectedCategory, int pageId = 1,
+        string orderByType = "date", int startPrice = 0, int endPrice = 0);
     }
 }

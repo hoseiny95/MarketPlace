@@ -51,8 +51,13 @@ namespace App.Domain.Services.Products
         public async Task<List<BoothProductDto>> GetAll(CancellationToken cancellationToken)
             => await _boothProductRepository.GetAll(cancellationToken);
 
+        public async Task<Tuple<List<BoothProductDto>, int>> GetAllPaging(CancellationToken cancellationToken, List<int> ProductsId , int pageId = 1, 
+            string orderByType = "date", int startPrice = 0, int endPrice = 0)
+            => await _boothProductRepository.GetAllPaging(cancellationToken, ProductsId, pageId, orderByType, startPrice, endPrice);
+
         public async Task<BoothProductDto> GetById(int boothProductId, CancellationToken cancellationToken)
             => await _boothProductRepository.GetById(boothProductId, cancellationToken);
+
 
         public async Task RefuseProduct(int id, CancellationToken cancellationToken)
             => await _boothProductRepository.RefuseProduct(id, cancellationToken);

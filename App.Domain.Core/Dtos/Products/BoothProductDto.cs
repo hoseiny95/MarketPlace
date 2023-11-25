@@ -29,6 +29,7 @@ public class BoothProductDto
     public string Description { get; set; } 
 
     public bool IsAvailable { get; set; }
+    public DateTime CreatedAt { get; set; }
     public virtual ICollection<AuctionDto> Auctions { get; set; } = new List<AuctionDto>();
 
     public virtual Booth Both { get; set; }

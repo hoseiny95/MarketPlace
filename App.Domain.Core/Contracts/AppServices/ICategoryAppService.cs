@@ -14,4 +14,5 @@ public interface ICategoryAppService
     Task<List<SelectListItem>> GetFirstSubCategoryItems(int parentId, CancellationToken cancellationToken);
     Task<List<SelectListItem>> GetSecondSubCategoryItems(int parentId, CancellationToken cancellationToken);
     Task<List<CategoryDto>> GetChildren(int categoryId, CancellationToken cancellationToken);
+    Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken);
 }

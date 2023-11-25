@@ -41,6 +41,9 @@ public class ProductService : IProductService
     public async Task<ProductDto> GetById(int ProductId, CancellationToken cancellationToken)
         => await _productRepository.GetById(ProductId, cancellationToken);
 
+    public async Task<List<int>> GetIDByCategories(List<CategoryDto> categories, CancellationToken cancellationToken)
+        => await _productRepository.GetIDByCategories(categories, cancellationToken);
+
     public async Task<int> Update(ProductDto Product, CancellationToken cancellationToken)
         => await _productRepository.Update(Product, cancellationToken);
 }

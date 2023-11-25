@@ -2,22 +2,45 @@
 
 @model List<BoothProductDto>
 
-
-
-
-
-
-@foreach (var item in Model.Where(g => g.IsBid == true && g.IsAvailable == true))
-{
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-        <article>
-            <a href="" class="img-layer"><img src="/images/@item.ProductImages.First().Image.ImagePath"></a>
-            <h2><a href=""> پیشنهاد قیمت </a></h2>
-            <span> آخرین قیمت : @item.Auctions.First().LastPrice </span>
-            <i>@(item.Auctions.First().Endtime - DateTime.Now)</i>
-        </article>
-    </div>
+@{
+    var type = ViewBag.type;
 }
+
+
+@if (ViewBag.type == 1)
+{
+    @foreach (var item in Model.Where(g => g.IsBid == false && g.IsAvailable == true))
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
+            <article>
+                <a href="/Product/detail/@item.Id" class="img-layer"><img src="/images/@item.ProductImages.First().Image.ImagePath" style="height: 170px"></a>
+                <a href="/Product/detail/@item.Id"><b>@item.Product.Name</b></a><br />
+                <a href="/Product/detail/@item.Id">@item.Both.Name</a>
+                <h2><a href=""> خرید </a></h2>
+                <span>  قیمت : @item.Price </span>
+                <i></i>
+            </article>
+        </div>
+    }
+}
+
+@if (ViewBag.type == 2)
+{
+    @foreach (var item in Model.Where(g => g.IsBid == true && g.IsAvailable == true))
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
+            <article>
+                <a href="" class="img-layer"><img src="/images/@item.ProductImages.First().Image.ImagePath" style="height: 150px"></a>
+                <a href=""><b>@item.Product.Name</b></a>
+                <h2><a href=""> پیشنهاد قیمت </a></h2>
+                <span> آخرین قیمت : @item.Auctions.First().LastPrice </span>
+                <i>@(item.Auctions.First().Endtime - DateTime.Now)</i>
+            </article>
+        </div>
+    }
+}
+
+
 
 
 

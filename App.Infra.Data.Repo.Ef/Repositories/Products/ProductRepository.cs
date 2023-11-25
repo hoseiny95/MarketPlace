@@ -69,5 +69,18 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             productList.RemoveAll(item => item == null);
             return productList;
         }
+        public async Task<List<int>> GetIDByCategories(List<CategoryDto> categories, CancellationToken cancellationToken)
+        {
+            var productList = new List<int>();
+            foreach (var item in categories)
+            {
+                var product = await _context.Products.Include(c => c.BoothProducts)
+                         .ThenInclude(c => c.ProductImages).ThenInclude(c => c.Image)
+                         .Where(x => x.CategoryId == item.Id).Select(s => s.Id).ToListAsync(cancellationToken);
+                productList.AddRange(product);
+            }
+            productList.RemoveAll(item => item == 0);
+            return productList;
+        }
     }
 }

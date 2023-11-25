@@ -25,6 +25,7 @@ public partial class BoothProduct
     public string Description { get; set; } = null!;
 
     public bool IsAvailable { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     public virtual ICollection<Auction> Auctions { get; set; } = new List<Auction>();
 

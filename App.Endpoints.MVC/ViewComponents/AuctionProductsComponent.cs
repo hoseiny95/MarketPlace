@@ -13,8 +13,9 @@ public class AuctionProductsComponent : ViewComponent
         _boothProductService = boothProductService;
     }
 
-    public async Task<IViewComponentResult> InvokeAsync()
+    public async Task<IViewComponentResult> InvokeAsync(int id)
     {
+        ViewBag.type = id;
         var result = await _boothProductService.GetAll(default);
         return View(result);
     }
