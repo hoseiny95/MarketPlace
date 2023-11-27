@@ -32,6 +32,10 @@
                                 {
                                     <a href="/Admin"> پنل ادمین </a>
                                 }
+                                @if (User.IsInRole("Customer") && User.Identity.IsAuthenticated)
+                                {
+                                    <a href="/order/showorder?username=@User.Identity.Name"> سبد خرید </a>
+                                }
 
                             </li>
                         </ul>
@@ -43,7 +47,7 @@
                                 <div class="loggein">
                                     <i class="zmdi zmdi-account"></i><a href="/UserPanel"> @User.Identity.Name ، خوش آمدید </a>
                                     /
-                                    <a href="Account/Logout"> خروج </a>
+                                    <a href="/Account/Logout"> خروج </a>
                                 </div>
                             }
                             else

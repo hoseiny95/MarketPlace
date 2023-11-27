@@ -49,8 +49,8 @@ public class AuctionRepository : IAuctionRepository
 
     public async Task<int> Update(AuctionDto auction, CancellationToken cancellationToken)
     {
-        var entity = _mapper.Map<Auction>(auction);
-        _context.Auctions.Update(entity);
+        var entity = await _context.Auctions.FirstOrDefaultAsync(x => x.Id == auction.Id, cancellationToken);
+        entity.LastPrice = auction.LastPrice;
         await _context.SaveChangesAsync(cancellationToken);
         return entity.Id;
     }

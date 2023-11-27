@@ -26,8 +26,8 @@ public class OrderRepository : IOrderRepository
     }
     public async Task<int> Create(OrderDto order, CancellationToken cancellationToken)
     {
-        var entity = _mapper.Map<OrderDto>(order);
-        await _context.AddAsync(entity, cancellationToken);
+        var entity = _mapper.Map<Order>(order);
+        await _context.Orders.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return entity.Id;
     }
@@ -51,13 +51,16 @@ public class OrderRepository : IOrderRepository
     public async Task<OrderDto> GetById(int orderId, CancellationToken cancellationToken)
                   => _mapper.Map<OrderDto>(await _context.Orders.Include(c => c.OrderLines).ThenInclude(c => c.BothProduct)
                       .ThenInclude(c => c.ProductImages).ThenInclude(c => c.Image)
-                      .Include(c => c.OrderLines).ThenInclude(c => c.BothProduct).ThenInclude(c => c.Both)
-                                .FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken));
+                      .Include(c => c.OrderLines).ThenInclude(c => c.BothProduct).ThenInclude(c => c.Both).Include(c => c.OrderLines)
+                       .Include(c => c.OrderLines).ThenInclude(c => c.BothProduct).ThenInclude(c => c.Product)
+                      .FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken));
 
     public async Task<int> Update(OrderDto order, CancellationToken cancellationToken)
     {
-        var entity = _mapper.Map<Order>(order);
-        _context.Orders.Update(entity);
+        var entity = await _context.Orders.FirstOrDefaultAsync(x => x.Id == order.Id, cancellationToken);
+        entity.OrderStatusId = order.OrderStatusId;
+        entity.PriceSum = order.PriceSum;
+        entity.IsBid = order.IsBid;
         await _context.SaveChangesAsync(cancellationToken);
         return entity.Id;   
     }

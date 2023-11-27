@@ -1,0 +1,120 @@
+﻿@using App.Domain.Core.Dtos.Orders;
+@model OrderDto
+
+
+@{
+    ViewData["Title"] = "ShowOrder";
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">تاپ شاپ</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> نمایش فاکتور </li>
+        </ul>
+    </nav>
+</div>
+
+<main>
+    <div class="container">
+        <div class="user-account">
+            <div class="row">
+                <partial name="_SideBar" />
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <section class="user-account-content">
+                        <header><h1> فاکتور شما </h1></header>
+                        @if (ViewBag.finaly == true)
+                        {
+                            <div class="alert alert-success">
+                                فاکتور با موفقیت پرداخت گردید
+                            </div>
+                        }
+                        @if (Model != null)
+                        {
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>کالا</th>
+                                        <th>نام کالا</th>
+                                        <th>تعداد</th>
+                                        <th>قیمت</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderLines)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href="/Product/detail/@item.BothProduct.Id" class="img-layer">
+                                                    <img src="/images/@item.BothProduct.ProductImages.First().Image.ImagePath" style="height : 150px">
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="/ShowCourse/@item.Id" target="_blank">@item.BothProduct.Product.Name</a><br><br><br>
+                                                <a class="link-info" href="#">@item.BothProduct.Both.Name</a>
+                                            </td>
+                                            <td>
+                                                @item.Count
+                                            </td>
+                                            <td>
+                                                @item.PriceSum.ToString("#,0")
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                  
+                                    @if(Model.OrderStatusId == 1)
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="text-left">کد تخفیف</td>
+                                            <td>
+                                                <input type="text" class="form-control" />
+                                                <input type="submit" class="btn btn-primary btn-block" style="margin-top: 5px" value="اعمال" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="3" class="text-left">جمع کل</td>
+                                            <td>
+                                                @Model.PriceSum.ToString("#,0")
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="text-left"></td>
+                                            <td colspan="2">
+
+                                                <a class="btn btn-success btn-block" href="/Order/FinishOrder/@Model.Id">تایید فاکتور</a>
+
+
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+
+                                        <tr>
+                                            <td colspan="3" class="text-left">پرداخت شده</td>
+                                            <td>
+                                                @Model.PriceSum.ToString("#,0")
+                                            </td>
+                                        </tr>
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                سبد خرید خالی است
+                            </div>
+                        }
+
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

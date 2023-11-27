@@ -8,10 +8,6 @@
     <header>
         @* <a href="" class="logo"><img src="/images/logo.JPG"></a> *@
         <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-        @if (@ViewBag.SetBid != null)
-        {
-            <div class="alert alert-danger">قیمت داده شده بالاتر از آخرین قیمت نیست</div>
-        }
         <h1> با ما بهترین خرید را تجربه کنید </h1>
         <h3> در مزایده شرکت کن و با کیفیت ترین را بخر </h3>
     </header>
@@ -28,6 +24,10 @@
             @if (@ViewBag.SetBid != null)
             {
                 <div class="alert alert-danger">قیمت داده شده بالاتر از آخرین قیمت نیست</div>
+            }
+            @if (@ViewBag.BidSuccess != null)
+            {
+                <div class="alert alert-info">قیمت شما با موفقیت ثبت شد</div>
             }
             <header>
                 <h2> تخفیف های شگفت انگیز </h2>

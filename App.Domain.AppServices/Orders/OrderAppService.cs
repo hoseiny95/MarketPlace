@@ -43,6 +43,8 @@ public class OrderAppService : IOrderAppService
         if(customer.Orders.Any(c => c.OrderStatusId == 1))
         {
             var order = customer.Orders.Where(x => x.OrderStatusId ==1).FirstOrDefault();
+            var orderlines = await _orderLineService.GetAllByOrderId(order.Id, cancellationToken);
+            order.OrderLines = orderlines;
             var orderline = order.OrderLines.Where(c => c.BothProductId == BoothProductId).FirstOrDefault();
             if (orderline == null)
             {
@@ -75,6 +77,7 @@ public class OrderAppService : IOrderAppService
                 IsBid = false,
                 OrderStatusId = 1,
                 PriceSum = product.Price,
+                CreatedAt = DateTime.Now,
                 OrderLines =new List<OrderLineDto>() {new OrderLineDto()
                 {
                     BothProductId = BoothProductId,
@@ -88,8 +91,36 @@ public class OrderAppService : IOrderAppService
         }        
     }
 
+    public async Task FinishOrder(int orderId, CancellationToken cancellationToken)
+    {
+        var order = await _orderService.GetById(orderId, cancellationToken);
+        order.OrderStatusId = 2;
+
+        await _orderService.Update(order,cancellationToken);
+    }
+
     public async Task<OrderDto> GetbyId(int orderId, CancellationToken cancellationToken)
         => await _orderService.GetById(orderId, cancellationToken);
+
+    public async Task<OrderDto> GetbyUsername(string username, CancellationToken cancellationToken)
+    {
+        var user = await _userService.GetByUserName(username, cancellationToken);
+        var customer = await _customerService.GetByUserId(user.Id, cancellationToken);
+        var order = customer.Orders.Where(x => x.OrderStatusId == 1).FirstOrDefault();
+        if (order != null)
+        {
+            var orderlines = await _orderLineService.GetAllByOrderId(order.Id, cancellationToken);
+            order.OrderLines = orderlines;
+        }
+        return order;
+    }
+    public async Task<List<OrderDto>> GetAllbyUsername(string username, CancellationToken cancellationToken)
+    {
+        var user = await _userService.GetByUserName(username, cancellationToken);
+        var customer = await _customerService.GetByUserId(user.Id, cancellationToken);
+        var order = customer.Orders.ToList();
+        return order;
+    }
 
     public async Task UpdateSellersWallet(int orderId, CancellationToken cancellationToken)
     {

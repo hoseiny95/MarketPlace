@@ -20,6 +20,9 @@ namespace App.Domain.Services.Products
             _boothProductRepository = boothProductRepository;
         }
 
+        public async Task<int> BidUpdate(BoothProductDto boothProduct, CancellationToken cancellationToken)
+            => await _boothProductRepository.BidUpdate(boothProduct, cancellationToken);    
+
         public async Task ConfirmProduct(int id, CancellationToken cancellationToken)
             => await _boothProductRepository.ConfirmProduct(id, cancellationToken);
 

@@ -14,11 +14,18 @@ public class AuctionAppService : IAuctionAppService
 {
     private readonly IAuctionService _auctionService;
     private readonly IBoothProductService _boothProductService;
+    private readonly ICustomerService _customerService;
+    private readonly IAppUserService _userService;
+    private readonly IBidService _bidService;
 
-    public AuctionAppService(IAuctionService auctionService, IBoothProductService boothProductService)
+    public AuctionAppService(IAuctionService auctionService, IBoothProductService boothProductService, 
+        ICustomerService customerService, IAppUserService userService, IBidService bidService)
     {
         _auctionService = auctionService;
         _boothProductService = boothProductService;
+        _customerService = customerService;
+        _userService = userService;
+        _bidService = bidService;
     }
 
     public async Task<int> StartAuction(int boothId, double minPrice, int duration, int BoothProdectId, 
@@ -39,7 +46,7 @@ public class AuctionAppService : IAuctionAppService
         int AuctionId = await _auctionService.Create(AuctionDto, cancellationToken);
         var boothProduct = await _boothProductService.GetById(BoothProdectId, cancellationToken);
         boothProduct.IsBid = true;
-        await _boothProductService.Update(boothProduct, cancellationToken);
+        await _boothProductService.BidUpdate(boothProduct, cancellationToken);
         return AuctionId;
     }
     public async Task EndAuction(int auctionId, CancellationToken cancellationToken)
@@ -55,5 +62,29 @@ public class AuctionAppService : IAuctionAppService
         if (auction.WinnerId == 0)
             boothProduct.IsAvailable = false;
         await _boothProductService.Update(boothProduct, cancellationToken);
+    }
+
+    public async Task<double> GetLastPrice(int auctionId, CancellationToken cancellationToken)
+    {
+        var auction = await _auctionService.GetById(auctionId, cancellationToken);
+        return auction.LastPrice;
+    }
+
+    public async Task CreateBid(string username, int auctionId, double price, CancellationToken cancellationToken)
+    {
+        var user = await _userService.GetByUserName(username, cancellationToken);
+        var customer = await _customerService.GetByUserId(user.Id, cancellationToken);
+        var bid = new BidDto()
+        {
+            AuctionId = auctionId,
+            CustomerId = customer.Id,
+            Price = price,
+            CreateAt = DateTime.UtcNow,
+        };
+        await _bidService.Create(bid, cancellationToken);
+        var auction = await _auctionService.GetById(auctionId, cancellationToken);
+        auction.LastPrice = price;
+        await _auctionService.Update(auction, cancellationToken);
+
     }
 }

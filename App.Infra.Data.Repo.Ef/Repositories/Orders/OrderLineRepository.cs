@@ -27,7 +27,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Orders
         public async Task<int> Create(OrderLineDto order, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<OrderLine>(order);
-            await _context.AddAsync(entity, cancellationToken);
+            await _context.OrderLines.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
         }
@@ -44,18 +44,24 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Orders
 
 
         public async Task<List<OrderLineDto>> GetAllByOrderId(int orderId, CancellationToken cancellationToken)
-                       => _mapper.Map<List<OrderLineDto>>(await _context.OrderLines.Where(x=> x.OrderId==orderId).ToListAsync(cancellationToken));
+                       => _mapper.Map<List<OrderLineDto>>(await _context.OrderLines.Include(c => c.BothProduct)
+                           .ThenInclude(c => c.Product).Include(c => c.BothProduct).ThenInclude(c => c.ProductImages)
+                           .ThenInclude(c => c.Image).Include(c => c.BothProduct).ThenInclude(c => c.Both)
+                           .Where(x=> x.OrderId==orderId).ToListAsync(cancellationToken));
 
 
         public async Task<OrderLineDto> GetById(int orderId, CancellationToken cancellationToken)
                     => _mapper.Map<OrderLineDto>(await _context.OrderLines.FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken));
+        
+       
 
 
         public async Task<int> Update(OrderLineDto order, CancellationToken cancellationToken)
         {
-            var entity = _mapper.Map<OrderLine>(order);
-            _context.OrderLines.Update(entity);
-            await _context.SaveChangesAsync(cancellationToken);
+            var entity = await _context.OrderLines.FirstOrDefaultAsync(x => x.Id == order.Id, cancellationToken);
+            entity.Count = order.Count;
+            entity.PriceSum = order.PriceSum;
+            var i = await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
         }
     }

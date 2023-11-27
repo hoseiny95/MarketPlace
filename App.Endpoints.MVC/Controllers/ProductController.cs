@@ -38,8 +38,8 @@ namespace App.Endpoints.MVC.Controllers
         public async Task<IActionResult> BuyProduct(int id, CancellationToken cancellationToken)
         {
             
-            var orderid = await _orderAppService.ByeProduct(id, User.Identity.Name, cancellationToken);
-            return Redirect("/Order/ShowOrder" + orderid.ToString());
+             await _orderAppService.ByeProduct(id, User.Identity.Name, cancellationToken);
+            return RedirectToAction("ShowOrder","Order",new {username = User.Identity.Name });
         }
 
     }

@@ -59,6 +59,14 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
         }
+
+        public async Task<int> BidUpdate(BoothProductDto boothProduct, CancellationToken cancellationToken)
+        {
+            var entity = await _context.BoothProducts.FirstOrDefaultAsync(c=> c.Id == boothProduct.Id, cancellationToken);
+            entity.IsBid = boothProduct.IsBid;
+            await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
+        }
         public async Task<List<ProductAdminDto>> GetAdminProducts(CancellationToken cancellationToken)
         {
             var result = _context.BoothProducts.Include(x => x.Both).Include(x => x.Product)

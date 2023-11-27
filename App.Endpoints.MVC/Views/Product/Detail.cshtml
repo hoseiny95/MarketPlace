@@ -17,7 +17,7 @@
 
             <div class="col-md-8 col-sm-12 col-xs-12 pull-left">
                 <section class="term-description">
-                    <img src="/images/@Model.ProductImages.First().Image.ImagePath">
+                    <img src="/images/@Model.ProductImages.First().Image.ImagePath" style="height: 150px">
 
                 </section>
 
@@ -161,8 +161,8 @@
                         </li>
                     </ul>
 
-                    
-                        <a href=""> قیمت خرید: @Model.Price.ToString("#,0") تومان </a>
+
+                    <a href="/product/BuyProduct/@Model.Id"> قیمت خرید: @Model.Price.ToString("#,0") تومان </a>
                     
                 </div>
 

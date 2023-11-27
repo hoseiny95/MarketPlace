@@ -18,7 +18,7 @@ public partial class Order
     public bool IsBid { get; set; }
 
     public int OrderStatusId { get; set; }
-
+    public DateTime CreatedAt { get; set; }
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual Customer Customer { get; set; } = null!;

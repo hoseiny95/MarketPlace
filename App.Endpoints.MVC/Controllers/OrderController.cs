@@ -12,19 +12,25 @@ namespace App.Endpoints.MVC.Controllers
             _orderAppService = orderAppService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            return View();
-        }
-        public async Task<IActionResult> ShowOrder(int orderId, CancellationToken cancellationToken)
-        {
-            var model = _orderAppService.GetbyId(orderId, cancellationToken);
+            var model = await _orderAppService.GetAllbyUsername(User.Identity.Name, cancellationToken);
             return View(model);
         }
-        public async Task<IActionResult> FinishOrder(int orderId, CancellationToken cancellationToken)
+        public async Task<IActionResult> ShowOrder(string username, CancellationToken cancellationToken)
         {
-            var model = _orderAppService.GetbyId(orderId, cancellationToken);
+            var model = await _orderAppService.GetbyUsername(username, cancellationToken);
             return View(model);
+        } 
+        public async Task<IActionResult> ShowOrderByOrderId(int id, CancellationToken cancellationToken)
+        {
+            var model = await _orderAppService.GetbyId(id , cancellationToken);
+            return View(nameof(ShowOrder),model);
+        }
+        public async Task<IActionResult> FinishOrder(int id, CancellationToken cancellationToken)
+        {
+            await _orderAppService.FinishOrder(id, cancellationToken);
+            return Redirect("/home/index");
         }
     }
 }

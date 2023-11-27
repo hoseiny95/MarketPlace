@@ -47,7 +47,7 @@ public class CustomerRepository : ICustomerRepository
 
 
     public async Task<CustomerDto> GetById(int customerId, CancellationToken CancellationToken)
-                  => _mapper.Map<CustomerDto>(await _context.Customers
+                  => _mapper.Map<CustomerDto>(await _context.Customers.Include(c => c.Orders).ThenInclude(c => c.OrderLines)
                                 .FirstOrDefaultAsync(x => x.Id == customerId, CancellationToken));
 
     public async Task<int> Update(CustomerDto customer, CancellationToken CancellationToken)

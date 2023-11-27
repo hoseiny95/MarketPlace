@@ -16,7 +16,7 @@
                 <a href="/Product/detail/@item.Id" class="img-layer"><img src="/images/@item.ProductImages.First().Image.ImagePath" style="height: 170px"></a>
                 <a href="/Product/detail/@item.Id"><b>@item.Product.Name</b></a><br />
                 <a href="/Product/detail/@item.Id">@item.Both.Name</a>
-                <h2><a href=""> خرید </a></h2>
+                <h2><a href="/Product/BuyProduct/@item.Id"> خرید </a></h2>
                 <span>  قیمت : @item.Price </span>
                 <i></i>
             </article>
@@ -32,13 +32,55 @@
             <article>
                 <a href="" class="img-layer"><img src="/images/@item.ProductImages.First().Image.ImagePath" style="height: 150px"></a>
                 <a href=""><b>@item.Product.Name</b></a>
-                <h2><a href=""> پیشنهاد قیمت </a></h2>
-                <span> آخرین قیمت : @item.Auctions.First().LastPrice </span>
+                <h2><a class="setPrice" id="@item.Auctions.First().Id" href="#" data-toggle="modal" data-target="#confirmDeleteModal"> پیشنهاد قیمت </a></h2>
+                
+                <span> آخرین قیمت :@item.Auctions.First().LastPrice </span>
                 <i>@(item.Auctions.First().Endtime - DateTime.Now)</i>
             </article>
         </div>
     }
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/Auction/SetPrice">
+                        <div class="form-group">
+                            <input type="hidden" id="AuctionId"  name="Auction" >
+                            <input name="price" type="number" class="form-control" placeholder="قیمت را وارد کنید">
+                        </div>
+                        <input type="submit" class="btn btn-info m-2" value="ثبت" >
+                    </form>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بازگشت</button>
+
+                </div>
+                    
+            </div>
+        </div>
+    </div>
+
 }
+@* @section Scripts
+{
+    <script>
+        $("#setPrice").click(function() {
+            alert("The paragraph was clicked.");
+            console.log("sfsdgmkbm");
+            debugger;
+            var id = $("#auctio").val();
+            $("#AuctionId").val(id);
+
+        });
+    </script>
+} *@
 
 
 

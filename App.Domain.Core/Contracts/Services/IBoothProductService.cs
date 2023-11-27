@@ -21,5 +21,5 @@ public interface IBoothProductService
     Task CreateProductImage(int boothProductId, int imageId, CancellationToken cancellationToken);
     Task<Tuple<List<BoothProductDto>, int>> GetAllPaging(CancellationToken cancellationToken, List<int> ProductsId, int pageId = 1,
         string orderByType = "date", int startPrice = 0, int endPrice = 0);
-
+    Task<int> BidUpdate(BoothProductDto boothProduct, CancellationToken cancellationToken);
 }

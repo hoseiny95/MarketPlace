@@ -20,6 +20,7 @@ public partial class OrderDto
     public bool IsBid { get; set; }
 
     public int OrderStatusId { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     public virtual ICollection<CommentDto> Comments { get; set; } = new List<CommentDto>();
 
