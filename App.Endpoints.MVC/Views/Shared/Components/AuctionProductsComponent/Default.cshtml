@@ -35,8 +35,8 @@
                 <a href=""><b>@item.Product.Name</b></a>
                 <h2><a class="setPrice" id="@item.Auctions.Where(c => !c.IsSold).First().Id" href="#" data-toggle="modal" data-target="#confirmDeleteModal"> پیشنهاد قیمت </a></h2>
                 
-                <span> آخرین قیمت :@item.Auctions.First().LastPrice </span>
-                <i>@(item.Auctions.First().Endtime - DateTime.Now)</i>
+                <span> آخرین قیمت :@item.Auctions.Where(x => !x.IsSold).First().LastPrice </span>
+                <i>@(item.Auctions.Where(x => !x.IsSold).First().Endtime - DateTime.Now)</i>
             </article>
         </div>
     }
