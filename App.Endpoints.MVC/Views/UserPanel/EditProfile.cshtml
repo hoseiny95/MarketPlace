@@ -72,13 +72,13 @@
                                         <div class="col-md-7 col-sm-8 col-xs-12">
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
-                                                <input disabled type="text" class="form-control" asp-for="userName" placeholder="نام کاربری" aria-describedby="username">
+                                                <input disabled value="@user.User.UserName" type="text" class="form-control" asp-for="userName" placeholder="نام کاربری" aria-describedby="username">
                                             </div>
                                         </div>
                                         <div class="col-md-7 col-sm-8 col-xs-12">
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
-                                                <input disabled type="text" class="form-control" asp-for="Email" placeholder="ایمیل" aria-describedby="email-address">
+                                                <input disabled value="@user.User.Email" type="text" class="form-control" asp-for="Email" placeholder="ایمیل" aria-describedby="email-address">
                                             </div>
                                         </div>
                                         <div class="col-md-7 col-sm-8 col-xs-12">

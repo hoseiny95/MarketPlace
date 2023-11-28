@@ -22,12 +22,13 @@
 
             <div class="col-md-8 col-sm-12 col-xs-12 pull-left">
                 <section class="term-description">
-                    <img src="/images/@Model.ProductImages.First().Image.ImagePath" style="height: 200px">
-
+                    <div class="col-4">
+                    <img src="/images/@Model.ProductImages.First().Image.ImagePath" >
+                    </div>
                 </section>
 
                 <section class="user-comments">
-                    <header><h3> نظرات کاربران </h3></header>
+                    <header><h3> نظرات خریداران </h3></header>
                     <div class="inner">
                         <form asp-action="SetComment">
                             <div class="row">

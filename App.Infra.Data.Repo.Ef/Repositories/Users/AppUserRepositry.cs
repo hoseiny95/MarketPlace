@@ -37,17 +37,34 @@ public class AppUserRepositry : IAppUserRepositry
 
     public async Task<IdentityResult> Create(AppUserDto userDto, CancellationToken CancellationToken)
     {
-        var user = new AppUser
+        var user = new AppUser();
+        if (userDto.Role == "Customer")
         {
-            UserName = userDto.UserName,
-            Email = userDto.Email,
-        };
+             user = new AppUser
+            {
+                UserName = userDto.UserName,
+                Email = userDto.Email,
+                Customer = new Customer { }
+            };
+        }
+        else
+        {
+            user = new AppUser
+            {
+                UserName = userDto.UserName,
+                Email = userDto.Email,
+                Seller = new Seller { }
+            };
+
+        }
+       
         var result = await _userManager.CreateAsync(user, userDto.Password);
 
         if (result.Succeeded)
         {
             await _userManager.AddToRoleAsync(user, userDto.Role);
         }
+        
         return result;
 
     }

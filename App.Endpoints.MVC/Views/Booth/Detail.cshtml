@@ -4,7 +4,10 @@
 
 
 <div class="panel-body">
+    <h2>فروشگاه @Model.First().Both.Name</h2>
+    <hr />
     <div class="card-deck row">
+  
         @foreach (var item in Model)
         {
             <div class="col-md-4 mt-4 border-1">
@@ -22,12 +25,13 @@
 
                     <div class="card-body mt-1">
                         قیمت :  @item.Price <br /><br />
-
-                       
+                        <h2><a href="/product/buyProduct/@item.Id"> خرید </a></h2>
+                       <hr/>
 
                     </div>
 
                     <div class="card-footer">
+                      
                     </div>
                 </div>
             </div>

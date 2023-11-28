@@ -50,6 +50,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
         public async Task<BoothProductDto> GetById(int boothProductId, CancellationToken cancellationToken)
             => _mapper.Map<BoothProductDto>(await _context.BoothProducts.Include(c => c.Both).Include(c => c.Product)
                 .Include(c => c.ProductImages).ThenInclude(c => c.Image).Include(c => c.Comments)
+                .Include(c => c.Comments).ThenInclude(c => c.Customer).ThenInclude(c => c.Image)
                 .FirstOrDefaultAsync(x => x.Id == boothProductId, cancellationToken));
         public async Task<int> Update(BoothProductDto boothProduct, CancellationToken cancellationToken)
         {

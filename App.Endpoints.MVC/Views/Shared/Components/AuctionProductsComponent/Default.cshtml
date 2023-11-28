@@ -9,7 +9,8 @@
 
 @if (ViewBag.type == 1)
 {
-    @foreach (var item in Model.Where(g => g.IsBid == false && g.IsAvailable == true))
+   
+    @foreach (var item in Model.Skip(0).Take(8).ToList().Where(g => g.IsBid == false && g.IsAvailable == true))
     {
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
             <article>
