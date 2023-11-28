@@ -20,6 +20,8 @@ public interface IBoothProductRepository
     Task RefuseProduct(int id, CancellationToken cancellationToken);
     Task CreateProductImage(int boothProductId, int imageId, CancellationToken cancellationToken);
     Task<Tuple<List<BoothProductDto>, int>> GetAllPaging(CancellationToken cancellationToken, List<int> ProductsId, int pageId = 1,
-        string orderByType = "date", int startPrice = 0, int endPrice = 0);
+        string orderByType = "date", int startPrice = 0, int endPrice = 0, string filter = null);
     Task<int> BidUpdate(BoothProductDto boothProduct, CancellationToken cancellationToken);
+    Task<List<BoothProductDto>> GetByBoothId(int boothId, CancellationToken cancellationToken);
+    Task<List<BoothProductDto>> GetAllByName(string name, CancellationToken cancellationToken);
 }

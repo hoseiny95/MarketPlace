@@ -16,8 +16,8 @@
         <h3> در مزایده شرکت کن و با کیفیت ترین را بخر </h3>
     </header>
     <div class="search-form">
-        <form>
-            <input type="text" name="" placeholder="چی دوست داری بخری ؟">
+        <form asp-action="Index" asp-controller="Product">
+            <input type="text" name="filter" placeholder="چی دوست داری بخری ؟">
             <button><i class="zmdi zmdi-search"></i></button>
         </form>
     </div>
@@ -31,7 +31,7 @@
             }
             <header>
                 <h2> تخفیف های شگفت انگیز </h2>
-                <a href=""> مشاهده همه </a>
+                <a href="/product/index"> مشاهده همه </a>
             </header>
             <div class="row">
              

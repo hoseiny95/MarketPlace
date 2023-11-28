@@ -60,7 +60,7 @@ public class CustomerRepository : ICustomerRepository
     public async Task<CustomerDto> GetByUserId(int userId, CancellationToken CancellationToken)
     {
         var customer =  await _context.Customers.Include(c => c.User).ThenInclude(c=> c.Wallet).Include(c=> c.Orders)
-            .Include(c=> c.Bids).Include(c => c.Image)
+            .Include(c=> c.Bids).Include(c => c.Image).Include(c => c.Orders).ThenInclude(c => c.OrderLines)
             .FirstOrDefaultAsync(x=> x.UserId == userId, CancellationToken);
         return _mapper.Map<CustomerDto>(customer);  
     }

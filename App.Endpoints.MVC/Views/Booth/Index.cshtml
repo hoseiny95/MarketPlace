@@ -1,0 +1,33 @@
+﻿@using App.Domain.Core.Dtos.Products;
+@using Framework.Utilities;
+@model List<BoothDto>;
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">لیست غرفه ها</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="panel-body">
+    <div class="row m-10">
+        <!-- col -->
+       
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
+                <article>
+                    <a href="/Booth/detail/@item.Id" class="img-layer"><img src="/images/@item.Image.ImagePath"></a><br />
+                    <span>  <a href="/Booth/detail/@item.Id"> <b>@item.Name</b> </a></span><br />
+                    تاریخ ایجاد: <span> @item.CreatedAt.ToShamsi() </span><br />
+                    تلفن: <span> @item.Phone </span><br />
+                    شهر: <span> @item.City.Name </span><br />
+                    توضیحات: <span> @item.Description </span><br />
+
+                </article>
+            </div>
+
+        }
+
+    </div>
+</div>
+

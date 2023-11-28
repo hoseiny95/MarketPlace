@@ -1,4 +1,5 @@
-﻿using App.Endpoints.MVC.Models;
+﻿using App.Domain.Core.Contracts.AppServices;
+using App.Endpoints.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,10 +8,12 @@ namespace App.Endpoints.MVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IBoothProductAppService _boothProductAppService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IBoothProductAppService boothProductAppService)
         {
             _logger = logger;
+            _boothProductAppService = boothProductAppService;
         }
 
         public IActionResult Index()
@@ -20,6 +23,12 @@ namespace App.Endpoints.MVC.Controllers
 
         public IActionResult Privacy()
         {
+            return View();
+        }
+
+        public async Task<IActionResult> Search(string search, CancellationToken cancellationToken)
+        {
+            var res = await _boothProductAppService.GetAllByName(search, cancellationToken);
             return View();
         }
 

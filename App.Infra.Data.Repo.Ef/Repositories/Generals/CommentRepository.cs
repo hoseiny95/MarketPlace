@@ -26,7 +26,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Generals
         }
         public async Task<int> Create(CommentDto comment, CancellationToken cancellationToken)
         {
-            var entity = _mapper.Map<CommentDto>(comment);
+            var entity = _mapper.Map<Comment>(comment);
             await _context.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;

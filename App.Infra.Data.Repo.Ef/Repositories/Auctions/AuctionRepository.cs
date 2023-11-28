@@ -51,6 +51,7 @@ public class AuctionRepository : IAuctionRepository
     {
         var entity = await _context.Auctions.FirstOrDefaultAsync(x => x.Id == auction.Id, cancellationToken);
         entity.LastPrice = auction.LastPrice;
+        entity.IsSold = auction.IsSold;
         await _context.SaveChangesAsync(cancellationToken);
         return entity.Id;
     }

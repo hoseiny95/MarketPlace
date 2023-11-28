@@ -20,9 +20,9 @@ namespace App.Endpoints.MVC.Controllers
         }
 
         public async Task<IActionResult> Index( List<int> selectedGroups, CancellationToken cancellationToken, int pageId = 1, string orderByType = "date",
-            int startPrice = 0, int endPrice = 0)
+            int startPrice = 0, int endPrice = 0, string filter = null)
         {
-            var model = await _boothProductAppService.GetAllPaging(cancellationToken, selectedGroups, pageId, orderByType, startPrice, endPrice);
+            var model = await _boothProductAppService.GetAllPaging(cancellationToken, selectedGroups, pageId, orderByType, startPrice, endPrice, filter);
             ViewBag.selectedGroups = selectedGroups;
             ViewBag.pageId = pageId;
             var categories = await _categoryAppService.GetAll(cancellationToken);
@@ -41,6 +41,14 @@ namespace App.Endpoints.MVC.Controllers
              await _orderAppService.ByeProduct(id, User.Identity.Name, cancellationToken);
             return RedirectToAction("ShowOrder","Order",new {username = User.Identity.Name });
         }
-
+        public async Task<IActionResult> SetComment(int productId, string comment, CancellationToken cancellationToken)
+        {
+            var check = await _boothProductAppService.SetComment(User.Identity.Name, productId, comment, cancellationToken);
+            var model = await _boothProductAppService.GetById(productId, cancellationToken);
+            if (check)
+                ViewBag.comment = true;
+            else ViewBag.dontcomment = false;
+            return View("Detail", model);
+        }
     }
 }

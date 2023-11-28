@@ -49,7 +49,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
                         .ToListAsync(cancellationToken));
         public async Task<BoothProductDto> GetById(int boothProductId, CancellationToken cancellationToken)
             => _mapper.Map<BoothProductDto>(await _context.BoothProducts.Include(c => c.Both).Include(c => c.Product)
-                .Include(c => c.ProductImages).ThenInclude(c => c.Image)
+                .Include(c => c.ProductImages).ThenInclude(c => c.Image).Include(c => c.Comments)
                 .FirstOrDefaultAsync(x => x.Id == boothProductId, cancellationToken));
         public async Task<int> Update(BoothProductDto boothProduct, CancellationToken cancellationToken)
         {
@@ -62,7 +62,7 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
 
         public async Task<int> BidUpdate(BoothProductDto boothProduct, CancellationToken cancellationToken)
         {
-            var entity = await _context.BoothProducts.FirstOrDefaultAsync(c=> c.Id == boothProduct.Id, cancellationToken);
+            var entity = await _context.BoothProducts.FirstOrDefaultAsync(c => c.Id == boothProduct.Id, cancellationToken);
             entity.IsBid = boothProduct.IsBid;
             await _context.SaveChangesAsync(cancellationToken);
             return entity.Id;
@@ -143,8 +143,8 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             await _context.AddAsync(proimg, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }
-        public async Task<Tuple<List<BoothProductDto>, int>> GetAllPaging( CancellationToken cancellationToken, List<int> ProductsId, int pageId = 1,
-        string orderByType = "date", int startPrice = 0, int endPrice = 0)
+        public async Task<Tuple<List<BoothProductDto>, int>> GetAllPaging(CancellationToken cancellationToken, List<int> ProductsId, int pageId = 1,
+        string orderByType = "date", int startPrice = 0, int endPrice = 0, string filter = null)
         {
 
             IQueryable<BoothProduct> result = _context.BoothProducts;
@@ -179,9 +179,13 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
             {
                 result = result.Where(x => ProductsId.Contains(x.ProductId));
             }
+            if (!string.IsNullOrEmpty(filter))
+            {
+                result = result.Include(c => c.Product).Where(x => x.Product.Name.Contains(filter));
+            }
             int skip = (pageId - 1) * 8;
 
-            int pageCount =(int) Math.Ceiling( (decimal)result.Include(c => c.Both).Include(c => c.Product)
+            int pageCount = (int)Math.Ceiling((decimal)result.Include(c => c.Both).Include(c => c.Product)
                         .Include(c => c.Auctions)
                         .Include(c => c.ProductImages).ThenInclude(c => c.Image)
                 .Count() / 8);
@@ -193,5 +197,16 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
 
             return Tuple.Create(_mapper.Map<List<BoothProductDto>>(entities), pageCount);
         }
+
+        public async Task<List<BoothProductDto>> GetByBoothId(int boothId, CancellationToken cancellationToken)
+            => _mapper.Map<List<BoothProductDto>>(await _context.BoothProducts.Where(x => x.BothId == boothId).Include(c => c.Both).Include(c => c.Product)
+                .Include(c => c.ProductImages).ThenInclude(c => c.Image).ToArrayAsync(cancellationToken));
+
+        public async Task<List<BoothProductDto>> GetAllByName(string name, CancellationToken cancellationToken)
+                => _mapper.Map<List<BoothProductDto>>(await _context.BoothProducts.Include(c => c.Both).Include(c => c.Product)
+                        .Include(c => c.Auctions)
+                        .Include(c => c.ProductImages).ThenInclude(c => c.Image).Where(x => x.Product.Name.Contains(name))
+                        .ToListAsync(cancellationToken));
+
     }
 }

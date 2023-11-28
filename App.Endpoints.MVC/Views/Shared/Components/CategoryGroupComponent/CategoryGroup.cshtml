@@ -5,6 +5,7 @@
         <nav>
             <span class="responsive-sign"><i class="zmdi zmdi-menu"></i></span>
             <ul>
+                <li><a href="/booth"> غرفه ها </a></li>
                 @foreach (var group in Model.Where(g => g.ParentId == null))
                 {
                     <li>

@@ -17,6 +17,7 @@ public class AuctionProductsComponent : ViewComponent
     {
         ViewBag.type = id;
         var result = await _boothProductService.GetAll(default);
-        return View(result);
+        var res = result.Skip(0).Take(8).ToList();
+        return View(res);
     }
 }
