@@ -35,6 +35,8 @@ public class UsersController : Controller
          await _appUserService.Create(user, cancellationToken);
         return Redirect("/admin/users") ; 
     }
+
+    [HttpPost]
     public async Task<IActionResult> Delete(int id,CancellationToken cancellationToken)
     {
         await _appUserService.Delete(id, cancellationToken);

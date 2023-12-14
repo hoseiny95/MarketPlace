@@ -14,6 +14,7 @@ public class AppUserDto
     public string Role { get; set; }
     public bool IsSeller { get; set; }
     public bool RememberMe { get; set; }
+    public bool IsActive { get; set; }
 
     public virtual ICollection<AddressDto> Addresses { get; set; } = new List<AddressDto>();
 

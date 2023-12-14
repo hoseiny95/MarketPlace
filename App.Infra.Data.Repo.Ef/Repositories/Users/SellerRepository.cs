@@ -67,24 +67,24 @@ public class SellerRepository : ISellerRepository
         .ThenInclude(c => c.BoothProducts)
         .ThenInclude(c => c.ProductImages).ThenInclude(c => c.Image).Include(c => c.Booth).ThenInclude(c => c.BoothProducts)
         .ThenInclude(c => c.Product).Include(c => c.MedalNavigation)
+        .Include(c => c.Booth)
         .SelectMany(x => x.Booth.BoothProducts).ToListAsync(cancellationToken);
-
-
-        var re = await (from p in _context.Sellers.Where(x => x.UserId == userId)
-                  from c in _context.Booths
-                  where p.BoothId == c.Id
-                  select c
-                  ).FirstOrDefaultAsync(cancellationToken);
-        var seller = await _context.Sellers.Where(x => x.UserId == userId).Include(c => c.MedalNavigation).FirstOrDefaultAsync(cancellationToken);
-        re.Seller = seller;
-        booths.ForEach(x => x.Both = re);
-
-
+        if (booths.Count > 0)
+        {
+            var re = await (from p in _context.Sellers.Where(x => x.UserId == userId)
+                            from c in _context.Booths
+                            where p.BoothId == c.Id
+                            select c
+               ).FirstOrDefaultAsync(cancellationToken);
+            var seller = await _context.Sellers.Where(x => x.UserId == userId).Include(c => c.MedalNavigation).FirstOrDefaultAsync(cancellationToken);
+            re.Seller = seller;
+            booths.ForEach(x => x.Both = re);
+        }
         var boothDtos = _mapper.Map<List<BoothProductDto>>(booths);
         return boothDtos;
     }
     public async Task<int> GetBoothId(int userId, CancellationToken cancellationToken)
-        => await _context.Sellers.Where(x => x.UserId == userId).Select(c => c.BoothId).FirstOrDefaultAsync(cancellationToken);
+        => (int)await _context.Sellers.Where(x => x.UserId == userId).Select(c => c.BoothId).FirstOrDefaultAsync(cancellationToken);
 
     public async Task<SellerDto> GetByBoothProductId(int boothProductId, CancellationToken cancellationToken)
     {
@@ -96,7 +96,7 @@ public class SellerRepository : ISellerRepository
    public async Task<SellerDto> GetbyUserId(int userId, CancellationToken cancellationToken)
     {
        var seller = await  _context.Sellers.Include(c => c.User).ThenInclude(c => c.Wallet)
-            .Include(c => c.Booth).ThenInclude(c => c.Image)
+            .Include(c => c.Booth).ThenInclude(c => c.Image).Include(c => c.MedalNavigation)
             .Where(x => x.UserId == userId).FirstOrDefaultAsync(cancellationToken);
         return _mapper.Map<SellerDto>(seller);
     }

@@ -10,9 +10,9 @@ public partial class Customer
 {
     public int Id { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; } 
 
-    public string Lastname { get; set; } = null!;
+    public string? Lastname { get; set; } 
 
     public int UserId { get; set; }
 
@@ -24,13 +24,13 @@ public partial class Customer
 
     public virtual ICollection<Auction>? Auctions { get; set; } = new List<Auction>();
 
-    public virtual ICollection<Bid> Bids { get; set; } = new List<Bid>();
+    public virtual ICollection<Bid>? Bids { get; set; } = new List<Bid>();
 
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public virtual ICollection<Comment>? Comments { get; set; } = new List<Comment>();
 
     public virtual Image? Image { get; set; } = null!;
 
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    public virtual ICollection<Order>? Orders { get; set; } = new List<Order>();
 
     public virtual AppUser? User { get; set; } = null!;
 }

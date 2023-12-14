@@ -24,7 +24,7 @@ public partial class MarketPlaceContext : IdentityDbContext<AppUser, IdentityRol
 
     public virtual DbSet<Address> Addresses { get; set; }
 
-    //public virtual DbSet<AppUser> AppUsers { get; set; }
+    public virtual DbSet<AppUser> AppUsers { get; set; }
 
     public virtual DbSet<Auction> Auctions { get; set; }
 
@@ -105,7 +105,16 @@ public partial class MarketPlaceContext : IdentityDbContext<AppUser, IdentityRol
 
             entity.HasOne(d => d.Wallet).WithOne(p => p.AppUser)
                 .HasForeignKey<AppUser>(d => d.WalletId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_AppUser_Wallets");
+
+            entity.HasOne(d => d.Seller).WithOne(p => p.User)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sellers_AppUser");
+
+            entity.HasOne(d => d.Customer).WithOne(p => p.User)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sellers_AppUser");
         });
 
         modelBuilder.Entity<Auction>(entity =>

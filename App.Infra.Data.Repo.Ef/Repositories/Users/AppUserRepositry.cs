@@ -1,5 +1,6 @@
 ﻿using App.Domain.Core.Contracts.Repositories;
 using App.Domain.Core.Dtos.Users;
+using App.Domain.Core.Entities.Products;
 using App.Domain.Core.Entities.Users;
 using App.Infra.Db.Sql.Models;
 using AutoMapper;
@@ -40,11 +41,13 @@ public class AppUserRepositry : IAppUserRepositry
         var user = new AppUser();
         if (userDto.Role == "Customer")
         {
-             user = new AppUser
+            user = new AppUser
             {
                 UserName = userDto.UserName,
                 Email = userDto.Email,
-                Customer = new Customer { }
+                Customer = new Customer { },
+                IsActive = true
+                
             };
         }
         else
@@ -53,20 +56,34 @@ public class AppUserRepositry : IAppUserRepositry
             {
                 UserName = userDto.UserName,
                 Email = userDto.Email,
-                Seller = new Seller { }
+                IsActive = true
             };
 
         }
-       
+
         var result = await _userManager.CreateAsync(user, userDto.Password);
 
         if (result.Succeeded)
         {
             await _userManager.AddToRoleAsync(user, userDto.Role);
-        }
-        
-        return result;
+            user = await _userManager.FindByNameAsync(userDto.UserName);
+            int id = _context.Wallets.Max(x => x.Id);
+            var wallet = new Wallet() { Id = id +1, Balance = 0, AppUser = user };
+            _context.Add(wallet);
+            if (userDto.Role == "Seller")
+            {
+                int sellerid = _context.Sellers.Max(x => x.Id);
+                var seller = new Seller() { Id = sellerid + 1, UserId = user.Id, Medal = 1, User = user, Booth = 
+                    new Booth { IsDeleted = false, CreatedAt = DateTime.Now, IsSuprior = false } };
+                _context.Add(seller);
+               
+            }
+            _context.SaveChanges();
 
+        }
+       
+
+        return result;
     }
     public async Task CreateRole(string name)
     {
@@ -84,7 +101,14 @@ public class AppUserRepositry : IAppUserRepositry
     public async Task Delete(int userId, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
-        await _userManager.DeleteAsync(user);
+        //_context.AppUsers.Remove(user);
+        //_context.Remove(user);
+        //_context.Entry(userrole).State = EntityState.Modified;
+        //_context.Entry(user).State = EntityState.Deleted;
+        user.IsActive = false;
+        await _context.SaveChangesAsync(cancellationToken);
+    
+
     }
 
     public async Task<List<AppUserDto>> GetAll(CancellationToken CancellationToken)
@@ -135,5 +159,8 @@ public class AppUserRepositry : IAppUserRepositry
         var user = await _userManager.FindByNameAsync(userName);
         return _mapper.Map<AppUserDto>(user);
     }
-   
+
+    public async Task<AppUserDto> GetByEmail(string email, CancellationToken cancellationToken)
+        => _mapper.Map <AppUserDto> (await _userManager.FindByEmailAsync(email));
+    
 }

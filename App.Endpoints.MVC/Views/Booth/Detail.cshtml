@@ -25,7 +25,16 @@
 
                     <div class="card-body mt-1">
                         قیمت :  @item.Price <br /><br />
-                        <h2><a href="/product/buyProduct/@item.Id"> خرید </a></h2>
+                        @if (User.IsInRole("Customer"))
+                        {
+                            <h2><a href="/product/buyProduct/@item.Id"> خرید </a></h2>
+
+                        }
+                        else
+                        {
+                            <h2><a style="pointer-events: none;" href="/product/buyProduct/@item.Id"> خرید </a></h2>
+
+                        }
                        <hr/>
 
                     </div>

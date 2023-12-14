@@ -36,7 +36,8 @@
         <div class="form-layer">
 
             <form asp-action="Login" method="post">
-
+                <div asp-validation-summary="All" class="text-danger">
+                </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
                     <input asp-for="Email" type="text" class="form-control" placeholder="ایمیل" aria-describedby="email-address">

@@ -1,10 +1,6 @@
 ﻿@using App.Domain.Core.Dtos.Admin;
 @model List<ProductAdminDto>;
-@{
-    int id = 0;
-    string name = null;
-    string boothName = null;
-}
+
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">لیست کالا</h1>
@@ -33,16 +29,14 @@
                     @item.Description
 
                 </div>
-                <div style="display: none;">
-                    @(id = item.Id)@(name = item.Name)@(boothName = item.BoothName)
-                </div>
+             
 
                 <div class="card-footer">
                     @*  <a asp-page="/Flowers/Detail" asp-route-ID="@item.Id"
                 class="btn-primary btn m-1">Detail</a> *@
                     <a href="/Admin/Products/EditProduct/@item.Id"
                        class="btn-primary btn m-1">ویرایش</a>
-                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">حذف</a>
+                    <a id="@item.Id" href="#" class="setDelete btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">حذف</a>
 
 
                 </div>
@@ -59,14 +53,31 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                   آیا از حذف کالای @name در فروشگاه @boothName اطمینان دارید؟
+                   آیا از حذف کالا در فروشگاه  اطمینان دارید؟
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بازگشت</button>
-                    <a class="btn btn-danger" href="/Admin/products/Delete/@id">حذف</a>
+                    <form method="post" action="/Admin/products/Delete">
+                        <div class="form-group">
+                            <input type="hidden" id="DeleteId" name="id">
+                        </div>
+                        <input  type="submit" class="btn btn-danger" value="حذف">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">بازگشت</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
 </div>
+
+@section Scripts
+    {
+
+    <script type="text/javascript">
+        $(".setDelete").on("click", function () {
+            var current2 = $(this).attr("Id");
+            $("#DeleteId").val(current2);
+        });
+
+    </script>
+}

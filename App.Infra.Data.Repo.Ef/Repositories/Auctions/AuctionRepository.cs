@@ -43,7 +43,7 @@ public class AuctionRepository : IAuctionRepository
 
 
     public async Task<AuctionDto> GetById(int auctionId, CancellationToken cancellationToken)
-                    => _mapper.Map<AuctionDto>(await _context.Auctions.FirstOrDefaultAsync(x => x.Id == auctionId, cancellationToken));
+                    => _mapper.Map<AuctionDto>(await _context.Auctions.Include(c => c.Bids).FirstOrDefaultAsync(x => x.Id == auctionId, cancellationToken));
 
 
 

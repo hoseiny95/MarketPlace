@@ -58,16 +58,16 @@ public class SellerAppService : ISellerAppService
         var DataSeller = await _sellerService.GetById(seller.Id, cancellationToken);
         if (photo != null)
         {
-            var image = await _imageService.GetById(DataSeller.Booth.ImageId, cancellationToken);
+            var image = await _imageService.GetById((int)DataSeller.Booth.ImageId, cancellationToken);
             var path = _imageService.CreateImagePath(photo);
             _imageService.Image_resize(path[0], path[1], 150);
             var index = path[1].LastIndexOf('\\');
             var imagePath = "smallPic/" + path[1].Substring(index + 1);
             var imageId = await _imageService.Create(imagePath, cancellationToken);
-            await _boothService.ImageUpdate(DataSeller.BoothId, imageId, cancellationToken);
+            await _boothService.ImageUpdate((int)DataSeller.BoothId, imageId, cancellationToken);
             if (image != null)
             {
-                await _imageService.Delete(DataSeller.Booth.ImageId, cancellationToken);
+                await _imageService.Delete((int)DataSeller.Booth.ImageId, cancellationToken);
                 _imageService.Delete(image.ImagePath);
             }
 

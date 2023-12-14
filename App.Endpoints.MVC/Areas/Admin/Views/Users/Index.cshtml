@@ -2,8 +2,8 @@
 @model List<AppUserDto>;
 @{
     ViewData["Title"] = "Index";
-    int id = 0;
-    string name = null;
+ 
+   
 }
 
 <div class="row">
@@ -61,16 +61,19 @@
                                         <td>@user.UserName</td>
                                         <td>@user.Email</td>
                                         <td>
-                                           
+                                            @if (user.IsActive)
+                                            {
                                                 <p class="text-success">فعال</p>
-                                            
-                                            
+
+                                            }
+                                            else
+                                            {
+                                                <p class="text-danger">غیر فعال</p>
+                                            }
+
                                             
                                         </td>
                                         <td>@user.Role
-                                            <div style="display: none;">
-                                                @(id = user.Id)@(name = user.UserName)
-                                            </div>
                                         </td>
                                         
                                         <td>
@@ -82,7 +85,7 @@
                                             </a> *@
 @*                                             <a class="btn btn-sm btn-danger" onclick="DeleteBranch('@user.Id')"> حذف</a>
  *@
-                                            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">حذف</a>
+                                            <a id="@user.Id" href="#" class="setDelete btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">حذف</a>
 
 </td>
                                     </tr>
@@ -123,11 +126,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    از حذف کاربر @name اطمینان دارید؟
+                    از حذف کاربر  اطمینان دارید؟
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بازگشت</button>
-                    <a class="btn btn-danger" href="/Admin/Users/Delete/@id">حذف</a>
+                    <form method="post" action="/Admin/Users/Delete">
+                        <div class="form-group">
+                            <input type="hidden"  id="DeleteId" name="id">
+                          
+                        </div>
+                        <input  type="submit" class="btn btn-danger" value="حذف">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">بازگشت</button>
+                    </form>
+                
                 </div>
             </div>
         </div>
@@ -135,6 +145,18 @@
 
     <!-- /.col-lg-12 -->
 </div>
+
+@section Scripts
+    {
+           
+    <script type="text/javascript">
+            $(".setDelete").on("click", function () {
+                var current2 = $(this).attr("Id");
+                $("#DeleteId").val(current2);
+            });
+      
+    </script>
+}
 
 
 

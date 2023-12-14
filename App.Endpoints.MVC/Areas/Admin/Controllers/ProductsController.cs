@@ -52,7 +52,7 @@ public class ProductsController : Controller
         var res = await _boothProductService.GetAdminProductsNotConfirm(cancellationToken);
         return View(res);
     }
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
          await _boothProductService.Delete(id,cancellationToken);

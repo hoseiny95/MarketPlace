@@ -64,11 +64,21 @@ namespace App.Endpoints.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _userService.Login(_mapper.Map<AppUserDto>(model), cancellationToken);
-                if (result.Succeeded)
+                var user = await _userService.GetByEmail(model.Email, cancellationToken);
+                if (user.IsActive)
                 {
-                    return RedirectToAction("Index", "Home");
+                    var result = await _userService.Login(_mapper.Map<AppUserDto>(model), cancellationToken);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, " کاربری حذف شده است *");
+                    return View(model);
+                }
+              
                 ModelState.AddModelError(string.Empty, "نام کاربری یا کلمه عبور اشتباه است *");
             }
             return View(model);

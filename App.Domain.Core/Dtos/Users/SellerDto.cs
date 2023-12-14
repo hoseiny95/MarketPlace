@@ -9,23 +9,23 @@ public class SellerDto
 {
     public int Id { get; set; }
 
-    public int BoothId { get; set; }
+    public int? BoothId { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; } = null!;
 
-    public string Lastname { get; set; } = null!;
-    public string UserName { get; set; } = null!;
+    public string? Lastname { get; set; } = null!;
+    public string? UserName { get; set; } = null!;
 
     public int UserId { get; set; } 
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
-    public int Medal { get; set; }
+    public int? Medal { get; set; }
 
-    public long Phone { get; set; }
+    public long? Phone { get; set; }
 
-    public virtual BoothDto Booth { get; set; } = null!;
+    public virtual BoothDto? Booth { get; set; } = null!;
 
-    public virtual MedalStatusDto MedalNavigation { get; set; } = null!;
+    public virtual MedalStatusDto? MedalNavigation { get; set; } = null!;
 
     public virtual AppUserDto User { get; set; } = null!;
 

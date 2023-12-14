@@ -2,7 +2,9 @@
 using App.Domain.Core.Contracts.Services;
 using App.Domain.Core.Dtos.Products;
 using App.Domain.Core.Dtos.Users;
+using App.Domain.Core.Entities.Users;
 using App.Domain.Services.Generals;
+using App.Domain.Services.Users;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -27,7 +29,8 @@ public class CustomerAppService : ICustomerAppService
 
     public async Task EditProfile(CustomerDto customer, IFormFile photo, CancellationToken cancellationToken)
     {
-        if(photo != null)
+        var DataCustomer = await _customerService.GetByUserId(customer.UserId, cancellationToken);
+        if (photo != null)
         {
             var image = await _imageService.GetById(customer.ImageId, cancellationToken);
             var path = _imageService.CreateImagePath(photo);
@@ -45,7 +48,7 @@ public class CustomerAppService : ICustomerAppService
         }
         else
         {
-            var image = await _imageService.GetById(customer.ImageId, cancellationToken);
+            customer.ImageId = DataCustomer.ImageId;
         }
         await _customerService.UpdateBaseInfo(customer, cancellationToken);
         //var user = new AppUserDto()

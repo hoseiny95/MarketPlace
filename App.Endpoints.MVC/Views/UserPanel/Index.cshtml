@@ -33,10 +33,10 @@
                                 <div class="account-information">
                                     <h3> اطلاعات کاربری </h3>
                                     <ul>
-                                        <li> <i class="zmdi zmdi-assignment-account"></i> نام کاربری :  @user.User.UserName </li>
-                                        <li> <i class="zmdi zmdi-email"></i> ایمیل : @user.User.Email </li>
-                                        <li> <i class="zmdi zmdi-calendar-check"></i> تلفن : @user.Phone  </li>
-                                        <li> <i class="zmdi zmdi-account"></i> موجودی حساب : @user.User.Wallet.Balance تومان </li>
+                                        <li> <i class="zmdi zmdi-assignment-account"></i> نام کاربری :  @(user.User.UserName == null ? "" : user.User.UserName)</li>
+                                        <li> <i class="zmdi zmdi-email"></i> ایمیل :  @(user.User.Email == null ? "" : user.User.Email)  </li>
+                                        <li> <i class="zmdi zmdi-calendar-check"></i> تلفن :  @(user.Phone == null ? "" : user.Phone)   </li>
+                                        <li> <i class="zmdi zmdi-account"></i> موجودی حساب :  @(user.User.Wallet == null ? "0" : user.User.Wallet.Balance) تومان </li>
                                     </ul>
                                 </div>
                             </div>
@@ -64,8 +64,8 @@
                                     <ul>
                                         <li> <i class="zmdi zmdi-assignment-account"></i> نام کاربری : @seller.User.UserName </li>
                                         <li> <i class="zmdi zmdi-email"></i> ایمیل : @seller.User.Email </li>
-                                        <li> <i class="zmdi zmdi-calendar-check"></i>  تلفن: @seller.Phone </li>
-                                        <li> <i class="zmdi zmdi-account"></i> موجودی حساب : @seller.User.Wallet.Balance تومان </li>
+                                        <li> <i class="zmdi zmdi-calendar-check"></i>  تلفن:  @(seller.Phone == null ? "" : seller.Phone) </li>
+                                        <li> <i class="zmdi zmdi-account"></i> موجودی حساب : @(seller.User.Wallet == null ? "0" : seller.User.Wallet.Balance) تومان </li>
                                     </ul>
                                 </div>
                             </div>

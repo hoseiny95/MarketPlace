@@ -21,10 +21,14 @@ public class AppUserService : IAppUserService
 
     public async Task<IdentityResult> Create(AppUserDto user, CancellationToken CancellationToken)
     {
-        if (user.IsSeller == true)
-            user.Role = "Seller";
-        else
-            user.Role = "Customer";
+        if (user.Role == null)
+        {
+            if (user.IsSeller == true)
+                user.Role = "Seller";
+            else
+                user.Role = "Customer";
+        }
+       
        return await _appRepository.Create(user, CancellationToken);
     }
 
@@ -32,7 +36,7 @@ public class AppUserService : IAppUserService
     {
         try
         {
-           await _appRepository.Delete(userId, cancellationToken);
+        await _appRepository.Delete(userId, cancellationToken);
             return true;
         }
         catch
@@ -43,6 +47,9 @@ public class AppUserService : IAppUserService
 
     public async Task<List<AppUserDto>> GetAll(CancellationToken CancellationToken)
         => await _appRepository.GetAll(CancellationToken);
+
+    public async Task<AppUserDto> GetByEmail(string email, CancellationToken cancellationToken)
+        => await _appRepository.GetByEmail(email, cancellationToken);   
 
     public async Task<AppUserDto> GetById(int userId, CancellationToken CancellationToken)
         => await _appRepository.GetById(userId, CancellationToken);

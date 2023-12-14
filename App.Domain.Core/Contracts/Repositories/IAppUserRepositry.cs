@@ -14,5 +14,6 @@ public interface IAppUserRepositry
     Task Delete(int userId, CancellationToken cancellationToken);
     Task<SignInResult> Login(AppUserDto userDto, CancellationToken cancellationToken);
     Task<AppUserDto> GetByUserName(string userName , CancellationToken cancellationToken);
+    Task<AppUserDto> GetByEmail(string email , CancellationToken cancellationToken);
 
 }

@@ -17,7 +17,16 @@
                 <a href="/Product/detail/@item.Id" class="img-layer"><img src="/images/@item.ProductImages.First().Image.ImagePath" style="height: 170px"></a>
                 <a href="/Product/detail/@item.Id"><b>@item.Product.Name</b></a><br />
                 <a href="/booth/detail/@item.Both.Id">@item.Both.Name</a>
-                <h2><a href="/Product/BuyProduct/@item.Id"> خرید </a></h2>
+                @if (User.IsInRole("Customer"))
+                {
+                    <h2><a  href="/Product/BuyProduct/@item.Id"> خرید </a></h2>
+
+                }
+                else
+                {
+                    <h2><a style="pointer-events: none;" href="/Product/BuyProduct/@item.Id"> خرید </a></h2>
+
+                }
                 <span>  قیمت : @item.Price </span>
                 <i></i>
             </article>
@@ -33,8 +42,16 @@
             <article>
                 <a href="" class="img-layer"><img src="/images/@item.ProductImages.First().Image.ImagePath" style="height: 150px"></a>
                 <a href=""><b>@item.Product.Name</b></a>
-                <h2><a class="setPrice" id="@item.Auctions.Where(c => !c.IsSold).First().Id" href="#" data-toggle="modal" data-target="#confirmDeleteModal"> پیشنهاد قیمت </a></h2>
-                
+                @if (User.IsInRole("Customer"))
+                {
+                    <h2><a class="setPrice" id="@item.Auctions.Where(c => !c.IsSold).First().Id" href="#" data-toggle="modal" data-target="#confirmDeleteModal"> پیشنهاد قیمت </a></h2>
+
+                }
+                else
+                {
+                    <h2><a style="pointer-events: none;" class="setPrice" id="@item.Auctions.Where(c => !c.IsSold).First().Id" href="#" data-toggle="modal" data-target="#confirmDeleteModal"> پیشنهاد قیمت </a></h2>
+
+                }
                 <span> آخرین قیمت :@item.Auctions.Where(x => !x.IsSold).First().LastPrice </span>
                 <i>@(item.Auctions.Where(x => !x.IsSold).First().Endtime - DateTime.Now)</i>
             </article>

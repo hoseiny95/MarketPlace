@@ -61,7 +61,7 @@ public class AuctionAppService : IAuctionAppService
         boothProduct.IsBid = false;
         if (auction.WinnerId == 0)
             boothProduct.IsAvailable = false;
-        await _boothProductService.Update(boothProduct, cancellationToken);
+        await _boothProductService.BidUpdate(boothProduct, cancellationToken);
         auction.IsSold = true;
         await _auctionService.Update(auction, cancellationToken);
     }

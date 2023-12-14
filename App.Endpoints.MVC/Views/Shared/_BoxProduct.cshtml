@@ -9,7 +9,16 @@
         <a href="/Product/detail/@Model.Id" class="img-layer"><img src="/images/@Model.ProductImages.First().Image.ImagePath" style="height: 170px"></a>
         <a href="/Product/detail/@Model.Id"><b>@Model.Product.Name</b></a><br />
         <a href="/booth/detail/@Model.Both.Id">@Model.Both.Name</a>
+        @if (User.IsInRole("Customer"))
+        {
             <h2><a href="/product/buyProduct/@Model.Id"> خرید </a></h2>
+
+        }
+        else
+        {
+            <h2><a style="pointer-events: none;" href="/product/buyProduct/@Model.Id"> خرید </a></h2>
+
+        }
             <span>  قیمت : @Model.Price </span>
             <i></i>
         </article>

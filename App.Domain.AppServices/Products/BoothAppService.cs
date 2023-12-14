@@ -30,7 +30,7 @@ namespace App.Domain.AppServices.Products
 
         public async Task Update(BoothDto boothDto, IFormFile photo, CancellationToken cancellationToken)
         {
-            var image = await _imageService.GetById(boothDto.ImageId, cancellationToken);
+            var image = await _imageService.GetById((int)boothDto.ImageId, cancellationToken);
             if (photo != null)
             {
                 var path = _imageService.CreateImagePath(photo);
@@ -38,7 +38,7 @@ namespace App.Domain.AppServices.Products
                 var index = path[1].LastIndexOf('\\');
                 var imagePath = "smallPic/" + path[1].Substring(index + 1);
                 var imageId = await _imageService.Create(imagePath, cancellationToken);
-                await _imageService.Delete(boothDto.ImageId, cancellationToken);
+                await _imageService.Delete((int)boothDto.ImageId, cancellationToken);
                 _imageService.Delete(image.ImagePath);
                 boothDto.ImageId = imageId;
             }

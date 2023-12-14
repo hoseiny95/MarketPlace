@@ -119,9 +119,16 @@
                         </li>
                     </ul>
 
+                    @if (User.IsInRole("Customer"))
+                    {
+                        <a href="/product/BuyProduct/@Model.Id"> قیمت خرید: @Model.Price.ToString("#,0") تومان </a>
 
-                    <a href="/product/BuyProduct/@Model.Id"> قیمت خرید: @Model.Price.ToString("#,0") تومان </a>
-                    
+                    }
+                    else
+                    {
+                        <a style="pointer-events: none;" href="/product/BuyProduct/@Model.Id"> قیمت خرید: @Model.Price.ToString("#,0") تومان </a>
+
+                    }
                 </div>
 
 

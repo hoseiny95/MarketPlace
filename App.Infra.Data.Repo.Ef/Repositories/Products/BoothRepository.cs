@@ -44,13 +44,14 @@ namespace App.Infra.Data.Repo.Ef.Repositories.Products
                                 {
                                     Id = c.Id,
                                     Name = c.Name,
-                                    City =c.City,
+                                    City = c.City,
                                     Image = c.Image,
                                     Phone = c.Phone,
                                     CreatedAt = c.CreatedAt,
                                     Description = c.Description,
                                     
                                 });
+            var res = await result.ToListAsync(cancellationToken);
             return await result.ToListAsync(cancellationToken);
         }             
         public async Task<BoothDto> GetById(int boothId, CancellationToken cancellationToken)

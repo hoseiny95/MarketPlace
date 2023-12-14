@@ -12,15 +12,15 @@ public partial class Booth
 
     public bool IsDeleted { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; } = null!;
 
     public int? ImageId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
-    public long Phone { get; set; }
+    public long? Phone { get; set; }
 
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; } = null!;
 
     public bool IsSuprior { get; set; }
 
@@ -28,7 +28,7 @@ public partial class Booth
 
     public virtual ICollection<Auction> Auctions { get; set; } = new List<Auction>();
 
-    public virtual ICollection<BoothProduct> BoothProducts { get; set; } = new List<BoothProduct>();
+    public virtual ICollection<BoothProduct>? BoothProducts { get; set; } = new List<BoothProduct>();
 
     public virtual City? City { get; set; } = null!;
 

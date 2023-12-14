@@ -99,6 +99,7 @@ public class BoothController : Controller
             Price = model.price,
             Quantity = model.quantity,
             IsBid = model.IsBid,
+            CreatedAt = DateTime.Now
         };
         await _boothProductAppService.Create(boothProduct, photo, model.ImageId, cancellationToken);
         return LocalRedirect("/Seller/home");
